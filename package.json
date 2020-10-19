@@ -13,11 +13,9 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
     "@types/styled-components": "^5.1.4",
-    "google-protobuf": "^3.13.0",
     "graphql": "^15.3.0",
     "grommet": "^2.15.1",
     "grommet-icons": "^4.5.0",
-    "grpc-web": "^1.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -32,7 +30,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate": "./api/generate.sh",
     "tools:server": "./tools/server/run-server.sh"
   },
   "eslintConfig": {
@@ -65,12 +62,9 @@
   },
   "devDependencies": {
     "async": "^3.2.0",
-    "grpc": "^1.24.3",
-    "grpc-tools": "^1.9.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "npm-outdated-to-latest": "^1.0.3",
-    "prettier": "^2.1.2",
-    "protoc-gen-grpc-web": "^1.2.0"
+    "prettier": "^2.1.2"
   }
 }

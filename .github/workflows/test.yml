@@ -1,4 +1,4 @@
-name: Test
+name: test
 on: push
 jobs:
   build:
@@ -12,9 +12,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install Packages
+      - name: install deps
         run: npm ci
-      - name: Generate code
-        run: sudo apt-get install -y protobuf-compiler && npm run generate
-      - name: Build page
+      - name: build
         run: npm run build
