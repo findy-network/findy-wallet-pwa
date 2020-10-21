@@ -5,6 +5,7 @@ import {
   split,
   HttpLink,
   FieldFunctionOptions,
+  makeVar,
 } from '@apollo/client'
 import {
   getMainDefinition,
@@ -12,6 +13,8 @@ import {
 } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
+
+export const addedEventIdsVar = makeVar<string[]>([])
 
 const uri = 'localhost:8085/query'
 
@@ -64,6 +67,11 @@ const client = new ApolloClient({
       Query: {
         fields: {
           events: relayStylePagination(),
+          addedEventIds: {
+            read() {
+              return addedEventIdsVar()
+            },
+          },
           connections: relayStylePagination(),
           cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
             return toReference({
