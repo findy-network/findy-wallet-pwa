@@ -5,7 +5,23 @@ import { User, Fireball } from 'grommet-icons'
 import { useQuery, gql } from '@apollo/client'
 
 import { IEventEdge } from './Types'
+import EventNotifications from './EventNotifications'
 import Waiting from './Waiting'
+import { addedEventIdsVar } from '../apollo'
+
+Home.fragments = {
+  data: gql`
+    fragment EventDataFragment on Event {
+      id
+      description
+      createdMs
+      connection {
+        id
+        theirLabel
+      }
+    }
+  `,
+}
 
 const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
@@ -13,13 +29,7 @@ const EVENTS_QUERY = gql`
       edges {
         cursor
         node {
-          id
-          description
-          createdMs
-          connection {
-            id
-            theirLabel
-          }
+          ...EventDataFragment
         }
       }
       pageInfo {
@@ -30,6 +40,7 @@ const EVENTS_QUERY = gql`
       }
     }
   }
+  ${Home.fragments.data}
 `
 
 const EVENTS_SUBSCRIPTION = gql`
@@ -37,16 +48,11 @@ const EVENTS_SUBSCRIPTION = gql`
     eventAdded {
       cursor
       node {
-        id
-        description
-        createdMs
-        connection {
-          id
-          theirLabel
-        }
+        ...EventDataFragment
       }
     }
   }
+  ${Home.fragments.data}
 `
 
 function Home() {
@@ -63,12 +69,13 @@ function Home() {
     if (!subscribed) {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData: { data } }) => {
+        updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
           if (!data) return prev
           const newEvent = data.eventAdded
           const exists = prev.events.edges.find(
             (item: IEventEdge) => item.node.id === newEvent.node.id
           )
+
           if (!exists) {
             const newState = {
               ...prev,
@@ -81,6 +88,7 @@ function Home() {
                 },
               },
             }
+            addedEventIdsVar([...addedEventIdsVar(), newEvent.node.id])
             return newState
           }
           return prev
@@ -97,6 +105,7 @@ function Home() {
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="small">
+          <EventNotifications events={data.events.edges} />
           {[...data.events.edges].reverse().map(({ node }: IEventEdge) => (
             <Box
               key={node.id}
