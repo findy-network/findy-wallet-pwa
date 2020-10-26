@@ -4,26 +4,14 @@ import { User, Fireball } from 'grommet-icons'
 
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 import { IEventEdge } from './Types'
 import EventNotifications from './EventNotifications'
 import Waiting from './Waiting'
 import { addedEventIdsVar } from '../apollo'
 import Unread from './Unread'
-
-Home.fragments = {
-  data: gql`
-    fragment EventDataFragment on Event {
-      id
-      description
-      createdMs
-      connection {
-        id
-        theirLabel
-      }
-    }
-  `,
-}
+import Event from './Event'
 
 const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
@@ -42,7 +30,7 @@ const EVENTS_QUERY = gql`
       }
     }
   }
-  ${Home.fragments.data}
+  ${Event.fragments.data}
 `
 
 const EVENTS_SUBSCRIPTION = gql`
@@ -54,11 +42,14 @@ const EVENTS_SUBSCRIPTION = gql`
       }
     }
   }
-  ${Home.fragments.data}
+  ${Event.fragments.data}
 `
 
 const RelativeBox = styled(Box)`
   position: relative;
+  a {
+    text-decoration: none;
+  }
 `
 
 function Home() {
@@ -110,38 +101,41 @@ function Home() {
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="small">
+        <RelativeBox margin="small">
           <EventNotifications events={data.events.edges} />
           {[...data.events.edges].reverse().map(({ node }: IEventEdge) => (
-            <RelativeBox
-              key={node.id}
-              background="light-1"
-              border="bottom"
-              pad="medium"
-              height={{ min: '8rem' }}
-            >
-              <Unread show={!node.read} />
-              <Text>
-                {new Date(parseInt(node.createdMs, 10) * 1000).toLocaleString()}
-              </Text>
-              <Box direction="row" align="center">
-                <Box>
-                  {node.connection ? (
-                    <>
-                      <User />
-                      <Text>{node.connection.theirLabel}</Text>
-                    </>
-                  ) : (
-                    <Fireball />
-                  )}
+            <Link key={node.id} to={`/events/${node.id}`}>
+              <RelativeBox
+                background="light-1"
+                border="bottom"
+                pad="medium"
+                height={{ min: '8rem' }}
+              >
+                <Unread show={!node.read} />
+                <Text>
+                  {new Date(
+                    parseInt(node.createdMs, 10) * 1000
+                  ).toLocaleString()}
+                </Text>
+                <Box direction="row" align="center">
+                  <Box>
+                    {node.connection ? (
+                      <>
+                        <User />
+                        <Text>{node.connection.theirLabel}</Text>
+                      </>
+                    ) : (
+                      <Fireball />
+                    )}
+                  </Box>
+                  <Box>
+                    <Heading margin="medium" level="4">
+                      {node.description}
+                    </Heading>
+                  </Box>
                 </Box>
-                <Box>
-                  <Heading margin="medium" level="4">
-                    {node.description}
-                  </Heading>
-                </Box>
-              </Box>
-            </RelativeBox>
+              </RelativeBox>
+            </Link>
           ))}
           {data.events.pageInfo.hasPreviousPage && (
             <Button
@@ -155,7 +149,7 @@ function Home() {
               }
             ></Button>
           )}
-        </Box>
+        </RelativeBox>
       )}
     </>
   )
