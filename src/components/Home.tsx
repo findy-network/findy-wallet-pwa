@@ -3,11 +3,13 @@ import { Box, Button, Heading, Text } from 'grommet'
 import { User, Fireball } from 'grommet-icons'
 
 import { useQuery, gql } from '@apollo/client'
+import styled from 'styled-components'
 
 import { IEventEdge } from './Types'
 import EventNotifications from './EventNotifications'
 import Waiting from './Waiting'
 import { addedEventIdsVar } from '../apollo'
+import Unread from './Unread'
 
 Home.fragments = {
   data: gql`
@@ -53,6 +55,10 @@ const EVENTS_SUBSCRIPTION = gql`
     }
   }
   ${Home.fragments.data}
+`
+
+const RelativeBox = styled(Box)`
+  position: relative;
 `
 
 function Home() {
@@ -107,13 +113,14 @@ function Home() {
         <Box margin="small">
           <EventNotifications events={data.events.edges} />
           {[...data.events.edges].reverse().map(({ node }: IEventEdge) => (
-            <Box
+            <RelativeBox
               key={node.id}
               background="light-1"
               border="bottom"
               pad="medium"
               height={{ min: '8rem' }}
             >
+              <Unread show={!node.read} />
               <Text>
                 {new Date(parseInt(node.createdMs, 10) * 1000).toLocaleString()}
               </Text>
@@ -134,7 +141,7 @@ function Home() {
                   </Heading>
                 </Box>
               </Box>
-            </Box>
+            </RelativeBox>
           ))}
           {data.events.pageInfo.hasPreviousPage && (
             <Button
