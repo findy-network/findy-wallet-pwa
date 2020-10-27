@@ -19,6 +19,8 @@ import {
   Logout as LogoutIcon,
 } from 'grommet-icons'
 
+import EventNotifications from './EventNotifications'
+
 const Button = styled(GrommetButton)`
   padding: 12px;
 `
@@ -111,6 +113,8 @@ function Navi({ children }: IProps) {
         <WideNav fill>{nav('row')}</WideNav>
       </Header>
       <Box direction="row" fill>
+        <EventNotifications />
+
         {menuOpen && <Sidebar background="brand">{nav('column')}</Sidebar>}
         <Box pad="medium">{children}</Box>
       </Box>

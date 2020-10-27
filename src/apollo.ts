@@ -67,11 +67,6 @@ const client = new ApolloClient({
       Query: {
         fields: {
           events: relayStylePagination(),
-          addedEventIds: {
-            read() {
-              return addedEventIdsVar()
-            },
-          },
           connections: relayStylePagination(),
           cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
             return toReference({
