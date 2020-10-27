@@ -8,7 +8,6 @@ const USER_QUERY = gql`
   query GetUser {
     user {
       name
-      lastLoginTimeMs
     }
   }
 `

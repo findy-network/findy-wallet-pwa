@@ -5,6 +5,7 @@ import { Box, Grommet, grommet } from 'grommet'
 
 import Navi from './components/Navi'
 import Home from './components/Home'
+import Event from './components/Event'
 import Connections from './components/Connections'
 import Connection from './components/Connection'
 import Credentials from './components/Credentials'
@@ -18,6 +19,7 @@ function App() {
           <Navi>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/events/:id" component={Event} />
               <Route exact path="/connections" component={Connections} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />

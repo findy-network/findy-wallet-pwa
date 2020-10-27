@@ -4,6 +4,7 @@ export interface IEventEdge {
 
 export interface IEventNode {
   id: string
+  read: boolean
   description: string
   connection: IConnectionNode
   createdMs: string
