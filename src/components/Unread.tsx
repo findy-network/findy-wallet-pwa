@@ -15,4 +15,6 @@ const Circle = styled.div`
   border-radius: 50%;
 `
 
-export default ({ show }: IProps) => <>{show && <Circle />}</>
+const Unread = ({ show }: IProps) => <>{show && <Circle />}</>
+
+export default Unread
