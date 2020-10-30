@@ -8,6 +8,7 @@ import { addedEventIdsVar } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
 import { useQuery, gql } from '@apollo/client'
+import { fetchPolicyVar } from '../apollo'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -53,6 +54,7 @@ function EventNotifications() {
                 },
               },
             }
+            fetchPolicyVar('cache-and-network') // change default policy to network to get latest in view refresh
             addedEventIdsVar([...addedEventIdsVar(), newEvent.node.id])
             return newState
           }

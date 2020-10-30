@@ -9,7 +9,13 @@ interface IProps {
 }
 
 const Notification = ({ onClose, text }: IProps) => (
-  <Dialog position="top" onClose={onClose} onEsc={onClose} duration={3}>
+  <Dialog
+    position="top"
+    modal={false}
+    onClose={onClose}
+    onEsc={onClose}
+    duration={3}
+  >
     <Box
       direction="row"
       align="center"
