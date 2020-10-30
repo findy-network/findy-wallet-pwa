@@ -11,6 +11,8 @@ import Waiting from './Waiting'
 import Unread from './Unread'
 import Event from './Event'
 
+import { fetchPolicyVar } from '../apollo'
+
 export const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
     events(last: 5, before: $cursor) {
@@ -41,9 +43,10 @@ const RelativeBox = styled(Box)`
 function Home() {
   // TODO: for some reason we get react error for memory consumption
   // if useQuery is used, thus executing query after mount
-  const [execQuery, { loading, error, data, fetchMore }] = useLazyQuery(
-    EVENTS_QUERY
-  )
+  const [
+    execQuery,
+    { loading, error, data, fetchMore },
+  ] = useLazyQuery(EVENTS_QUERY, { fetchPolicy: fetchPolicyVar() })
   useEffect(() => {
     execQuery()
   }, [execQuery])

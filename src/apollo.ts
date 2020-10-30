@@ -6,6 +6,7 @@ import {
   HttpLink,
   FieldFunctionOptions,
   makeVar,
+  WatchQueryFetchPolicy,
 } from '@apollo/client'
 import {
   getMainDefinition,
@@ -15,6 +16,7 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 
 export const addedEventIdsVar = makeVar<string[]>([])
+export const fetchPolicyVar = makeVar<WatchQueryFetchPolicy>('cache-first')
 
 const uri = 'localhost:8085/query'
 
