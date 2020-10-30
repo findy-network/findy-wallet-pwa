@@ -34,20 +34,21 @@ function EventNotifications() {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
-          if (!data) return prev
+          const state = prev && prev.events ? prev : { events: { edges: [] } }
+          if (!data) return state
           const newEvent = data.eventAdded
-          const exists = prev.events.edges.find(
+          const exists = state.events.edges.find(
             (item: IEventEdge) => item.node.id === newEvent.node.id
           )
 
           if (!exists) {
             const newState = {
-              ...prev,
+              ...state,
               events: {
-                ...prev.events,
-                edges: [...prev.events.edges, newEvent],
+                ...state.events,
+                edges: [...state.events.edges, newEvent],
                 pageInfo: {
-                  ...prev.events.pageInfo,
+                  ...state.events.pageInfo,
                   endCursor: newEvent.cursor,
                 },
               },

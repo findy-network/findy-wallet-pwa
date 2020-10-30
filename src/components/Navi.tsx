@@ -12,6 +12,7 @@ import {
   BoxProps,
 } from 'grommet'
 import {
+  Scan as MeIcon,
   Home as HomeIcon,
   Menu as MenuIcon,
   Projects as ProjectsIcon,
@@ -69,6 +70,9 @@ function Navi({ children }: IProps) {
     <Nav gap="small" align="start" direction={direction}>
       <Link to="/">
         <Button icon={<HomeIcon />} hoverIndicator label="Home" plain />
+      </Link>
+      <Link to="/me">
+        <Button icon={<MeIcon />} hoverIndicator label="Me" plain />
       </Link>
       <Link to="/connections">
         <Button

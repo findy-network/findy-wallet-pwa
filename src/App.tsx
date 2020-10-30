@@ -9,6 +9,7 @@ import Event from './components/Event'
 import Connections from './components/Connections'
 import Connection from './components/Connection'
 import Credentials from './components/Credentials'
+import Me from './components/Me'
 import Login from './components/Login'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               <Route exact path="/connections" component={Connections} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
+              <Route exact path="/me" component={Me} />
             </Switch>
           </Navi>
         </Login>
