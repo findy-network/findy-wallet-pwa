@@ -12,6 +12,7 @@ const Notification = ({ onClose, text }: IProps) => (
   <Dialog
     position="top"
     modal={false}
+    plain={true}
     onClose={onClose}
     onEsc={onClose}
     duration={3}
