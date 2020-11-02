@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Box, Button, Heading, TextInput } from 'grommet'
 import { Add as AddIcon } from 'grommet-icons'
 import Dialog from './Dialog'
+import QrReader from './QrReader'
 
 const AddButton = styled(Button)`
   position: fixed;
@@ -26,6 +27,7 @@ const Smoke = styled.div`
 
 function Add() {
   const [dialogOpen, setOpen] = useState(false)
+  const [code, setCode] = useState('')
   return (
     <>
       {!dialogOpen && (
@@ -56,7 +58,16 @@ function Add() {
               margin="medium"
             >
               <Heading level="2">Add connection</Heading>
-              <TextInput placeholder="Copy paste invitation here"></TextInput>
+              <TextInput
+                placeholder="Copy paste invitation here"
+                value={code}
+              />
+              <QrReader
+                onRead={(res: string) => {
+                  console.log(res)
+                  setCode(res)
+                }}
+              />
               <Button label="OK" onClick={() => setOpen(false)}></Button>
             </Box>
           </Dialog>
