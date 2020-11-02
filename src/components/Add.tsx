@@ -5,6 +5,16 @@ import { Add as AddIcon } from 'grommet-icons'
 import Dialog from './Dialog'
 import QrReader from './QrReader'
 
+import { useMutation, gql } from '@apollo/client'
+
+const CONNECT_MUTATION = gql`
+  mutation Connect($input: ConnectInput!) {
+    connect(input: $input) {
+      ok
+    }
+  }
+`
+
 const AddButton = styled(Button)`
   position: fixed;
   bottom: 1rem;
@@ -28,6 +38,7 @@ const Smoke = styled.div`
 function Add() {
   const [dialogOpen, setOpen] = useState(false)
   const [code, setCode] = useState('')
+  const [connect] = useMutation(CONNECT_MUTATION)
   return (
     <>
       {!dialogOpen && (
@@ -64,11 +75,18 @@ function Add() {
               />
               <QrReader
                 onRead={(res: string) => {
-                  console.log(res)
+                  // console.log(res)
                   setCode(res)
                 }}
               />
-              <Button label="OK" onClick={() => setOpen(false)}></Button>
+              <Button
+                label="OK"
+                onClick={() => {
+                  setOpen(false)
+                  connect({ variables: { input: { invitation: code } } })
+                  setCode('')
+                }}
+              ></Button>
             </Box>
           </Dialog>
         </Smoke>
