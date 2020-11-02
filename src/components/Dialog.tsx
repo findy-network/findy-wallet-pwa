@@ -6,6 +6,7 @@ interface IProps {
   modal?: boolean
   position: LayerPositionType
   duration: number
+  plain: boolean
   onClose: () => void
   onEsc: () => void
 }
@@ -19,18 +20,20 @@ function Dialog({
   ...rest
 }: IProps) {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onClose()
-    }, 3000)
-    return () => clearTimeout(timer)
+    if (duration) {
+      const timer = setTimeout(() => {
+        onClose()
+      }, duration * 1000)
+      return () => clearTimeout(timer)
+    }
   })
   return (
     <Layer
       position={position || 'top'}
       modal={modal}
       margin="none"
-      responsive
-      plain={modal ? false : true}
+      responsive={false}
+      onClickOutside={onClose}
       {...rest}
     >
       {children}

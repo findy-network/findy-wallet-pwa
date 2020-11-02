@@ -21,6 +21,7 @@ import {
 } from 'grommet-icons'
 
 import EventNotifications from './EventNotifications'
+import Add from './Add'
 
 const Button = styled(GrommetButton)`
   padding: 12px;
@@ -122,6 +123,7 @@ function Navi({ children }: IProps) {
         {menuOpen && <Sidebar background="brand">{nav('column')}</Sidebar>}
         <Box pad="medium">{children}</Box>
       </Box>
+      <Add />
     </>
   )
 }
