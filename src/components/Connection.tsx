@@ -46,6 +46,8 @@ function Connection({ match }: RouteComponentProps<TParams>) {
           <Heading level={2}>Connection {data.connection.theirLabel}</Heading>
           <Box>
             <Box>
+              <div>ID</div>
+              <div>{data.connection.id}</div>
               <div>My DID</div>
               <div>{data.connection.ourDid}</div>
             </Box>

@@ -8,6 +8,7 @@ import Home from './components/Home'
 import Event from './components/Event'
 import Connections from './components/Connections'
 import Connection from './components/Connection'
+import Job from './components/Job'
 import Credentials from './components/Credentials'
 import Me from './components/Me'
 import Login from './components/Login'
@@ -21,6 +22,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/events/:id" component={Event} />
+              <Route exact path="/jobs/:id" component={Job} />
               <Route exact path="/connections" component={Connections} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
