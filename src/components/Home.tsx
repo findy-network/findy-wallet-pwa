@@ -10,6 +10,7 @@ import { IEventEdge } from './Types'
 import Waiting from './Waiting'
 import Unread from './Unread'
 import Event from './Event'
+import Jobs from './Jobs'
 
 import { fetchPolicyVar } from '../apollo'
 
@@ -58,10 +59,13 @@ function Home() {
   return (
     <>
       <Heading level={2}>Home</Heading>
+      <Jobs />
       {showWaiting ? (
         <Waiting loading={isLoading} error={error} />
       ) : (
         <RelativeBox margin="small">
+          <Heading level={3}>Events</Heading>
+
           {[...data.events.edges].reverse().map(({ node }: IEventEdge) => (
             <Link key={node.id} to={`/events/${node.id}`}>
               <RelativeBox

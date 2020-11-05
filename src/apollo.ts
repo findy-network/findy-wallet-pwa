@@ -70,6 +70,7 @@ const client = new ApolloClient({
         fields: {
           events: relayStylePagination(),
           connections: relayStylePagination(),
+          jobs: relayStylePagination(),
           cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
             return toReference({
               __typename: 'Pairwise',

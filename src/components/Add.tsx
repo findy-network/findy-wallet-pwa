@@ -83,7 +83,9 @@ function Add() {
                 label="OK"
                 onClick={() => {
                   setOpen(false)
-                  connect({ variables: { input: { invitation: code } } })
+                  if (code) {
+                    connect({ variables: { input: { invitation: code } } })
+                  }
                   setCode('')
                 }}
               ></Button>

@@ -24,3 +24,30 @@ export interface IConnectionNode {
 export interface IConnectionArgs {
   id: string
 }
+
+export interface IJobEdge {
+  node: IJobNode
+}
+
+enum ProtocolType {
+  NONE = 'NONE',
+  CONNECTION = 'CONNECTION',
+  CREDENTIAL = 'CREDENTIAL',
+  PROOF = 'PROOF',
+  BASIC_MESSAGE = 'BASIC_MESSAGE',
+}
+
+enum JobStatus {
+  WAITING = 'WAITING',
+  PENDING = 'PENDING',
+  COMPLETE = 'COMPLETE',
+}
+
+export interface IJobNode {
+  id: string
+  initiatedByUs: boolean
+  createdMs: string
+  updatedMs: string
+  protocol: ProtocolType
+  status: JobStatus
+}
