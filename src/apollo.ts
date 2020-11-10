@@ -62,26 +62,26 @@ const splitLink = split(
   authLink.concat(httpLink)
 )
 
-const client = new ApolloClient({
-  uri: `http://${uri}`,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          events: relayStylePagination(),
-          connections: relayStylePagination(),
-          jobs: relayStylePagination(),
-          cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
-            return toReference({
-              __typename: 'Pairwise',
-              id: args!.id,
-            })
-          },
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        events: relayStylePagination(),
+        connections: relayStylePagination(),
+        jobs: relayStylePagination(),
+        cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
+          return toReference({
+            __typename: 'Pairwise',
+            id: args!.id,
+          })
         },
       },
     },
-  }),
-  link: ApolloLink.from([splitLink]),
+  },
 })
 
-export default client
+export default new ApolloClient({
+  uri: `http://${uri}`,
+  cache,
+  link: ApolloLink.from([splitLink]),
+})

@@ -10,14 +10,15 @@ Job.fragments = {
     fragment JobDataFragment on Job {
       id
       protocol
+      protocolId
       initiatedByUs
+      connection {
+        id
+      }
       status
       result
       createdMs
       updatedMs
-      details {
-        pairwiseId
-      }
     }
   `,
 }

@@ -41,6 +41,11 @@ const RelativeBox = styled(Box)`
   }
 `
 
+const toTimeString = (str: string) => {
+  const d = new Date(parseInt(str, 10))
+  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+}
+
 function Home() {
   // TODO: for some reason we get react error for memory consumption
   // if useQuery is used, thus executing query after mount
@@ -75,11 +80,7 @@ function Home() {
                 height={{ min: '8rem' }}
               >
                 <Unread show={!node.read} />
-                <Text>
-                  {new Date(
-                    parseInt(node.createdMs, 10) * 1000
-                  ).toLocaleString()}
-                </Text>
+                <Text>{toTimeString(node.createdMs)}</Text>
                 <Box direction="row" align="center">
                   <Box>
                     {node.connection ? (

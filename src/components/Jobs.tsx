@@ -10,7 +10,7 @@ import Job from './Job'
 
 import { fetchPolicyVar } from '../apollo'
 
-const JOBS_QUERY = gql`
+export const JOBS_QUERY = gql`
   query GetJobs($cursor: String) {
     jobs(first: 10, after: $cursor) {
       edges {
@@ -27,45 +27,56 @@ const JOBS_QUERY = gql`
   ${Job.fragments.data}
 `
 
+const toTimeString = (str: string) => {
+  const d = new Date(parseInt(str, 10))
+  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+}
+
 function Jobs() {
+  console.log(fetchPolicyVar())
   const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY, {
     fetchPolicy: fetchPolicyVar(),
   })
 
   return (
     <div>
-      <Heading level={3}>Jobs</Heading>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="small">
-          {data.jobs.edges.map(({ node }: IJobEdge) => (
-            <Link key={node.id} to={`/jobs/${node.id}`}>
-              <Box
-                background="light-1"
-                direction="row"
-                align="center"
-                pad="medium"
-                border="bottom"
-                height={{ min: '8rem' }}
-              >
-                {node.protocol}: {node.status}
-              </Box>
-            </Link>
-          ))}
-          {data.jobs.pageInfo.hasNextPage && (
-            <Button
-              label="Load more"
-              onClick={() =>
-                fetchMore({
-                  variables: {
-                    cursor: data.jobs.pageInfo.endCursor,
-                  },
-                })
-              }
-            ></Button>
-          )}
-        </Box>
+        <>
+          {data.jobs.edges.length > 0 && <Heading level={3}>Jobs</Heading>}
+          <Box margin="small">
+            {data.jobs.edges.map(({ node }: IJobEdge) => (
+              <Link key={node.id} to={`/jobs/${node.id}`}>
+                <Box
+                  background="light-1"
+                  direction="column"
+                  align="center"
+                  pad="medium"
+                  border="bottom"
+                  height={{ min: '8rem' }}
+                >
+                  <div>Created {toTimeString(node.createdMs)}</div>
+                  <div>
+                    {node.protocol}: {node.status}
+                  </div>
+                </Box>
+              </Link>
+            ))}
+            {data.jobs.pageInfo.hasNextPage && (
+              <Button
+                label="Load more"
+                onClick={() =>
+                  fetchMore({
+                    variables: {
+                      cursor: data.jobs.pageInfo.endCursor,
+                    },
+                  })
+                }
+              ></Button>
+            )}
+          </Box>
+        </>
       )}
     </div>
   )
