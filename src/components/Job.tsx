@@ -23,7 +23,7 @@ Job.fragments = {
   `,
 }
 
-const JOB_QUERY = gql`
+export const JOB_QUERY = gql`
   query GetJob($id: ID!) {
     job(id: $id) {
       ...JobDataFragment

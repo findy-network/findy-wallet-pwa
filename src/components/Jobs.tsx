@@ -33,7 +33,6 @@ const toTimeString = (str: string) => {
 }
 
 function Jobs() {
-  console.log(fetchPolicyVar())
   const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY, {
     fetchPolicy: fetchPolicyVar(),
   })

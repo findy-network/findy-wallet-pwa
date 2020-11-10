@@ -35,8 +35,6 @@ function EventNotifications() {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
-          fetchPolicyVar('cache-first')
-
           const state = prev?.events ? prev : { events: { edges: [] } }
           if (!data) return state
           const newEvent = data.eventAdded
