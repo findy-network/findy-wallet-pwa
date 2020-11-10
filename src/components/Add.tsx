@@ -72,6 +72,7 @@ function Add() {
               <TextInput
                 placeholder="Copy paste invitation here"
                 value={code}
+                onChange={(e) => setCode(e.target.value)}
               />
               <QrReader
                 onRead={(res: string) => {

@@ -10,19 +10,20 @@ Job.fragments = {
     fragment JobDataFragment on Job {
       id
       protocol
+      protocolId
       initiatedByUs
+      connection {
+        id
+      }
       status
       result
       createdMs
       updatedMs
-      details {
-        pairwiseId
-      }
     }
   `,
 }
 
-const JOB_QUERY = gql`
+export const JOB_QUERY = gql`
   query GetJob($id: ID!) {
     job(id: $id) {
       ...JobDataFragment

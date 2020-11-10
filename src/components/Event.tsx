@@ -16,6 +16,19 @@ Event.fragments = {
         id
         theirLabel
       }
+      job {
+        id
+        protocol
+        protocolId
+        initiatedByUs
+        connection {
+          id
+        }
+        status
+        result
+        createdMs
+        updatedMs
+      }
     }
   `,
 }
