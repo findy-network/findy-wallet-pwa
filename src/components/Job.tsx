@@ -7,18 +7,21 @@ import Waiting from './Waiting'
 
 Job.fragments = {
   data: gql`
-    fragment JobDataFragment on Job {
-      id
-      protocol
-      protocolId
-      initiatedByUs
-      connection {
+    fragment JobNodeFragment on JobEdge {
+      node {
         id
+        protocol
+        protocolId
+        initiatedByUs
+        connection {
+          id
+        }
+        status
+        result
+        createdMs
+        updatedMs
       }
-      status
-      result
-      createdMs
-      updatedMs
+      cursor
     }
   `,
 }
@@ -26,7 +29,7 @@ Job.fragments = {
 export const JOB_QUERY = gql`
   query GetJob($id: ID!) {
     job(id: $id) {
-      ...JobDataFragment
+      ...JobNodeFragment
     }
   }
   ${Job.fragments.data}
@@ -40,13 +43,14 @@ function Job({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
+  const node = data?.job.node
   return (
     <>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <>
-          <Heading level={2}>Job {data.job.id}</Heading>
+          <Heading level={2}>Job {node.id}</Heading>
           <Box></Box>
         </>
       )}

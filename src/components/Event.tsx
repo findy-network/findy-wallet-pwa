@@ -7,27 +7,29 @@ import Waiting from './Waiting'
 
 Event.fragments = {
   data: gql`
-    fragment EventDataFragment on Event {
-      id
-      read
-      description
-      createdMs
-      connection {
+    fragment EventNodeFragment on EventEdge {
+      node {
         id
-        theirLabel
-      }
-      job {
-        id
-        protocol
-        protocolId
-        initiatedByUs
+        read
+        description
+        createdMs
         connection {
           id
+          theirLabel
         }
-        status
-        result
-        createdMs
-        updatedMs
+        job {
+          id
+          protocol
+          protocolId
+          initiatedByUs
+          connection {
+            id
+          }
+          status
+          result
+          createdMs
+          updatedMs
+        }
       }
     }
   `,
@@ -36,7 +38,7 @@ Event.fragments = {
 const EVENT_QUERY = gql`
   query GetEvent($id: ID!) {
     event(id: $id) {
-      ...EventDataFragment
+      ...EventNodeFragment
     }
   }
   ${Event.fragments.data}
@@ -44,7 +46,7 @@ const EVENT_QUERY = gql`
 const MARK_READ_MUTATION = gql`
   mutation MarkRead($input: MarkReadInput!) {
     markEventRead(input: $input) {
-      ...EventDataFragment
+      ...EventNodeFragment
     }
   }
   ${Event.fragments.data}
@@ -60,15 +62,17 @@ function Event({ match }: RouteComponentProps<TParams>) {
     },
   })
   const [markRead] = useMutation(MARK_READ_MUTATION)
+  const node = data?.event.node
+
   useEffect(() => {
     if (!markingDone && !error && !loading) {
-      if (!data.event.read) {
-        markRead({ variables: { input: { id: data.event.id } } })
+      if (!node.read) {
+        markRead({ variables: { input: { id: node.id } } })
       }
 
       setMarkingDone(true)
     }
-  }, [loading, error, data, markingDone, markRead])
+  }, [loading, error, node, markingDone, markRead])
 
   return (
     <>
@@ -76,8 +80,8 @@ function Event({ match }: RouteComponentProps<TParams>) {
         <Waiting loading={loading} error={error} />
       ) : (
         <>
-          <Heading level={2}>{data.event.description}</Heading>
-          <div>{data.event.read ? 'READ' : 'NOT READ'}</div>
+          <Heading level={2}>{node.description}</Heading>
+          <div>{node.read ? 'READ' : 'NOT READ'}</div>
         </>
       )}
     </>

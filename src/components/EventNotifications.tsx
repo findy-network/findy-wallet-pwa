@@ -2,25 +2,60 @@ import React, { useState, useEffect } from 'react'
 
 import { useReactiveVar } from '@apollo/client'
 
-import { IEventEdge } from './Types'
+import { IEdge, IEventEdge, ProtocolType } from './Types'
 import Notification from './Notification'
-import { addedEventIdsVar } from '../apollo'
+import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
-import { useQuery, gql } from '@apollo/client'
-import { fetchPolicyVar } from '../apollo'
+import { useQuery, useLazyQuery, gql } from '@apollo/client'
+import { JOB_QUERY } from './Job'
+import { JOBS_QUERY } from './Jobs'
+import { CONNECTION_QUERY } from './Connection'
+import { CONNECTIONS_QUERY } from './Connections'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
     eventAdded {
       cursor
-      node {
-        ...EventDataFragment
-      }
+      ...EventNodeFragment
     }
   }
   ${Event.fragments.data}
 `
+
+const stateWithNewItem = (
+  prevState: any,
+  itemName: string,
+  newItem: IEdge,
+  last: boolean
+) => {
+  const state =
+    prevState && prevState[itemName] ? prevState : { [itemName]: { edges: [] } }
+  const items = state[itemName]
+  // No need to add item if it is already there
+  if (
+    !newItem ||
+    items.edges.find((item: IEdge) => item.node.id === newItem.node.id)
+  ) {
+    return { state, updated: false }
+  }
+  return {
+    state: {
+      ...state,
+      [itemName]: {
+        ...items,
+        edges: [...items.edges, newItem],
+        pageInfo: {
+          ...items.pageInfo,
+          ...(last
+            ? { endCursor: newItem.cursor }
+            : { startCursor: newItem.cursor }),
+        },
+      },
+    },
+    updated: true,
+  }
+}
 
 function EventNotifications() {
   const addedEventIds = useReactiveVar(addedEventIdsVar)
@@ -29,39 +64,82 @@ function EventNotifications() {
   })
   const [subscribed, setSubscribed] = useState(false)
 
+  const [execJobQuery] = useLazyQuery(JOB_QUERY, {
+    onCompleted: (jobData) => {
+      try {
+        // this will throw if there are no items in cache
+        const state: any = cache.readQuery({ query: JOBS_QUERY })
+        if (!state.jobs.pageInfo.hasNextPage) {
+          const newState = stateWithNewItem(state, 'jobs', jobData.job, false)
+          if (newState.updated) {
+            client.writeQuery({ query: JOBS_QUERY, data: newState.state })
+          }
+        }
+      } catch (e) {}
+    },
+  })
+
+  const [execConnectionQuery] = useLazyQuery(CONNECTION_QUERY, {
+    onCompleted: (connectionData) => {
+      try {
+        // this will throw if there are no items in cache
+        const state: any = cache.readQuery({ query: CONNECTIONS_QUERY })
+        if (!state.connections.pageInfo.hasNextPage) {
+          const newState = stateWithNewItem(
+            state,
+            'connections',
+            connectionData.connection,
+            false
+          )
+          if (newState.updated) {
+            client.writeQuery({
+              query: CONNECTIONS_QUERY,
+              data: newState.state,
+            })
+          }
+        }
+      } catch (e) {}
+    },
+  })
+
   useEffect(() => {
     if (!subscribed) {
       setSubscribed(true)
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
-          const state = prev?.events ? prev : { events: { edges: [] } }
-          if (!data) return state
-          const newEvent = data.eventAdded
-          const exists = state.events.edges.find(
-            (item: IEventEdge) => item.node.id === newEvent.node.id
+          const newState = stateWithNewItem(
+            prev,
+            'events',
+            data.eventAdded,
+            true
           )
-          if (!exists) {
-            const newState = {
-              ...state,
-              events: {
-                ...state.events,
-                edges: [...state.events.edges, newEvent],
-                pageInfo: {
-                  ...state.events.pageInfo,
-                  endCursor: newEvent.cursor,
+          if (newState.updated) {
+            const { node }: IEventEdge = data.eventAdded
+            if (node.job) {
+              execJobQuery({
+                variables: {
+                  id: node.job.id,
                 },
-              },
+              })
+              if (
+                node.job.protocol === ProtocolType.CONNECTION &&
+                node.job.protocolId
+              ) {
+                execConnectionQuery({
+                  variables: {
+                    id: node.job.protocolId,
+                  },
+                })
+              }
             }
-            fetchPolicyVar('cache-and-network') // change default policy to network to get latest in view refresh
-            addedEventIdsVar([...addedEventIdsVar(), newEvent.node.id])
-            return newState
+            addedEventIdsVar([...addedEventIdsVar(), node.id])
           }
-          return prev
+          return newState.state
         },
       })
     }
-  }, [subscribeToMore, subscribed])
+  }, [subscribeToMore, subscribed, execJobQuery, execConnectionQuery])
   return (
     <>
       {data &&

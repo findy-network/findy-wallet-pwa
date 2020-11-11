@@ -8,15 +8,11 @@ import { Link } from 'react-router-dom'
 import Waiting from './Waiting'
 import Job from './Job'
 
-import { fetchPolicyVar } from '../apollo'
-
 export const JOBS_QUERY = gql`
   query GetJobs($cursor: String) {
-    jobs(first: 10, after: $cursor) {
+    jobs(first: 2, after: $cursor) {
       edges {
-        node {
-          ...JobDataFragment
-        }
+        ...JobNodeFragment
       }
       pageInfo {
         endCursor
@@ -33,9 +29,7 @@ const toTimeString = (str: string) => {
 }
 
 function Jobs() {
-  const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY, {
-    fetchPolicy: fetchPolicyVar(),
-  })
+  const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY)
 
   return (
     <div>

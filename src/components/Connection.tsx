@@ -7,23 +7,26 @@ import Waiting from './Waiting'
 
 Connection.fragments = {
   data: gql`
-    fragment PairwiseDataFragment on Pairwise {
-      id
-      ourDid
-      theirDid
-      theirEndpoint
-      theirLabel
-      createdMs
-      approvedMs
-      initiatedByUs
+    fragment PairwiseNodeFragment on PairwiseEdge {
+      node {
+        id
+        ourDid
+        theirDid
+        theirEndpoint
+        theirLabel
+        createdMs
+        approvedMs
+        initiatedByUs
+      }
+      cursor
     }
   `,
 }
 
-const CONNECTION_QUERY = gql`
+export const CONNECTION_QUERY = gql`
   query GetConnection($id: ID!) {
     connection(id: $id) {
-      ...PairwiseDataFragment
+      ...PairwiseNodeFragment
     }
   }
   ${Connection.fragments.data}
@@ -37,19 +40,20 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
+  const node = data?.connection.node
   return (
     <>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <>
-          <Heading level={2}>Connection {data.connection.theirLabel}</Heading>
+          <Heading level={2}>Connection {node.theirLabel}</Heading>
           <Box>
             <Box>
               <div>ID</div>
-              <div>{data.connection.id}</div>
+              <div>{node.id}</div>
               <div>My DID</div>
-              <div>{data.connection.ourDid}</div>
+              <div>{node.ourDid}</div>
             </Box>
           </Box>
         </>

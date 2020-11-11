@@ -9,15 +9,11 @@ import { Link } from 'react-router-dom'
 import Connection from './Connection'
 import Waiting from './Waiting'
 
-import { fetchPolicyVar } from '../apollo'
-
-const CONNECTIONS_QUERY = gql`
+export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
     connections(first: 10, after: $cursor) {
       edges {
-        node {
-          ...PairwiseDataFragment
-        }
+        ...PairwiseNodeFragment
       }
       pageInfo {
         endCursor
@@ -29,9 +25,7 @@ const CONNECTIONS_QUERY = gql`
 `
 
 function Connections() {
-  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY, {
-    fetchPolicy: fetchPolicyVar(),
-  })
+  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
 
   return (
     <>
