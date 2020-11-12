@@ -5,28 +5,39 @@ import { Box, Heading } from 'grommet'
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 
+const nodeFragment = gql`
+  fragment PairwiseNodeFragment on Pairwise {
+    id
+    ourDid
+    theirDid
+    theirEndpoint
+    theirLabel
+    createdMs
+    approvedMs
+    initiatedByUs
+  }
+`
+
 Connection.fragments = {
-  data: gql`
-    fragment PairwiseDataFragment on Pairwise {
-      id
-      ourDid
-      theirDid
-      theirEndpoint
-      theirLabel
-      createdMs
-      approvedMs
-      initiatedByUs
+  node: nodeFragment,
+  edge: gql`
+    fragment PairwiseEdgeFragment on PairwiseEdge {
+      cursor
+      node {
+        ...PairwiseNodeFragment
+      }
     }
+    ${nodeFragment}
   `,
 }
 
-const CONNECTION_QUERY = gql`
+export const CONNECTION_QUERY = gql`
   query GetConnection($id: ID!) {
     connection(id: $id) {
-      ...PairwiseDataFragment
+      ...PairwiseNodeFragment
     }
   }
-  ${Connection.fragments.data}
+  ${Connection.fragments.node}
 `
 
 type TParams = { id: string }
@@ -37,19 +48,20 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
+  const node = data?.connection
   return (
     <>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <>
-          <Heading level={2}>Connection {data.connection.theirLabel}</Heading>
+          <Heading level={2}>Connection {node.theirLabel}</Heading>
           <Box>
             <Box>
               <div>ID</div>
-              <div>{data.connection.id}</div>
+              <div>{node.id}</div>
               <div>My DID</div>
-              <div>{data.connection.ourDid}</div>
+              <div>{node.ourDid}</div>
             </Box>
           </Box>
         </>

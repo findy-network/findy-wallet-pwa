@@ -38,7 +38,19 @@ const Smoke = styled.div`
 function Add() {
   const [dialogOpen, setOpen] = useState(false)
   const [code, setCode] = useState('')
-  const [connect] = useMutation(CONNECT_MUTATION)
+  const [errorMessage, setErrorMessage] = useState('')
+  const close = () => {
+    setOpen(false)
+    setErrorMessage('')
+  }
+  const [connect] = useMutation(CONNECT_MUTATION, {
+    onCompleted: close,
+    onError: () => {
+      setErrorMessage(
+        'Unable to send connection request,\n is the invitation in correct format?'
+      )
+    },
+  })
   return (
     <>
       {!dialogOpen && (
@@ -56,38 +68,50 @@ function Add() {
             duration={0}
             modal={false}
             plain={false}
-            onClose={() => setOpen(false)}
-            onEsc={() => setOpen(false)}
+            onClose={close}
+            onEsc={close}
           >
-            <Box
-              direction="column"
-              align="center"
-              justify="between"
-              gap="small"
-              round
-              pad="small"
-              margin="medium"
-            >
+            <Box round margin="medium">
               <Heading level="2">Add connection</Heading>
-              <TextInput
-                placeholder="Copy paste invitation here"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-              <QrReader
-                onRead={(res: string) => {
-                  // console.log(res)
-                  setCode(res)
-                }}
-              />
+              {errorMessage ? (
+                <Box pad="small">
+                  {errorMessage.split('\n').map((item) => (
+                    <div key={item}>{item}</div>
+                  ))}
+                </Box>
+              ) : (
+                <Box
+                  direction="column"
+                  align="center"
+                  justify="between"
+                  gap="small"
+                  round
+                  pad="small"
+                  margin="medium"
+                >
+                  {' '}
+                  <TextInput
+                    placeholder="Copy paste invitation here"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                  />
+                  <QrReader
+                    onRead={(res: string) => {
+                      // console.log(res)
+                      setCode(res)
+                    }}
+                  />
+                </Box>
+              )}
               <Button
                 label="OK"
                 onClick={() => {
-                  setOpen(false)
                   if (code) {
                     connect({ variables: { input: { invitation: code } } })
+                    setCode('')
+                  } else {
+                    close()
                   }
-                  setCode('')
                 }}
               ></Button>
             </Box>

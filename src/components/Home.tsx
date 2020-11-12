@@ -11,27 +11,21 @@ import Waiting from './Waiting'
 import Unread from './Unread'
 import Event from './Event'
 import Jobs from './Jobs'
-
-import { fetchPolicyVar } from '../apollo'
+import Utils from './Utils'
 
 export const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
     events(last: 5, before: $cursor) {
       edges {
-        cursor
-        node {
-          ...EventDataFragment
-        }
+        ...EventEdgeFragment
       }
       pageInfo {
-        endCursor
-        startCursor
-        hasPreviousPage
-        hasNextPage
+        ...PageInfoFragment
       }
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.edge}
+  ${Utils.fragments.pageInfo}
 `
 
 const RelativeBox = styled(Box)`
@@ -41,18 +35,12 @@ const RelativeBox = styled(Box)`
   }
 `
 
-const toTimeString = (str: string) => {
-  const d = new Date(parseInt(str, 10))
-  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
-}
-
 function Home() {
   // TODO: for some reason we get react error for memory consumption
   // if useQuery is used, thus executing query after mount
-  const [
-    execQuery,
-    { loading, error, data, fetchMore },
-  ] = useLazyQuery(EVENTS_QUERY, { fetchPolicy: fetchPolicyVar() })
+  const [execQuery, { loading, error, data, fetchMore }] = useLazyQuery(
+    EVENTS_QUERY
+  )
   useEffect(() => {
     execQuery()
   }, [execQuery])
@@ -80,7 +68,7 @@ function Home() {
                 height={{ min: '8rem' }}
               >
                 <Unread show={!node.read} />
-                <Text>{toTimeString(node.createdMs)}</Text>
+                <Text>{Utils.toTimeString(node.createdMs)}</Text>
                 <Box direction="row" align="center">
                   <Box>
                     {node.connection ? (

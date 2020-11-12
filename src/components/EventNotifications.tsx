@@ -2,25 +2,80 @@ import React, { useState, useEffect } from 'react'
 
 import { useReactiveVar } from '@apollo/client'
 
-import { IEventEdge } from './Types'
+import { IEdge, IEventEdge, ProtocolType } from './Types'
 import Notification from './Notification'
-import { addedEventIdsVar } from '../apollo'
+import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
-import { useQuery, gql } from '@apollo/client'
-import { fetchPolicyVar } from '../apollo'
+import { useQuery, gql, DocumentNode } from '@apollo/client'
+import { JOBS_QUERY } from './Jobs'
+import { CONNECTIONS_QUERY } from './Connections'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
     eventAdded {
-      cursor
-      node {
-        ...EventDataFragment
-      }
+      ...EventEdgeFragment
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.edge}
 `
+
+const stateWithNewItem = (
+  prevState: any,
+  itemName: string,
+  newItem: IEdge,
+  last: boolean
+) => {
+  const state =
+    prevState && prevState[itemName] ? prevState : { [itemName]: { edges: [] } }
+  const items = state[itemName]
+  // No need to add item if it is already there
+  if (
+    !newItem ||
+    items.edges.find((item: IEdge) => item.node.id === newItem.node.id)
+  ) {
+    return { state, updated: false }
+  }
+  return {
+    state: {
+      ...state,
+      [itemName]: {
+        ...items,
+        edges: [...items.edges, newItem],
+        pageInfo: {
+          ...items.pageInfo,
+          ...(last
+            ? { endCursor: newItem.cursor }
+            : { startCursor: newItem.cursor }),
+        },
+      },
+    },
+    updated: true,
+  }
+}
+
+const updateCacheWithNewItem = (
+  newItem: IEdge,
+  query: DocumentNode,
+  last: boolean,
+  itemName: string
+) => {
+  try {
+    // this will throw if there are no items in cache
+    const state: any = cache.readQuery({ query })
+    const items = state[itemName]
+    // Update only if the latest item is already fetched
+    const doUpdate =
+      (last && !items.pageInfo.hasPreviousPage) ||
+      (!last && !items.pageInfo.hasNextPage)
+    if (doUpdate) {
+      const newState = stateWithNewItem(state, itemName, newItem, last)
+      if (newState.updated) {
+        client.writeQuery({ query, data: newState.state })
+      }
+    }
+  } catch (e) {}
+}
 
 function EventNotifications() {
   const addedEventIds = useReactiveVar(addedEventIdsVar)
@@ -35,34 +90,35 @@ function EventNotifications() {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
-          const state = prev?.events ? prev : { events: { edges: [] } }
-          if (!data) return state
-          const newEvent = data.eventAdded
-          const exists = state.events.edges.find(
-            (item: IEventEdge) => item.node.id === newEvent.node.id
+          const newState = stateWithNewItem(
+            prev,
+            'events',
+            data.eventAdded,
+            true
           )
-          if (!exists) {
-            const newState = {
-              ...state,
-              events: {
-                ...state.events,
-                edges: [...state.events.edges, newEvent],
-                pageInfo: {
-                  ...state.events.pageInfo,
-                  endCursor: newEvent.cursor,
-                },
-              },
+          if (newState.updated) {
+            const { node }: IEventEdge = data.eventAdded
+            if (node.job) {
+              updateCacheWithNewItem(node.job, JOBS_QUERY, false, 'jobs')
+              const job = node.job.node
+              if (job.protocol === ProtocolType.CONNECTION && job.connection) {
+                updateCacheWithNewItem(
+                  job.connection,
+                  CONNECTIONS_QUERY,
+                  false,
+                  'connections'
+                )
+              }
             }
-            fetchPolicyVar('cache-and-network') // change default policy to network to get latest in view refresh
-            addedEventIdsVar([...addedEventIdsVar(), newEvent.node.id])
-            return newState
+            addedEventIdsVar([...addedEventIdsVar(), node.id])
           }
-          return prev
+          return newState.state
         },
       })
     }
   }, [subscribeToMore, subscribed])
   return (
+    // TODO: hide previous notification when new one is displayed
     <>
       {data &&
         data.events.edges

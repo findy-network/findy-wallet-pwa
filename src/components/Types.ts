@@ -1,21 +1,29 @@
-export interface IEventEdge {
+export interface IEdge {
+  node: INode
+  cursor: string
+}
+
+export interface INode {
+  id: string
+}
+
+export interface IEventEdge extends IEdge {
   node: IEventNode
 }
 
-export interface IEventNode {
-  id: string
+export interface IEventNode extends INode {
   read: boolean
   description: string
-  connection: IConnectionNode
+  connection?: IConnectionNode
   createdMs: string
+  job?: IJobEdge
 }
 
-export interface IConnectionEdge {
+export interface IConnectionEdge extends IEdge {
   node: IConnectionNode
 }
 
-export interface IConnectionNode {
-  id: string
+export interface IConnectionNode extends INode {
   theirLabel: string
   theirDid: string
   createdMs: string
@@ -25,11 +33,11 @@ export interface IConnectionArgs {
   id: string
 }
 
-export interface IJobEdge {
+export interface IJobEdge extends IEdge {
   node: IJobNode
 }
 
-enum ProtocolType {
+export enum ProtocolType {
   NONE = 'NONE',
   CONNECTION = 'CONNECTION',
   CREDENTIAL = 'CREDENTIAL',
@@ -37,17 +45,17 @@ enum ProtocolType {
   BASIC_MESSAGE = 'BASIC_MESSAGE',
 }
 
-enum JobStatus {
+export enum JobStatus {
   WAITING = 'WAITING',
   PENDING = 'PENDING',
   COMPLETE = 'COMPLETE',
 }
 
-export interface IJobNode {
-  id: string
+export interface IJobNode extends INode {
   initiatedByUs: boolean
   createdMs: string
   updatedMs: string
   protocol: ProtocolType
   status: JobStatus
+  connection?: IConnectionEdge
 }

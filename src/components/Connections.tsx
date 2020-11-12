@@ -8,30 +8,25 @@ import { IConnectionEdge } from './Types'
 import { Link } from 'react-router-dom'
 import Connection from './Connection'
 import Waiting from './Waiting'
+import Utils from './Utils'
 
-import { fetchPolicyVar } from '../apollo'
-
-const CONNECTIONS_QUERY = gql`
+export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
     connections(first: 10, after: $cursor) {
       edges {
-        node {
-          ...PairwiseDataFragment
-        }
+        ...PairwiseEdgeFragment
       }
       pageInfo {
-        endCursor
-        hasNextPage
+        ...PageInfoFragment
       }
     }
   }
-  ${Connection.fragments.data}
+  ${Connection.fragments.edge}
+  ${Utils.fragments.pageInfo}
 `
 
 function Connections() {
-  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY, {
-    fetchPolicy: fetchPolicyVar(),
-  })
+  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
 
   return (
     <>

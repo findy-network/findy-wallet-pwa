@@ -7,35 +7,25 @@ import { IJobEdge } from './Types'
 import { Link } from 'react-router-dom'
 import Waiting from './Waiting'
 import Job from './Job'
-
-import { fetchPolicyVar } from '../apollo'
+import Utils from './Utils'
 
 export const JOBS_QUERY = gql`
   query GetJobs($cursor: String) {
-    jobs(first: 10, after: $cursor) {
+    jobs(first: 2, after: $cursor) {
       edges {
-        node {
-          ...JobDataFragment
-        }
+        ...JobEdgeFragment
       }
       pageInfo {
-        endCursor
-        hasNextPage
+        ...PageInfoFragment
       }
     }
   }
-  ${Job.fragments.data}
+  ${Job.fragments.edge}
+  ${Utils.fragments.pageInfo}
 `
 
-const toTimeString = (str: string) => {
-  const d = new Date(parseInt(str, 10))
-  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
-}
-
 function Jobs() {
-  const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY, {
-    fetchPolicy: fetchPolicyVar(),
-  })
+  const { loading, error, data, fetchMore } = useQuery(JOBS_QUERY)
 
   return (
     <div>
@@ -55,7 +45,7 @@ function Jobs() {
                   border="bottom"
                   height={{ min: '8rem' }}
                 >
-                  <div>Created {toTimeString(node.createdMs)}</div>
+                  <div>Created {Utils.toTimeString(node.createdMs)}</div>
                   <div>
                     {node.protocol}: {node.status}
                   </div>

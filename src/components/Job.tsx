@@ -4,32 +4,44 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
+import Connection from './Connection'
+
+const nodeFragment = gql`
+  fragment JobNodeFragment on Job {
+    id
+    protocol
+    initiatedByUs
+    status
+    result
+    createdMs
+    updatedMs
+    connection {
+      ...PairwiseEdgeFragment
+    }
+  }
+  ${Connection.fragments.edge}
+`
 
 Job.fragments = {
-  data: gql`
-    fragment JobDataFragment on Job {
-      id
-      protocol
-      protocolId
-      initiatedByUs
-      connection {
-        id
+  node: nodeFragment,
+  edge: gql`
+    fragment JobEdgeFragment on JobEdge {
+      node {
+        ...JobNodeFragment
       }
-      status
-      result
-      createdMs
-      updatedMs
+      cursor
     }
+    ${nodeFragment}
   `,
 }
 
 export const JOB_QUERY = gql`
   query GetJob($id: ID!) {
     job(id: $id) {
-      ...JobDataFragment
+      ...JobNodeFragment
     }
   }
-  ${Job.fragments.data}
+  ${Job.fragments.node}
 `
 
 type TParams = { id: string }
@@ -40,13 +52,14 @@ function Job({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
+  const node = data?.job
   return (
     <>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <>
-          <Heading level={2}>Job {data.job.id}</Heading>
+          <Heading level={2}>Job {node.id}</Heading>
           <Box></Box>
         </>
       )}
