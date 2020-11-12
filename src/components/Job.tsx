@@ -4,23 +4,22 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
+import Connection from './Connection'
 
 const nodeFragment = gql`
   fragment JobNodeFragment on Job {
     id
     protocol
-    protocolId
     initiatedByUs
-    connection {
-      node {
-        id
-      }
-    }
     status
     result
     createdMs
     updatedMs
+    connection {
+      ...PairwiseEdgeFragment
+    }
   }
+  ${Connection.fragments.edge}
 `
 
 Job.fragments = {

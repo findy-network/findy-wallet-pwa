@@ -7,10 +7,8 @@ import Notification from './Notification'
 import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
-import { useQuery, useLazyQuery, gql } from '@apollo/client'
-import { JOB_QUERY } from './Job'
+import { useQuery, gql, DocumentNode } from '@apollo/client'
 import { JOBS_QUERY } from './Jobs'
-import { CONNECTION_QUERY } from './Connection'
 import { CONNECTIONS_QUERY } from './Connections'
 
 const EVENTS_SUBSCRIPTION = gql`
@@ -56,50 +54,35 @@ const stateWithNewItem = (
   }
 }
 
+const updateCacheWithNewItem = (
+  newItem: IEdge,
+  query: DocumentNode,
+  last: boolean,
+  itemName: string
+) => {
+  try {
+    // this will throw if there are no items in cache
+    const state: any = cache.readQuery({ query })
+    const items = state[itemName]
+    // Update only if the latest item is already fetched
+    const doUpdate =
+      (last && !items.pageInfo.hasPreviousPage) ||
+      (!last && !items.pageInfo.hasNextPage)
+    if (doUpdate) {
+      const newState = stateWithNewItem(state, itemName, newItem, last)
+      if (newState.updated) {
+        client.writeQuery({ query, data: newState.state })
+      }
+    }
+  } catch (e) {}
+}
+
 function EventNotifications() {
   const addedEventIds = useReactiveVar(addedEventIdsVar)
   const { data, subscribeToMore } = useQuery(EVENTS_QUERY, {
     fetchPolicy: 'cache-only',
   })
   const [subscribed, setSubscribed] = useState(false)
-
-  const [execJobQuery] = useLazyQuery(JOB_QUERY, {
-    onCompleted: (jobData) => {
-      try {
-        // this will throw if there are no items in cache
-        const state: any = cache.readQuery({ query: JOBS_QUERY })
-        if (!state.jobs.pageInfo.hasNextPage) {
-          const newState = stateWithNewItem(state, 'jobs', jobData.job, false)
-          if (newState.updated) {
-            client.writeQuery({ query: JOBS_QUERY, data: newState.state })
-          }
-        }
-      } catch (e) {}
-    },
-  })
-
-  const [execConnectionQuery] = useLazyQuery(CONNECTION_QUERY, {
-    onCompleted: (connectionData) => {
-      try {
-        // this will throw if there are no items in cache
-        const state: any = cache.readQuery({ query: CONNECTIONS_QUERY })
-        if (!state.connections.pageInfo.hasNextPage) {
-          const newState = stateWithNewItem(
-            state,
-            'connections',
-            connectionData.connection,
-            false
-          )
-          if (newState.updated) {
-            client.writeQuery({
-              query: CONNECTIONS_QUERY,
-              data: newState.state,
-            })
-          }
-        }
-      } catch (e) {}
-    },
-  })
 
   useEffect(() => {
     if (!subscribed) {
@@ -116,20 +99,15 @@ function EventNotifications() {
           if (newState.updated) {
             const { node }: IEventEdge = data.eventAdded
             if (node.job) {
-              execJobQuery({
-                variables: {
-                  id: node.job.id,
-                },
-              })
-              if (
-                node.job.protocol === ProtocolType.CONNECTION &&
-                node.job.protocolId
-              ) {
-                execConnectionQuery({
-                  variables: {
-                    id: node.job.protocolId,
-                  },
-                })
+              updateCacheWithNewItem(node.job, JOBS_QUERY, false, 'jobs')
+              const job = node.job.node
+              if (job.protocol === ProtocolType.CONNECTION && job.connection) {
+                updateCacheWithNewItem(
+                  job.connection,
+                  CONNECTIONS_QUERY,
+                  false,
+                  'connections'
+                )
               }
             }
             addedEventIdsVar([...addedEventIdsVar(), node.id])
@@ -138,8 +116,9 @@ function EventNotifications() {
         },
       })
     }
-  }, [subscribeToMore, subscribed, execJobQuery, execConnectionQuery])
+  }, [subscribeToMore, subscribed])
   return (
+    // TODO: hide previous notification when new one is displayed
     <>
       {data &&
         data.events.edges

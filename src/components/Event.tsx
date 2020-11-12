@@ -4,6 +4,7 @@ import { Heading } from 'grommet'
 
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Waiting from './Waiting'
+import Job from './Job'
 
 const nodeFragment = gql`
   fragment EventNodeFragment on Event {
@@ -16,11 +17,10 @@ const nodeFragment = gql`
       theirLabel
     }
     job {
-      node {
-        id
-      }
+      ...JobEdgeFragment
     }
   }
+  ${Job.fragments.edge}
 `
 
 Event.fragments = {

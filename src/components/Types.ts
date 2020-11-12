@@ -16,7 +16,7 @@ export interface IEventNode extends INode {
   description: string
   connection?: IConnectionNode
   createdMs: string
-  job?: IJobNode
+  job?: IJobEdge
 }
 
 export interface IConnectionEdge extends IEdge {
@@ -56,6 +56,6 @@ export interface IJobNode extends INode {
   createdMs: string
   updatedMs: string
   protocol: ProtocolType
-  protocolId?: string
   status: JobStatus
+  connection?: IConnectionEdge
 }
