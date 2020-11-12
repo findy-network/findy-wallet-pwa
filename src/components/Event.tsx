@@ -5,33 +5,34 @@ import { Heading } from 'grommet'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Waiting from './Waiting'
 
-Event.fragments = {
-  data: gql`
-    fragment EventNodeFragment on EventEdge {
+const nodeFragment = gql`
+  fragment EventNodeFragment on Event {
+    id
+    read
+    description
+    createdMs
+    connection {
+      id
+      theirLabel
+    }
+    job {
       node {
         id
-        read
-        description
-        createdMs
-        connection {
-          id
-          theirLabel
-        }
-        job {
-          id
-          protocol
-          protocolId
-          initiatedByUs
-          connection {
-            id
-          }
-          status
-          result
-          createdMs
-          updatedMs
-        }
       }
     }
+  }
+`
+
+Event.fragments = {
+  node: nodeFragment,
+  edge: gql`
+    fragment EventEdgeFragment on EventEdge {
+      cursor
+      node {
+        ...EventNodeFragment
+      }
+    }
+    ${nodeFragment}
   `,
 }
 
@@ -41,7 +42,7 @@ const EVENT_QUERY = gql`
       ...EventNodeFragment
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.node}
 `
 const MARK_READ_MUTATION = gql`
   mutation MarkRead($input: MarkReadInput!) {
@@ -49,7 +50,7 @@ const MARK_READ_MUTATION = gql`
       ...EventNodeFragment
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.node}
 `
 
 type TParams = { id: string }
@@ -62,7 +63,7 @@ function Event({ match }: RouteComponentProps<TParams>) {
     },
   })
   const [markRead] = useMutation(MARK_READ_MUTATION)
-  const node = data?.event.node
+  const node = data?.event
 
   useEffect(() => {
     if (!markingDone && !error && !loading) {

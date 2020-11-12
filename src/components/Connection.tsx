@@ -5,21 +5,29 @@ import { Box, Heading } from 'grommet'
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 
+const nodeFragment = gql`
+  fragment PairwiseNodeFragment on Pairwise {
+    id
+    ourDid
+    theirDid
+    theirEndpoint
+    theirLabel
+    createdMs
+    approvedMs
+    initiatedByUs
+  }
+`
+
 Connection.fragments = {
-  data: gql`
-    fragment PairwiseNodeFragment on PairwiseEdge {
-      node {
-        id
-        ourDid
-        theirDid
-        theirEndpoint
-        theirLabel
-        createdMs
-        approvedMs
-        initiatedByUs
-      }
+  node: nodeFragment,
+  edge: gql`
+    fragment PairwiseEdgeFragment on PairwiseEdge {
       cursor
+      node {
+        ...PairwiseNodeFragment
+      }
     }
+    ${nodeFragment}
   `,
 }
 
@@ -29,7 +37,7 @@ export const CONNECTION_QUERY = gql`
       ...PairwiseNodeFragment
     }
   }
-  ${Connection.fragments.data}
+  ${Connection.fragments.node}
 `
 
 type TParams = { id: string }
@@ -40,7 +48,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
-  const node = data?.connection.node
+  const node = data?.connection
   return (
     <>
       {loading || error ? (

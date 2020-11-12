@@ -8,20 +8,21 @@ import { IConnectionEdge } from './Types'
 import { Link } from 'react-router-dom'
 import Connection from './Connection'
 import Waiting from './Waiting'
+import Utils from './Utils'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
     connections(first: 10, after: $cursor) {
       edges {
-        ...PairwiseNodeFragment
+        ...PairwiseEdgeFragment
       }
       pageInfo {
-        endCursor
-        hasNextPage
+        ...PageInfoFragment
       }
     }
   }
-  ${Connection.fragments.data}
+  ${Connection.fragments.edge}
+  ${Utils.fragments.pageInfo}
 `
 
 function Connections() {

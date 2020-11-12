@@ -11,23 +11,21 @@ import Waiting from './Waiting'
 import Unread from './Unread'
 import Event from './Event'
 import Jobs from './Jobs'
+import Utils from './Utils'
 
 export const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
     events(last: 5, before: $cursor) {
       edges {
-        cursor
-        ...EventNodeFragment
+        ...EventEdgeFragment
       }
       pageInfo {
-        endCursor
-        startCursor
-        hasPreviousPage
-        hasNextPage
+        ...PageInfoFragment
       }
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.edge}
+  ${Utils.fragments.pageInfo}
 `
 
 const RelativeBox = styled(Box)`
@@ -36,11 +34,6 @@ const RelativeBox = styled(Box)`
     text-decoration: none;
   }
 `
-
-const toTimeString = (str: string) => {
-  const d = new Date(parseInt(str, 10))
-  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
-}
 
 function Home() {
   // TODO: for some reason we get react error for memory consumption
@@ -75,7 +68,7 @@ function Home() {
                 height={{ min: '8rem' }}
               >
                 <Unread show={!node.read} />
-                <Text>{toTimeString(node.createdMs)}</Text>
+                <Text>{Utils.toTimeString(node.createdMs)}</Text>
                 <Box direction="row" align="center">
                   <Box>
                     {node.connection ? (

@@ -16,11 +16,10 @@ import { CONNECTIONS_QUERY } from './Connections'
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
     eventAdded {
-      cursor
-      ...EventNodeFragment
+      ...EventEdgeFragment
     }
   }
-  ${Event.fragments.data}
+  ${Event.fragments.edge}
 `
 
 const stateWithNewItem = (
