@@ -14,7 +14,7 @@ const nodeFragment = gql`
     theirLabel
     createdMs
     approvedMs
-    initiatedByUs
+    invited
   }
 `
 
