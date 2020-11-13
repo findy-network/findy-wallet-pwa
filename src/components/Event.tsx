@@ -16,15 +16,23 @@ const nodeFragment = gql`
       id
       theirLabel
     }
+  }
+`
+
+const fullNodeFragment = gql`
+  fragment FullEventNodeFragment on Event {
+    ...EventNodeFragment
     job {
       ...JobEdgeFragment
     }
   }
+  ${nodeFragment}
   ${Job.fragments.edge}
 `
 
 Event.fragments = {
   node: nodeFragment,
+  fullNode: fullNodeFragment,
   edge: gql`
     fragment EventEdgeFragment on EventEdge {
       cursor
@@ -33,6 +41,15 @@ Event.fragments = {
       }
     }
     ${nodeFragment}
+  `,
+  fullEdge: gql`
+    fragment FullEventEdgeFragment on EventEdge {
+      cursor
+      node {
+        ...FullEventNodeFragment
+      }
+    }
+    ${fullNodeFragment}
   `,
 }
 

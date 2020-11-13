@@ -15,8 +15,10 @@ const nodeFragment = gql`
     result
     createdMs
     updatedMs
-    connection {
-      ...PairwiseEdgeFragment
+    output {
+      connection {
+        ...PairwiseEdgeFragment
+      }
     }
   }
   ${Connection.fragments.edge}
