@@ -68,11 +68,29 @@ export interface ICredentialValue {
   value: string
 }
 
+export enum CredentialRole {
+  ISSUER = 'ISSUER',
+  HOLDER = 'HOLDER',
+}
+
 export interface ICredentialNode extends INode {
+  role: CredentialRole
   schemaId: string
   credDefId: string
   attributes: ICredentialValue[]
   initiatedByUs: boolean
   approvedMs?: string
   issuedMs?: string
+  connection?: IConnectionNode
+}
+
+export interface IMessageEdge extends IEdge {
+  node: IMessageNode
+}
+
+export interface IMessageNode extends INode {
+  message: string
+  sentByMe: boolean
+  delivered: boolean
+  connection?: IConnectionNode
 }

@@ -11,6 +11,7 @@ import Connection from './components/Connection'
 import Job from './components/Job'
 import Credentials from './components/Credentials'
 import Credential from './components/Credential'
+import Message from './components/Message'
 import Me from './components/Me'
 import Login from './components/Login'
 
@@ -28,6 +29,7 @@ function App() {
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
               <Route exact path="/credentials/:id" component={Credential} />
+              <Route exact path="/messages/:id" component={Message} />
               <Route exact path="/me" component={Me} />
             </Switch>
           </Navi>

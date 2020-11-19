@@ -67,6 +67,7 @@ export const cache = new InMemoryCache({
         events: relayStylePagination(),
         connections: relayStylePagination(),
         jobs: relayStylePagination(),
+        //connection: relayStylePagination(['messages']),
         cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
           return toReference({
             __typename: 'Pairwise',
