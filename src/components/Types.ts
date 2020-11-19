@@ -5,6 +5,7 @@ export interface IEdge {
 
 export interface INode {
   id: string
+  createdMs: string
 }
 
 export interface IEventEdge extends IEdge {
@@ -15,7 +16,6 @@ export interface IEventNode extends INode {
   read: boolean
   description: string
   connection?: IConnectionNode
-  createdMs: string
   job?: IJobEdge
 }
 
@@ -26,7 +26,6 @@ export interface IConnectionEdge extends IEdge {
 export interface IConnectionNode extends INode {
   theirLabel: string
   theirDid: string
-  createdMs: string
 }
 
 export interface IConnectionArgs {
@@ -53,9 +52,27 @@ export enum JobStatus {
 
 export interface IJobNode extends INode {
   initiatedByUs: boolean
-  createdMs: string
   updatedMs: string
   protocol: ProtocolType
   status: JobStatus
   connection?: IConnectionEdge
+  credential?: ICredentialEdge
+}
+
+export interface ICredentialEdge extends IEdge {
+  node: ICredentialNode
+}
+
+export interface ICredentialValue {
+  name: string
+  value: string
+}
+
+export interface ICredentialNode extends INode {
+  schemaId: string
+  credDefId: string
+  attributes: ICredentialValue[]
+  initiatedByUs: boolean
+  approvedMs?: string
+  issuedMs?: string
 }
