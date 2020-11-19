@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, Heading } from 'grommet'
-import { User } from 'grommet-icons'
+import { Chat } from 'grommet-icons'
 
-import { useQuery, gql } from '@apollo/client'
+import { useLazyQuery, gql } from '@apollo/client'
 
 import { IMessageEdge } from './Types'
 import { Link } from 'react-router-dom'
@@ -13,7 +13,7 @@ import Utils from './Utils'
 export const MESSAGES_QUERY = gql`
   query GetMessages($id: ID!, $cursor: String) {
     connection(id: $id) {
-      messages(first: 1, after: $cursor) {
+      messages(first: 3, after: $cursor) {
         edges {
           ...MessageEdgeFragment
         }
@@ -32,16 +32,25 @@ interface IProps {
 }
 
 function Messages({ connectionId }: IProps) {
-  const { loading, error, data, fetchMore } = useQuery(MESSAGES_QUERY, {
-    variables: {
-      id: connectionId,
-    },
-  })
+  const [execQuery, { loading, error, data, fetchMore }] = useLazyQuery(
+    MESSAGES_QUERY
+  )
+  useEffect(() => {
+    execQuery({
+      variables: {
+        id: connectionId,
+      },
+    })
+  }, [execQuery, connectionId])
+
+  const doFetchMore = fetchMore || (() => {})
+  const isLoading = loading || (!error && !data)
+  const showWaiting = isLoading || error
 
   return (
     <>
       <Heading level={2}>Messages</Heading>
-      {loading || error ? (
+      {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="small">
@@ -55,7 +64,7 @@ function Messages({ connectionId }: IProps) {
                 border="bottom"
                 height={{ min: '8rem' }}
               >
-                <User />
+                <Chat />
                 <Heading margin="medium" level="6">
                   {node.message}
                 </Heading>
@@ -66,7 +75,7 @@ function Messages({ connectionId }: IProps) {
             <Button
               label="Load more"
               onClick={() =>
-                fetchMore({
+                doFetchMore({
                   variables: {
                     id: connectionId,
                     cursor: data.connection.messages.pageInfo.endCursor,
