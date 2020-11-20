@@ -4,7 +4,6 @@ import {
   InMemoryCache,
   split,
   HttpLink,
-  FieldFunctionOptions,
   makeVar,
 } from '@apollo/client'
 import {
