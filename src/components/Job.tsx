@@ -5,6 +5,8 @@ import { Box, Heading } from 'grommet'
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import Connection from './Connection'
+import Message from './Message'
+import Credential from './Credential'
 
 const nodeFragment = gql`
   fragment JobNodeFragment on Job {
@@ -19,9 +21,17 @@ const nodeFragment = gql`
       connection {
         ...PairwiseEdgeFragment
       }
+      message {
+        ...MessageEdgeFragment
+      }
+      credential {
+        ...CredentialEdgeFragment
+      }
     }
   }
   ${Connection.fragments.edge}
+  ${Message.fragments.edge}
+  ${Credential.fragments.edge}
 `
 
 Job.fragments = {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Heading } from 'grommet'
+import { Box, Button, Heading, Text } from 'grommet'
 import { Certificate } from 'grommet-icons'
 
 import { useQuery, gql } from '@apollo/client'
@@ -35,23 +35,30 @@ function Credentials() {
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="small">
-          {data.credentials.edges.map(({ node }: ICredentialEdge) => (
-            <Link key={node.id} to={`/credentials/${node.id}`}>
-              <Box
-                background="light-1"
-                direction="row"
-                align="center"
-                pad="medium"
-                border="bottom"
-                height={{ min: '8rem' }}
-              >
-                <Certificate />
-                <Heading margin="medium" level="6">
-                  {`${node.schemaId} ${node.id}`}
-                </Heading>
-              </Box>
-            </Link>
-          ))}
+          {data.credentials.edges.map(
+            ({ node }: ICredentialEdge, index: number) => (
+              <Link key={node.id} to={`/credentials/${node.id}`}>
+                <Box
+                  background="light-1"
+                  direction="row"
+                  align="center"
+                  pad="medium"
+                  border="bottom"
+                  height={{ min: '8rem' }}
+                >
+                  <Certificate />
+                  <Box>
+                    <Text>
+                      {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
+                    </Text>
+                    <Heading margin="medium" level="6">
+                      {`${node.schemaId} ${node.id}`}
+                    </Heading>
+                  </Box>
+                </Box>
+              </Link>
+            )
+          )}
           {data.credentials.pageInfo.hasNextPage && (
             <Button
               label="Load more"

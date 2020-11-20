@@ -62,78 +62,31 @@ const splitLink = split(
 
 export const cache = new InMemoryCache({
   typePolicies: {
+    // TODO: do not refetch connection data and nested fields
+    // on view load
+    Pairwise: {
+      fields: {
+        messages: relayStylePagination(),
+        credentials: relayStylePagination(),
+        proofs: relayStylePagination(),
+      },
+    },
     Query: {
       fields: {
         events: relayStylePagination(),
         connections: relayStylePagination(),
+        credentials: relayStylePagination(),
         jobs: relayStylePagination(),
-
-        // Hmm...
-        // Pagination logic does not seem to work "out-of-the-apollo"
-        // when there are nested items
-        // TODO: redesign this
         connection: {
-          read(connection, args) {
-            const { isReference } = args
-            if (isReference(connection)) {
-              return connection
-            }
-            if (connection) {
-              const arrayKey =
-                Object.keys(connection).find((item) => item !== '__typename') ||
-                ''
-              const existing = connection[arrayKey]
-              const objects = relayStylePagination().read!(existing, args)
-              return { ...connection, [arrayKey]: objects }
-            }
-            return connection
-          },
-          merge(existing, incoming, args) {
-            const { isReference } = args
-            if (isReference(incoming)) {
-              return { ...existing, ...incoming }
-            }
-            if (incoming) {
-              const isArrayName = (item: string) =>
-                item !== '__typename' && item !== '__ref'
-              const prevArrayKey = existing
-                ? Object.keys(existing).find(isArrayName) || ''
-                : ''
-              const newArrayKey = Object.keys(incoming).find(isArrayName) || ''
-              const merge = relayStylePagination().merge!
-              if (typeof merge === 'function') {
-                const cursorData = newArrayKey.match(
-                  /"(after|before)":"((\\"|[^"])*)"/i
-                )
-                const newArgs = cursorData && {
-                  ...args.args,
-                  [cursorData[1]]: cursorData[2],
-                }
-                const mergeArgs = cursorData ? { ...args, args: newArgs } : args
-                const prevData =
-                  typeof existing[prevArrayKey] !== 'string' &&
-                  existing[prevArrayKey]
-                const objects = merge(
-                  prevData,
-                  incoming[newArrayKey],
-                  mergeArgs
-                )
-                const n = {
-                  __typename: incoming.__typename,
-                  [prevArrayKey || newArrayKey]: objects,
-                }
-                return n
-              }
-            }
-            return existing
-          },
+          //keyArgs: ["id"],
+          merge: true,
         },
-        cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
+        /*cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
           return toReference({
             __typename: 'Pairwise',
             id: args!.id,
           })
-        },
+        },*/
       },
     },
   },

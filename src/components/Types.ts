@@ -50,13 +50,25 @@ export enum JobStatus {
   COMPLETE = 'COMPLETE',
 }
 
+export enum JobResult {
+  NONE = 'NONE',
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
+}
+
 export interface IJobNode extends INode {
-  initiatedByUs: boolean
-  updatedMs: string
   protocol: ProtocolType
+  initiatedByUs: boolean
   status: JobStatus
+  result: JobResult
+  updatedMs: string
+  output: IJobOutput
+}
+
+export interface IJobOutput {
   connection?: IConnectionEdge
   credential?: ICredentialEdge
+  message?: IMessageEdge
 }
 
 export interface ICredentialEdge extends IEdge {

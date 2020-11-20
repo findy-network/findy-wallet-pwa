@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
 
-import { useReactiveVar } from '@apollo/client'
+import { DataProxy, useReactiveVar } from '@apollo/client'
 
-import { IEdge, IEventEdge, ProtocolType } from './Types'
+import { IEdge, IEventEdge, IJobEdge, ProtocolType } from './Types'
 import Notification from './Notification'
 import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
-import { useQuery, gql, DocumentNode } from '@apollo/client'
+import { useQuery, gql } from '@apollo/client'
 import { JOBS_QUERY } from './Jobs'
 import { CONNECTIONS_QUERY } from './Connections'
+import { MESSAGES_QUERY } from './Messages'
+import { CREDENTIALS_QUERY } from './Credentials'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -56,13 +58,16 @@ const stateWithNewItem = (
 
 const updateCacheWithNewItem = (
   newItem: IEdge,
-  query: DocumentNode,
+  query: DataProxy.Query<any, any>,
   last: boolean,
+  parentName: string, // TODO: refactor nested items handling
   itemName: string
 ) => {
   try {
     // this will throw if there are no items in cache
-    const state: any = cache.readQuery({ query })
+    const state: any = parentName
+      ? cache.readQuery(query)[parentName]
+      : cache.readQuery(query)
     const items = state[itemName]
     // Update only if the latest item is already fetched
     const doUpdate =
@@ -71,10 +76,53 @@ const updateCacheWithNewItem = (
     if (doUpdate) {
       const newState = stateWithNewItem(state, itemName, newItem, last)
       if (newState.updated) {
-        client.writeQuery({ query, data: newState.state })
+        if (!parentName) {
+          client.writeQuery({ ...query, data: newState.state })
+        } else {
+          const wState = { [parentName]: newState.state }
+          client.writeQuery({ ...query, data: wState })
+        }
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    // console.log(e)
+  }
+}
+
+const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
+  const job = jobEdge.node
+
+  if (job.protocol === ProtocolType.CONNECTION && job.output.connection) {
+    updateCacheWithNewItem(
+      job.output.connection,
+      { query: CONNECTIONS_QUERY },
+      false,
+      '',
+      'connections'
+    )
+  } else if (
+    job.protocol === ProtocolType.BASIC_MESSAGE &&
+    job.output.message
+  ) {
+    updateCacheWithNewItem(
+      job.output.message,
+      { query: MESSAGES_QUERY, variables: { id: connectionID } },
+      false,
+      'connection',
+      'messages'
+    )
+  } else if (
+    job.protocol === ProtocolType.CREDENTIAL &&
+    job.output.credential
+  ) {
+    updateCacheWithNewItem(
+      job.output.credential,
+      { query: CREDENTIALS_QUERY },
+      false,
+      '',
+      'credentials'
+    )
+  }
 }
 
 function EventNotifications() {
@@ -99,15 +147,15 @@ function EventNotifications() {
           if (newState.updated) {
             const { node }: IEventEdge = data.eventAdded
             if (node.job) {
-              updateCacheWithNewItem(node.job, JOBS_QUERY, false, 'jobs')
-              const job = node.job.node
-              if (job.protocol === ProtocolType.CONNECTION && job.connection) {
-                updateCacheWithNewItem(
-                  job.connection,
-                  CONNECTIONS_QUERY,
-                  false,
-                  'connections'
-                )
+              updateCacheWithNewItem(
+                node.job,
+                { query: JOBS_QUERY },
+                false,
+                '',
+                'jobs'
+              )
+              if (node.connection) {
+                updateProtocolItem(node.connection.id, node.job)
               }
             }
             addedEventIdsVar([...addedEventIdsVar(), node.id])
@@ -126,7 +174,7 @@ function EventNotifications() {
           .map((item: IEventEdge) => (
             <Notification
               key={item.node.id}
-              text={item.node.description}
+              text={`${item.node.connection?.theirLabel}: ${item.node.description}`}
               onClose={() => {
                 const newItems = addedEventIds.filter((i) => i !== item.node.id)
                 addedEventIdsVar(newItems)
