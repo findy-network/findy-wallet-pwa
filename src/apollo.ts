@@ -4,7 +4,6 @@ import {
   InMemoryCache,
   split,
   HttpLink,
-  FieldFunctionOptions,
   makeVar,
 } from '@apollo/client'
 import {
@@ -62,17 +61,31 @@ const splitLink = split(
 
 export const cache = new InMemoryCache({
   typePolicies: {
+    // TODO: do not refetch connection data and nested fields
+    // on view load
+    Pairwise: {
+      fields: {
+        messages: relayStylePagination(),
+        credentials: relayStylePagination(),
+        proofs: relayStylePagination(),
+      },
+    },
     Query: {
       fields: {
         events: relayStylePagination(),
         connections: relayStylePagination(),
+        credentials: relayStylePagination(),
         jobs: relayStylePagination(),
-        cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
+        connection: {
+          //keyArgs: ["id"],
+          merge: true,
+        },
+        /*cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
           return toReference({
             __typename: 'Pairwise',
             id: args!.id,
           })
-        },
+        },*/
       },
     },
   },

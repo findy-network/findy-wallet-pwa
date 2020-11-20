@@ -5,6 +5,7 @@ export interface IEdge {
 
 export interface INode {
   id: string
+  createdMs: string
 }
 
 export interface IEventEdge extends IEdge {
@@ -15,7 +16,6 @@ export interface IEventNode extends INode {
   read: boolean
   description: string
   connection?: IConnectionNode
-  createdMs: string
   job?: IJobEdge
 }
 
@@ -26,7 +26,6 @@ export interface IConnectionEdge extends IEdge {
 export interface IConnectionNode extends INode {
   theirLabel: string
   theirDid: string
-  createdMs: string
 }
 
 export interface IConnectionArgs {
@@ -51,11 +50,59 @@ export enum JobStatus {
   COMPLETE = 'COMPLETE',
 }
 
+export enum JobResult {
+  NONE = 'NONE',
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
+}
+
 export interface IJobNode extends INode {
-  initiatedByUs: boolean
-  createdMs: string
-  updatedMs: string
   protocol: ProtocolType
+  initiatedByUs: boolean
   status: JobStatus
+  result: JobResult
+  updatedMs: string
+  output: IJobOutput
+}
+
+export interface IJobOutput {
   connection?: IConnectionEdge
+  credential?: ICredentialEdge
+  message?: IMessageEdge
+}
+
+export interface ICredentialEdge extends IEdge {
+  node: ICredentialNode
+}
+
+export interface ICredentialValue {
+  name: string
+  value: string
+}
+
+export enum CredentialRole {
+  ISSUER = 'ISSUER',
+  HOLDER = 'HOLDER',
+}
+
+export interface ICredentialNode extends INode {
+  role: CredentialRole
+  schemaId: string
+  credDefId: string
+  attributes: ICredentialValue[]
+  initiatedByUs: boolean
+  approvedMs?: string
+  issuedMs?: string
+  connection?: IConnectionNode
+}
+
+export interface IMessageEdge extends IEdge {
+  node: IMessageNode
+}
+
+export interface IMessageNode extends INode {
+  message: string
+  sentByMe: boolean
+  delivered: boolean
+  connection?: IConnectionNode
 }
