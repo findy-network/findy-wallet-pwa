@@ -5,6 +5,7 @@ import { Box, Heading } from 'grommet'
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import Messages from './Messages'
+import Credentials from './Credentials'
 
 const nodeFragment = gql`
   fragment PairwiseNodeFragment on Pairwise {
@@ -55,7 +56,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <>
+        <Box>
           <Heading level={2}>Connection {node.theirLabel}</Heading>
           <Box>
             <Box>
@@ -63,10 +64,11 @@ function Connection({ match }: RouteComponentProps<TParams>) {
               <div>{node.id}</div>
               <div>My DID</div>
               <div>{node.ourDid}</div>
+              <Credentials connectionId={node.id} />
               <Messages connectionId={node.id} />
             </Box>
           </Box>
-        </>
+        </Box>
       )}
     </>
   )

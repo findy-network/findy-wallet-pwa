@@ -11,7 +11,7 @@ import { useQuery, gql } from '@apollo/client'
 import { JOBS_QUERY } from './Jobs'
 import { CONNECTIONS_QUERY } from './Connections'
 import { MESSAGES_QUERY } from './Messages'
-import { CREDENTIALS_QUERY } from './Credentials'
+import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -120,6 +120,13 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
       { query: CREDENTIALS_QUERY },
       false,
       '',
+      'credentials'
+    )
+    updateCacheWithNewItem(
+      job.output.credential,
+      { query: CONNECTION_CREDENTIALS_QUERY, variables: { id: connectionID } },
+      false,
+      'connection',
       'credentials'
     )
   }

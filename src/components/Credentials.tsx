@@ -25,47 +25,75 @@ export const CREDENTIALS_QUERY = gql`
   ${Utils.fragments.pageInfo}
 `
 
-function Credentials() {
-  const { loading, error, data, fetchMore } = useQuery(CREDENTIALS_QUERY)
+export const CONNECTION_CREDENTIALS_QUERY = gql`
+  query GetConnectionCredentials($id: ID!, $cursor: String) {
+    connection(id: $id) {
+      credentials(first: 3, after: $cursor) {
+        edges {
+          ...CredentialEdgeFragment
+        }
+        pageInfo {
+          ...PageInfoFragment
+        }
+      }
+    }
+  }
+  ${Credential.fragments.edge}
+  ${Utils.fragments.pageInfo}
+`
+
+interface IProps {
+  connectionId?: string
+}
+
+function Credentials({ connectionId }: IProps) {
+  const { loading, error, data, fetchMore } = useQuery(
+    connectionId ? CONNECTION_CREDENTIALS_QUERY : CREDENTIALS_QUERY,
+    {
+      ...(connectionId ? { variables: { id: connectionId } } : {}),
+    }
+  )
+  const isLoading = loading || (!error && !data)
+  const showWaiting = isLoading || error
+
+  const credentials = data?.credentials || data?.connection?.credentials
 
   return (
-    <>
+    <Box height={{ min: 'initial' }}>
       <Heading level={2}>Credentials</Heading>
-      {loading || error ? (
+      {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="small">
-          {data.credentials.edges.map(
-            ({ node }: ICredentialEdge, index: number) => (
-              <Link key={node.id} to={`/credentials/${node.id}`}>
-                <Box
-                  background="light-1"
-                  direction="row"
-                  align="center"
-                  pad="medium"
-                  border="bottom"
-                  height={{ min: '8rem' }}
-                >
-                  <Certificate />
-                  <Box>
-                    <Text>
-                      {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
-                    </Text>
-                    <Heading margin="medium" level="6">
-                      {`${node.schemaId} ${node.id}`}
-                    </Heading>
-                  </Box>
+          {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
+            <Link key={node.id} to={`/credentials/${node.id}`}>
+              <Box
+                background="light-1"
+                direction="row"
+                align="center"
+                pad="medium"
+                border="bottom"
+                height={{ min: '8rem' }}
+              >
+                <Certificate />
+                <Box>
+                  <Text>
+                    {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
+                  </Text>
+                  <Heading margin="medium" level="6">
+                    {`${node.schemaId} ${node.id}`}
+                  </Heading>
                 </Box>
-              </Link>
-            )
-          )}
-          {data.credentials.pageInfo.hasNextPage && (
+              </Box>
+            </Link>
+          ))}
+          {credentials.pageInfo.hasNextPage && (
             <Button
               label="Load more"
               onClick={() =>
                 fetchMore({
                   variables: {
-                    cursor: data.credentials.pageInfo.endCursor,
+                    cursor: credentials.pageInfo.endCursor,
                   },
                 })
               }
@@ -73,7 +101,7 @@ function Credentials() {
           )}
         </Box>
       )}
-    </>
+    </Box>
   )
 }
 

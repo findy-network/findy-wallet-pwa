@@ -32,10 +32,9 @@ interface IProps {
 }
 
 function Messages({ connectionId }: IProps) {
-  const [
-    execQuery,
-    { loading, error, data, fetchMore },
-  ] = useLazyQuery(MESSAGES_QUERY, { fetchPolicy: 'cache-first' })
+  const [execQuery, { loading, error, data, fetchMore }] = useLazyQuery(
+    MESSAGES_QUERY
+  )
   useEffect(() => {
     execQuery({
       variables: {
@@ -49,7 +48,7 @@ function Messages({ connectionId }: IProps) {
   const showWaiting = isLoading || error
 
   return (
-    <>
+    <Box>
       <Heading level={2}>Messages</Heading>
       {showWaiting ? (
         <Waiting loading={loading} error={error} />
@@ -94,7 +93,7 @@ function Messages({ connectionId }: IProps) {
           )}
         </Box>
       )}
-    </>
+    </Box>
   )
 }
 
