@@ -5,7 +5,7 @@ import { DataProxy, useReactiveVar } from '@apollo/client'
 import { IEdge, IEventEdge, IJobEdge, ProtocolType } from './Types'
 import Notification from './Notification'
 import client, { addedEventIdsVar, cache } from '../apollo'
-import { EVENTS_QUERY } from './Home'
+import { EVENTS_QUERY, CONNECTION_EVENTS_QUERY } from './Events'
 import Event from './Event'
 import { useQuery, gql } from '@apollo/client'
 import { CONNECTION_JOBS_QUERY, JOBS_QUERY } from './Jobs'
@@ -71,10 +71,7 @@ const updateCacheWithNewItem = (
       : cache.readQuery(query)
     const items = state[itemName]
     // Update only if the latest item is already fetched
-    const doUpdate =
-      (last && !items.pageInfo.hasPreviousPage) ||
-      (!last && !items.pageInfo.hasNextPage)
-    if (doUpdate) {
+    if (!items.pageInfo.hasNextPage) {
       const newState = stateWithNewItem(state, itemName, newItem, last)
       if (newState.updated) {
         if (!parentName) {
@@ -86,13 +83,14 @@ const updateCacheWithNewItem = (
       }
     }
   } catch (e) {
-    // console.log(e)
+    //console.log(e)
   }
 }
 
 const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
   const job = jobEdge.node
 
+  // Update cached data for single connection jobs
   updateCacheWithNewItem(
     jobEdge,
     { query: CONNECTION_JOBS_QUERY, variables: { id: connectionID } },
@@ -102,6 +100,7 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
   )
 
   if (job.protocol === ProtocolType.CONNECTION && job.output.connection) {
+    // Update cached data for all connections
     updateCacheWithNewItem(
       job.output.connection,
       { query: CONNECTIONS_QUERY },
@@ -113,6 +112,7 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
     job.protocol === ProtocolType.BASIC_MESSAGE &&
     job.output.message
   ) {
+    // Update cached data for single connection messages
     updateCacheWithNewItem(
       job.output.message,
       { query: MESSAGES_QUERY, variables: { id: connectionID } },
@@ -124,6 +124,7 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
     job.protocol === ProtocolType.CREDENTIAL &&
     job.output.credential
   ) {
+    // Update cached data for all credentials
     updateCacheWithNewItem(
       job.output.credential,
       { query: CREDENTIALS_QUERY },
@@ -131,6 +132,7 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
       '',
       'credentials'
     )
+    // Update cached data for single connection credentials
     updateCacheWithNewItem(
       job.output.credential,
       { query: CONNECTION_CREDENTIALS_QUERY, variables: { id: connectionID } },
@@ -139,6 +141,7 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
       'credentials'
     )
   } else if (job.protocol === ProtocolType.PROOF && job.output.proof) {
+    // Update cached data for single connection proofs
     updateCacheWithNewItem(
       job.output.proof,
       { query: PROOFS_QUERY, variables: { id: connectionID } },
@@ -162,6 +165,9 @@ function EventNotifications() {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
+          // This function updates cache when new events are received from the server.
+          // The user does not need to refresh e.g. connection view but views
+          // are automatically updated with established connection data.
           const newState = stateWithNewItem(
             prev,
             'events',
@@ -170,7 +176,22 @@ function EventNotifications() {
           )
           if (newState.updated) {
             const { node }: IEventEdge = data.eventAdded
+            const { connection } = data.eventAdded.node
+            // Update cached data for single connection events
+            if (connection) {
+              updateCacheWithNewItem(
+                data.eventAdded,
+                {
+                  query: CONNECTION_EVENTS_QUERY,
+                  variables: { id: connection.id },
+                },
+                true,
+                'connection',
+                'events'
+              )
+            }
             if (node.job) {
+              // Update cached data for all jobs
               updateCacheWithNewItem(
                 node.job,
                 { query: JOBS_QUERY },
@@ -184,7 +205,7 @@ function EventNotifications() {
             }
             addedEventIdsVar([...addedEventIdsVar(), node.id])
           }
-          return newState.state
+          return newState.state // new state for all events
         },
       })
     }

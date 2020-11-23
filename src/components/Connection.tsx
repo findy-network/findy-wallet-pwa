@@ -8,6 +8,7 @@ import Messages from './Messages'
 import Credentials from './Credentials'
 import Proofs from './Proofs'
 import Jobs from './Jobs'
+import Events from './Events'
 import { fragments } from './ConnectionFragments'
 
 Connection.fragments = fragments
@@ -44,6 +45,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
               <div>My DID</div>
               <div>{node.ourDid}</div>
               <Jobs connectionId={node.id} />
+              <Events connectionId={node.id} />
               <Credentials connectionId={node.id} />
               <Proofs connectionId={node.id} />
               <Messages connectionId={node.id} />

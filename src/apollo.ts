@@ -68,6 +68,8 @@ export const cache = new InMemoryCache({
         messages: relayStylePagination(),
         credentials: relayStylePagination(),
         proofs: relayStylePagination(),
+        jobs: relayStylePagination(),
+        events: relayStylePagination(),
       },
     },
     Query: {
