@@ -1,36 +1,21 @@
 import React from 'react'
 import { Box, Button, Heading, Text } from 'grommet'
-import { Certificate } from 'grommet-icons'
+import { Compare } from 'grommet-icons'
 
 import { useQuery, gql } from '@apollo/client'
 
-import { ICredentialEdge } from './Types'
+import { IProofEdge } from './Types'
 import { Link } from 'react-router-dom'
-import Credential from './Credential'
+import Proof from './Proof'
 import Waiting from './Waiting'
 import Utils from './Utils'
 
-export const CREDENTIALS_QUERY = gql`
-  query GetCredentials($cursor: String) {
-    credentials(first: 10, after: $cursor) {
-      edges {
-        ...CredentialEdgeFragment
-      }
-      pageInfo {
-        ...PageInfoFragment
-      }
-    }
-  }
-  ${Credential.fragments.edge}
-  ${Utils.fragments.pageInfo}
-`
-
-export const CONNECTION_CREDENTIALS_QUERY = gql`
-  query GetConnectionCredentials($id: ID!, $cursor: String) {
+export const PROOFS_QUERY = gql`
+  query GetConnectionProofs($id: ID!, $cursor: String) {
     connection(id: $id) {
-      credentials(first: 3, after: $cursor) {
+      proofs(first: 3, after: $cursor) {
         edges {
-          ...CredentialEdgeFragment
+          ...ProofEdgeFragment
         }
         pageInfo {
           ...PageInfoFragment
@@ -38,7 +23,7 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
       }
     }
   }
-  ${Credential.fragments.edge}
+  ${Proof.fragments.edge}
   ${Utils.fragments.pageInfo}
 `
 
@@ -46,27 +31,24 @@ interface IProps {
   connectionId?: string
 }
 
-function Credentials({ connectionId }: IProps) {
-  const { loading, error, data, fetchMore } = useQuery(
-    connectionId ? CONNECTION_CREDENTIALS_QUERY : CREDENTIALS_QUERY,
-    {
-      ...(connectionId ? { variables: { id: connectionId } } : {}),
-    }
-  )
+function Proofs({ connectionId }: IProps) {
+  const { loading, error, data, fetchMore } = useQuery(PROOFS_QUERY, {
+    variables: { id: connectionId },
+  })
   const isLoading = loading || (!error && !data)
   const showWaiting = isLoading || error
 
-  const credentials = data?.credentials || data?.connection?.credentials
+  const proofs = data?.connection?.proofs
 
   return (
     <Box height={{ min: 'initial' }}>
-      <Heading level={2}>Credentials</Heading>
+      <Heading level={2}>Proofs</Heading>
       {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="small">
-          {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-            <Link key={node.id} to={`/credentials/${node.id}`}>
+          {proofs.edges.map(({ node }: IProofEdge, index: number) => (
+            <Link key={node.id} to={`/proofs/${node.id}`}>
               <Box
                 background="light-1"
                 direction="row"
@@ -75,25 +57,25 @@ function Credentials({ connectionId }: IProps) {
                 border="bottom"
                 height={{ min: '8rem' }}
               >
-                <Certificate />
+                <Compare />
                 <Box>
                   <Text>
                     {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
                   </Text>
                   <Heading margin="medium" level="6">
-                    {`${node.schemaId} ${node.id}`}
+                    {`${node.id}`}
                   </Heading>
                 </Box>
               </Box>
             </Link>
           ))}
-          {credentials.pageInfo.hasNextPage && (
+          {proofs.pageInfo.hasNextPage && (
             <Button
               label="Load more"
               onClick={() =>
                 fetchMore({
                   variables: {
-                    cursor: credentials.pageInfo.endCursor,
+                    cursor: proofs.pageInfo.endCursor,
                   },
                 })
               }
@@ -105,4 +87,4 @@ function Credentials({ connectionId }: IProps) {
   )
 }
 
-export default Credentials
+export default Proofs
