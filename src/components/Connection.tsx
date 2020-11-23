@@ -6,6 +6,7 @@ import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import Messages from './Messages'
 import Credentials from './Credentials'
+import Proofs from './Proofs'
 
 const nodeFragment = gql`
   fragment PairwiseNodeFragment on Pairwise {
@@ -65,6 +66,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
               <div>My DID</div>
               <div>{node.ourDid}</div>
               <Credentials connectionId={node.id} />
+              <Proofs connectionId={node.id} />
               <Messages connectionId={node.id} />
             </Box>
           </Box>

@@ -69,6 +69,7 @@ export interface IJobOutput {
   connection?: IConnectionEdge
   credential?: ICredentialEdge
   message?: IMessageEdge
+  proof?: IProofEdge
 }
 
 export interface ICredentialEdge extends IEdge {
@@ -93,6 +94,30 @@ export interface ICredentialNode extends INode {
   initiatedByUs: boolean
   approvedMs?: string
   issuedMs?: string
+  connection?: IConnectionNode
+}
+
+export interface IProofEdge extends IEdge {
+  node: IProofNode
+}
+
+export enum ProofRole {
+  VERIFIER = 'VERIFIER',
+  PROVER = 'PROVER',
+}
+
+export interface IProofAttribute {
+  name: string
+  credDefId: string
+}
+
+export interface IProofNode extends INode {
+  role: ProofRole
+  attributes: IProofAttribute[]
+  initiatedByUs: boolean
+  result: boolean
+  approvedMs?: string
+  verifiedMs?: string
   connection?: IConnectionNode
 }
 

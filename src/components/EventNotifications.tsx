@@ -12,6 +12,7 @@ import { JOBS_QUERY } from './Jobs'
 import { CONNECTIONS_QUERY } from './Connections'
 import { MESSAGES_QUERY } from './Messages'
 import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
+import { PROOFS_QUERY } from './Proofs'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -128,6 +129,14 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
       false,
       'connection',
       'credentials'
+    )
+  } else if (job.protocol === ProtocolType.PROOF && job.output.proof) {
+    updateCacheWithNewItem(
+      job.output.proof,
+      { query: PROOFS_QUERY, variables: { id: connectionID } },
+      false,
+      'connection',
+      'proofs'
     )
   }
 }
