@@ -8,7 +8,7 @@ import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY } from './Home'
 import Event from './Event'
 import { useQuery, gql } from '@apollo/client'
-import { JOBS_QUERY } from './Jobs'
+import { CONNECTION_JOBS_QUERY, JOBS_QUERY } from './Jobs'
 import { CONNECTIONS_QUERY } from './Connections'
 import { MESSAGES_QUERY } from './Messages'
 import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
@@ -92,6 +92,14 @@ const updateCacheWithNewItem = (
 
 const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
   const job = jobEdge.node
+
+  updateCacheWithNewItem(
+    jobEdge,
+    { query: CONNECTION_JOBS_QUERY, variables: { id: connectionID } },
+    false,
+    'connection',
+    'jobs'
+  )
 
   if (job.protocol === ProtocolType.CONNECTION && job.output.connection) {
     updateCacheWithNewItem(

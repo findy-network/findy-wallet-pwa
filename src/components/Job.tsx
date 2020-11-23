@@ -4,7 +4,7 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import Connection from './Connection'
+import { fragments as connFragments } from './ConnectionFragments'
 import Message from './Message'
 import Credential from './Credential'
 import Proof from './Proof'
@@ -33,7 +33,7 @@ const nodeFragment = gql`
       }
     }
   }
-  ${Connection.fragments.edge}
+  ${connFragments.edge}
   ${Message.fragments.edge}
   ${Credential.fragments.edge}
   ${Proof.fragments.edge}

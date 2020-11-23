@@ -7,32 +7,10 @@ import Waiting from './Waiting'
 import Messages from './Messages'
 import Credentials from './Credentials'
 import Proofs from './Proofs'
+import Jobs from './Jobs'
+import { fragments } from './ConnectionFragments'
 
-const nodeFragment = gql`
-  fragment PairwiseNodeFragment on Pairwise {
-    id
-    ourDid
-    theirDid
-    theirEndpoint
-    theirLabel
-    createdMs
-    approvedMs
-    invited
-  }
-`
-
-Connection.fragments = {
-  node: nodeFragment,
-  edge: gql`
-    fragment PairwiseEdgeFragment on PairwiseEdge {
-      cursor
-      node {
-        ...PairwiseNodeFragment
-      }
-    }
-    ${nodeFragment}
-  `,
-}
+Connection.fragments = fragments
 
 export const CONNECTION_QUERY = gql`
   query GetConnection($id: ID!) {
@@ -65,6 +43,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
               <div>{node.id}</div>
               <div>My DID</div>
               <div>{node.ourDid}</div>
+              <Jobs connectionId={node.id} />
               <Credentials connectionId={node.id} />
               <Proofs connectionId={node.id} />
               <Messages connectionId={node.id} />
