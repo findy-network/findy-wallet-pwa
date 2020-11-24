@@ -3,6 +3,7 @@ import { useQuery, gql } from '@apollo/client'
 
 import Waiting from './Waiting'
 import { Button } from 'grommet'
+import WebauthnLogin from './WebauthnLogin'
 
 const USER_QUERY = gql`
   query GetUser {
@@ -26,7 +27,7 @@ function Login({ children }: IProps) {
       {unauthenticated ? (
         <div>
           <Button
-            label="Login"
+            label="Playground login"
             onClick={() =>
               fetch('http://localhost:8085/token').then(async (data) => {
                 localStorage.setItem('token', await data.text())
@@ -34,6 +35,11 @@ function Login({ children }: IProps) {
               })
             }
           />
+          {window.PublicKeyCredential ? (
+            <WebauthnLogin />
+          ) : (
+            <div>Wallet login not supported in this browser :(</div>
+          )}
         </div>
       ) : (
         <>
