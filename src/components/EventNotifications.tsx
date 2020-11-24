@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react'
 
 import { DataProxy, useReactiveVar } from '@apollo/client'
 
-import { IEdge, IEventEdge, IJobEdge, ProtocolType } from './Types'
+import {
+  IEdge,
+  IEventEdge,
+  IJobEdge,
+  JobResult,
+  JobStatus,
+  ProtocolType,
+} from './Types'
 import Notification from './Notification'
 import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY, CONNECTION_EVENTS_QUERY } from './Events'
@@ -122,7 +129,9 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
     )
   } else if (
     job.protocol === ProtocolType.CREDENTIAL &&
-    job.output.credential
+    job.output.credential &&
+    job.status === JobStatus.COMPLETE &&
+    job.result === JobResult.SUCCESS
   ) {
     // Update cached data for all credentials
     updateCacheWithNewItem(
@@ -135,12 +144,20 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
     // Update cached data for single connection credentials
     updateCacheWithNewItem(
       job.output.credential,
-      { query: CONNECTION_CREDENTIALS_QUERY, variables: { id: connectionID } },
+      {
+        query: CONNECTION_CREDENTIALS_QUERY,
+        variables: { id: connectionID },
+      },
       false,
       'connection',
       'credentials'
     )
-  } else if (job.protocol === ProtocolType.PROOF && job.output.proof) {
+  } else if (
+    job.protocol === ProtocolType.PROOF &&
+    job.output.proof &&
+    job.status === JobStatus.COMPLETE &&
+    job.result === JobResult.SUCCESS
+  ) {
     // Update cached data for single connection proofs
     updateCacheWithNewItem(
       job.output.proof,
