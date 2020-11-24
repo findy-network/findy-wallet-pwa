@@ -219,7 +219,11 @@ function EventNotifications() {
           .map((item: IEventEdge) => (
             <Notification
               key={item.node.id}
-              text={`${item.node.connection?.theirLabel}: ${item.node.description}`}
+              text={`${
+                item.node.connection
+                  ? `${item.node.connection?.theirLabel}:`
+                  : ''
+              } ${item.node.description}`}
               onClose={() => {
                 const newItems = addedEventIds.filter((i) => i !== item.node.id)
                 addedEventIdsVar(newItems)

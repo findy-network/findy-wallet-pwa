@@ -1,13 +1,14 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Box, Heading } from 'grommet'
+import { Box, Button, Heading } from 'grommet'
 
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import { fragments as connFragments } from './ConnectionFragments'
 import Message from './Message'
 import Credential from './Credential'
 import Proof from './Proof'
+import { IJobNode, JobStatus, ProtocolType } from './Types'
 
 const nodeFragment = gql`
   fragment JobNodeFragment on Job {
@@ -61,6 +62,14 @@ export const JOB_QUERY = gql`
   ${Job.fragments.node}
 `
 
+const RESUME_JOB_MUTATION = gql`
+  mutation ResumeJob($input: ResumeJobInput!) {
+    resume(input: $input) {
+      ok
+    }
+  }
+`
+
 type TParams = { id: string }
 
 function Job({ match }: RouteComponentProps<TParams>) {
@@ -69,7 +78,12 @@ function Job({ match }: RouteComponentProps<TParams>) {
       id: match.params.id,
     },
   })
-  const node = data?.job
+  const [resumeJob] = useMutation(RESUME_JOB_MUTATION)
+
+  const node: IJobNode = data?.job
+
+  const doResume = (accept: boolean) =>
+    resumeJob({ variables: { input: { id: node.id, accept } } })
   return (
     <>
       {loading || error ? (
@@ -77,7 +91,45 @@ function Job({ match }: RouteComponentProps<TParams>) {
       ) : (
         <>
           <Heading level={2}>Job {node.id}</Heading>
-          <Box></Box>
+          <Box>
+            {node.protocol === ProtocolType.CREDENTIAL &&
+              node.output.credential && (
+                <Box>
+                  <Heading level={4}>Credential offer</Heading>
+                  <Box> {node.output.credential?.node.schemaId}</Box>
+                  <Box>
+                    {node.output.credential?.node.attributes.map((item) => (
+                      <div key={item.name}>
+                        {item.name}: {item.value}
+                      </div>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+            {node.protocol === ProtocolType.PROOF && node.output.proof && (
+              <Box>
+                <Heading level={4}>Proof request</Heading>
+                <Box>
+                  {node.output.proof?.node.attributes.map((item) => (
+                    <div key={item.name}>
+                      <div>
+                        {item.name} ({item.credDefId})
+                      </div>
+                    </div>
+                  ))}
+                </Box>
+              </Box>
+            )}
+            {node.status === JobStatus.PENDING && (
+              <div>
+                <Button
+                  onClick={() => doResume(false)}
+                  label="Decline"
+                ></Button>
+                <Button onClick={() => doResume(true)} label="Accept"></Button>
+              </div>
+            )}
+          </Box>
         </>
       )}
     </>
