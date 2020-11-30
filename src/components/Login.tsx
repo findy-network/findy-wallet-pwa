@@ -4,6 +4,7 @@ import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import { Button } from 'grommet'
 import WebauthnLogin from './WebauthnLogin'
+import config from '../config'
 
 const USER_QUERY = gql`
   query GetUser {
@@ -29,7 +30,7 @@ function Login({ children }: IProps) {
           <Button
             label="Playground login"
             onClick={() =>
-              fetch('http://localhost:8085/token').then(async (data) => {
+              fetch(`${config.gqlUrl}/token`).then(async (data) => {
                 localStorage.setItem('token', await data.text())
                 window.location.reload()
               })
