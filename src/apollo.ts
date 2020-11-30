@@ -32,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${config.gqlHost}?access_token=${token}`,
+  uri: `ws://${config.gqlHost}/query?access_token=${token}`,
   options: {
     reconnect: true,
     connectionParams: () => {
@@ -93,7 +93,7 @@ export const cache = new InMemoryCache({
 })
 
 export default new ApolloClient({
-  uri: config.gqlUrl,
+  uri: `${config.gqlUrl}/query`,
   cache,
   link: ApolloLink.from([splitLink]),
 })
