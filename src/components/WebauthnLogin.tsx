@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import { Anchor, Button, Box, TextInput, Text } from 'grommet'
 
+import config from '../config'
+
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
   return Uint8Array.from(atob(value), (c) => c.charCodeAt(0))
@@ -58,9 +60,7 @@ function WebauthnLogin() {
       setOperationResult(`Unable to register this device for email ${email}`)
       setEmail('')
     }
-    const response = await doFetch(
-      `http://localhost:8888/register/begin/${email}`
-    )
+    const response = await doFetch(`${config.authUrl}/register/begin/${email}`)
     if (response.status !== 200) {
       setError()
       return
@@ -92,18 +92,15 @@ function WebauthnLogin() {
       rawId,
       response: { attestationObject, clientDataJSON },
     } = credential
-    const result = await doFetch(
-      `http://localhost:8888/register/finish/${email}`,
-      {
-        id,
-        rawId: bufferEncode(rawId),
-        type,
-        response: {
-          attestationObject: bufferEncode(attestationObject!),
-          clientDataJSON: bufferEncode(clientDataJSON!),
-        },
-      }
-    )
+    const result = await doFetch(`${config.authUrl}/register/finish/${email}`, {
+      id,
+      rawId: bufferEncode(rawId),
+      type,
+      response: {
+        attestationObject: bufferEncode(attestationObject!),
+        clientDataJSON: bufferEncode(clientDataJSON!),
+      },
+    })
     if (result.status !== 200) {
       setError()
       return
@@ -118,7 +115,7 @@ function WebauthnLogin() {
       setOperationResult(`Unable to login with this device for email ${email}`)
       setEmail('')
     }
-    const response = await doFetch(`http://localhost:8888/login/begin/${email}`)
+    const response = await doFetch(`${config.authUrl}/login/begin/${email}`)
     if (response.status !== 200) {
       setError()
       return
@@ -142,20 +139,17 @@ function WebauthnLogin() {
       rawId,
       response: { authenticatorData, clientDataJSON, signature, userHandle },
     } = credential
-    const result = await doFetch(
-      `http://localhost:8888/login/finish/${email}`,
-      {
-        id,
-        rawId: bufferEncode(rawId),
-        type,
-        response: {
-          authenticatorData: bufferEncode(authenticatorData!),
-          clientDataJSON: bufferEncode(clientDataJSON!),
-          signature: bufferEncode(signature!),
-          userHandle: bufferEncode(userHandle!),
-        },
-      }
-    )
+    const result = await doFetch(`${config.authUrl}/login/finish/${email}`, {
+      id,
+      rawId: bufferEncode(rawId),
+      type,
+      response: {
+        authenticatorData: bufferEncode(authenticatorData!),
+        clientDataJSON: bufferEncode(clientDataJSON!),
+        signature: bufferEncode(signature!),
+        userHandle: bufferEncode(userHandle!),
+      },
+    })
     if (result.status !== 200) {
       setError()
       return

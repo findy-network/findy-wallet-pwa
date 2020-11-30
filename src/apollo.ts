@@ -12,13 +12,12 @@ import {
 } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
+import config from './config'
 
 export const addedEventIdsVar = makeVar<string[]>([])
 
-const uri = 'localhost:8085/query'
-
 const httpLink = new HttpLink({
-  uri: `http://${uri}`,
+  uri: `${config.gqlUrl}/query`,
 })
 const token = localStorage.getItem('token')
 const authHeader = { Authorization: `Bearer ${token}` }
@@ -33,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${uri}?access_token=${token}`,
+  uri: `ws://${config.gqlHost}?access_token=${token}`,
   options: {
     reconnect: true,
     connectionParams: () => {
@@ -94,7 +93,7 @@ export const cache = new InMemoryCache({
 })
 
 export default new ApolloClient({
-  uri: `http://${uri}`,
+  uri: config.gqlUrl,
   cache,
   link: ApolloLink.from([splitLink]),
 })
