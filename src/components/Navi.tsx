@@ -132,7 +132,7 @@ function Navi({ children }: IProps) {
         <WideNav fill>{nav('row')}</WideNav>
       </Header>
 
-      <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
+      <Box direction="row" flex overflow={{ horizontal: 'auto' }}>
         {menuOpen && (
           <Layer
             full="vertical"
@@ -146,7 +146,7 @@ function Navi({ children }: IProps) {
             <Sidebar background="brand">{nav('column')}</Sidebar>
           </Layer>
         )}
-        <Box flex align="center" justify="center" pad="medium">
+        <Box flex align="center" pad="medium">
           {children}
         </Box>
         <EventNotifications />
