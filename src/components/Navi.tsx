@@ -10,6 +10,7 @@ import {
   Sidebar as GrommetSidebar,
   Nav as GrommetNav,
   BoxProps,
+  Layer,
 } from 'grommet'
 import {
   Scan as MeIcon,
@@ -57,9 +58,7 @@ const MenuButton = styled(GrommetButton)`
   ${cssHideInWide}
 `
 
-const Sidebar = styled(GrommetSidebar)`
-  ${cssHideInWide}
-`
+const Sidebar = GrommetSidebar
 
 interface IProps {
   children: ReactNode
@@ -70,10 +69,22 @@ function Navi({ children }: IProps) {
   const nav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
       <Link to="/">
-        <Button icon={<HomeIcon />} hoverIndicator label="Home" plain />
+        <Button
+          icon={<HomeIcon />}
+          hoverIndicator
+          label="Home"
+          plain
+          onClick={() => setMenuOpen(false)}
+        />
       </Link>
       <Link to="/me">
-        <Button icon={<MeIcon />} hoverIndicator label="Me" plain />
+        <Button
+          icon={<MeIcon />}
+          hoverIndicator
+          label="Me"
+          plain
+          onClick={() => setMenuOpen(false)}
+        />
       </Link>
       <Link to="/connections">
         <Button
@@ -81,6 +92,7 @@ function Navi({ children }: IProps) {
           hoverIndicator
           label="Connections"
           plain
+          onClick={() => setMenuOpen(false)}
         />
       </Link>
       <Link to="/credentials">
@@ -89,6 +101,7 @@ function Navi({ children }: IProps) {
           hoverIndicator
           label="Credentials"
           plain
+          onClick={() => setMenuOpen(false)}
         />
       </Link>
       <Button
@@ -97,6 +110,7 @@ function Navi({ children }: IProps) {
         label="Logout"
         plain
         onClick={() => {
+          setMenuOpen(false)
           localStorage.clear()
           window.location.reload()
         }}
@@ -117,11 +131,25 @@ function Navi({ children }: IProps) {
         </Heading>
         <WideNav fill>{nav('row')}</WideNav>
       </Header>
-      <Box direction="row" fill>
-        <EventNotifications />
 
-        {menuOpen && <Sidebar background="brand">{nav('column')}</Sidebar>}
-        <Box pad="medium">{children}</Box>
+      <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
+        {menuOpen && (
+          <Layer
+            full="vertical"
+            position="left"
+            modal={true}
+            plain={false}
+            onEsc={() => setMenuOpen(false)}
+            onClickOutside={() => setMenuOpen(false)}
+            responsive={false}
+          >
+            <Sidebar background="brand">{nav('column')}</Sidebar>
+          </Layer>
+        )}
+        <Box flex align="center" justify="center" pad="medium">
+          {children}
+        </Box>
+        <EventNotifications />
       </Box>
       <Add />
     </>
