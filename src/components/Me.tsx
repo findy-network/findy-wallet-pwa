@@ -17,25 +17,31 @@ function Me() {
 
   return (
     <>
-      <Heading level={2}>Me</Heading>
-
       <Button
         label="Generate new invitation"
         onClick={() => doInvite()}
       ></Button>
       {data && (
-        <Box margin="large" direction="row">
-          <img
-            alt="invitation QR code"
-            src={`data:image/png;base64,${data.invite.imageB64}`}
-          />
-          <TextArea
-            readOnly
-            resize={false}
-            fill
-            value={data.invite.invitation}
-          />
-        </Box>
+        <>
+          <Box fill="vertical" gap="small" margin="small" direction="column">
+            <img
+              alt="invitation QR code"
+              src={`data:image/png;base64,${data.invite.imageB64}`}
+            />
+            <Box margin="small" height="medium" responsive={false}>
+              <TextArea
+                readOnly
+                resize={false}
+                fill
+                style={{ height: '400px' }}
+                value={data.invite.invitation}
+                onFocus={(event) => {
+                  event.target.select()
+                }}
+              />
+            </Box>
+          </Box>
+        </>
       )}
     </>
   )
