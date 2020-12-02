@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, Text } from 'grommet'
-import { EmptyCircle } from 'grommet-icons'
+import { Box, Button, Stack, Text } from 'grommet'
+import { FormClose, StatusPlaceholder } from 'grommet-icons'
 import Dialog from './Dialog'
 
 interface IProps {
@@ -15,7 +15,7 @@ const Notification = ({ onClose, text }: IProps) => (
     plain={true}
     onClose={onClose}
     onEsc={onClose}
-    duration={3}
+    duration={4}
   >
     <Box
       direction="row"
@@ -23,11 +23,14 @@ const Notification = ({ onClose, text }: IProps) => (
       justify="between"
       gap="small"
       round
-      pad="small"
+      pad={{ vertical: `xsmall`, left: `medium`, right: `medium` }}
       background="status-ok"
     >
-      <EmptyCircle />
       <Text size="large">{text}</Text>
+      <Stack alignSelf="center" margin={{ top: `xsmall` }}>
+        <StatusPlaceholder />
+        <Button plain icon={<FormClose />} onClick={onClose} />
+      </Stack>
     </Box>
   </Dialog>
 )
