@@ -1,7 +1,8 @@
-import React from 'react'
-import { Box, Button, Heading, TextArea } from 'grommet'
+import React, { useState } from 'react'
+import { Box, Button, TextArea } from 'grommet'
 
 import { useMutation, gql } from '@apollo/client'
+import Notification from './Notification'
 
 const INVITATION_MUTATION = gql`
   mutation Invitation {
@@ -14,6 +15,16 @@ const INVITATION_MUTATION = gql`
 
 function Me() {
   const [doInvite, { data }] = useMutation(INVITATION_MUTATION)
+  const [copySuccess, setCopyNotification] = useState(false)
+
+  const copyToClipBoard = async (copiedText: string) => {
+    try {
+      await navigator.clipboard.writeText(copiedText)
+      setCopyNotification(true)
+    } catch (err) {
+      setCopyNotification(false)
+    }
+  }
 
   return (
     <>
@@ -33,15 +44,26 @@ function Me() {
                 readOnly
                 resize={false}
                 fill
-                style={{ height: '400px' }}
                 value={data.invite.invitation}
                 onFocus={(event) => {
                   event.target.select()
                 }}
               />
             </Box>
+            <Button
+              label="Copy to clipboard"
+              onClick={() => copyToClipBoard(data.invite.invitation)}
+            ></Button>
           </Box>
         </>
+      )}
+      {copySuccess && (
+        <Notification
+          text={`Invitation copied to clipboard`}
+          onClose={() => {
+            setCopyNotification(false)
+          }}
+        />
       )}
     </>
   )
