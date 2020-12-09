@@ -29,7 +29,8 @@ function Me() {
   return (
     <>
       <Button
-        label="Generate new invitation"
+        label="Create new invitation"
+        primary
         onClick={() => doInvite()}
       ></Button>
       {data && (

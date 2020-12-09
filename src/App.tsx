@@ -2,6 +2,9 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 //import logo from './logo.svg'
 import { Box, Grommet, grommet } from 'grommet'
+import { deepMerge } from 'grommet/utils'
+
+import theme from './theme'
 
 import Navi from './components/Navi'
 import Home from './components/Home'
@@ -16,9 +19,11 @@ import Proof from './components/Proof'
 import Me from './components/Me'
 import Login from './components/Login'
 
+const appTheme = deepMerge(grommet, theme)
+
 function App() {
   return (
-    <Grommet theme={grommet} full={true}>
+    <Grommet theme={appTheme} full={true}>
       <Box fill={true}>
         <Login>
           <Navi>

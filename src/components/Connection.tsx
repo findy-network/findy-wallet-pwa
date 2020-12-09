@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Box, Heading } from 'grommet'
+import { Box, Heading, Tab, Tabs } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
@@ -37,19 +37,35 @@ function Connection({ match }: RouteComponentProps<TParams>) {
         <Waiting loading={loading} error={error} />
       ) : (
         <Box>
-          <Heading level={2}>Connection {node.theirLabel}</Heading>
+          <Heading level={2}>{node.theirLabel}</Heading>
           <Box>
-            <Box>
-              <div>ID</div>
-              <div>{node.id}</div>
-              <div>My DID</div>
-              <div>{node.ourDid}</div>
-              <Jobs connectionId={node.id} />
-              <Events connectionId={node.id} />
-              <Credentials connectionId={node.id} />
-              <Proofs connectionId={node.id} />
-              <Messages connectionId={node.id} />
-            </Box>
+            <Tabs justify="start" alignControls="start">
+              <Tab title="Jobs">
+                <Box fill pad="large" align="center">
+                  <Jobs connectionId={node.id} />
+                </Box>
+              </Tab>
+              <Tab title="Events">
+                <Box fill pad="large" align="center">
+                  <Events connectionId={node.id} />
+                </Box>
+              </Tab>
+              <Tab title="Credentials">
+                <Box fill pad="large" align="center">
+                  <Credentials connectionId={node.id} />
+                </Box>
+              </Tab>
+              <Tab title="Proofs">
+                <Box fill pad="large" align="center">
+                  <Proofs connectionId={node.id} />
+                </Box>
+              </Tab>
+              <Tab title="Messages">
+                <Box fill pad="large" align="center">
+                  <Messages connectionId={node.id} />
+                </Box>
+              </Tab>
+            </Tabs>
           </Box>
         </Box>
       )}
