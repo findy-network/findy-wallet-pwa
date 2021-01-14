@@ -32,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${config.gqlHost}/query?access_token=${token}`,
+  uri: `${config.wsUrl}/query?access_token=${token}`,
   options: {
     reconnect: true,
     connectionParams: () => {
