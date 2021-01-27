@@ -15,6 +15,7 @@ import Message from './components/Message'
 import Proof from './components/Proof'
 import Me from './components/Me'
 import Login from './components/Login'
+import URLConnect from './components/URLConnect'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route exact path="/messages/:id" component={Message} />
               <Route exact path="/proofs/:id" component={Proof} />
               <Route exact path="/me" component={Me} />
+              <Route exact path="/connect/:invitation" component={URLConnect} />
             </Switch>
           </Navi>
         </Login>
