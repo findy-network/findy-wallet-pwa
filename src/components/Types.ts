@@ -107,8 +107,18 @@ export enum ProofRole {
 }
 
 export interface IProofAttribute {
+  id: string
   name: string
   credDefId: string
+}
+
+export interface IProofValue {
+  attributeId: string
+  value: string
+}
+
+export interface IProvable {
+  provable: boolean
 }
 
 export interface IProofNode extends INode {
@@ -119,6 +129,8 @@ export interface IProofNode extends INode {
   approvedMs?: string
   verifiedMs?: string
   connection?: IConnectionNode
+  provable: IProvable
+  values: IProofValue[]
 }
 
 export interface IMessageEdge extends IEdge {
