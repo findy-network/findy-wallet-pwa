@@ -84,6 +84,11 @@ function Job({ match }: RouteComponentProps<TParams>) {
 
   const doResume = (accept: boolean) =>
     resumeJob({ variables: { input: { id: node.id, accept } } })
+
+  // Enable accept button if this is not proof OR the proof is provable!
+  const enableAccept =
+    node?.protocol !== ProtocolType.PROOF ||
+    node.output.proof?.node.provable.provable
   return (
     <>
       {loading || error ? (
@@ -126,7 +131,11 @@ function Job({ match }: RouteComponentProps<TParams>) {
                   onClick={() => doResume(false)}
                   label="Decline"
                 ></Button>
-                <Button onClick={() => doResume(true)} label="Accept"></Button>
+                <Button
+                  disabled={!enableAccept}
+                  onClick={() => doResume(true)}
+                  label="Accept"
+                ></Button>
               </div>
             )}
           </Box>
