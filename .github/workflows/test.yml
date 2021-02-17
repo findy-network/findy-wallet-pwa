@@ -15,4 +15,8 @@ jobs:
       - name: install deps
         run: npm ci
       - name: build
-        run: npm run build
+        run: CI=true npm run build
+      - name: lint
+        run: npm run test:lint
+      - name: test
+        run: CI=true npm test
