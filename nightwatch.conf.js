@@ -48,14 +48,12 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          // This tells Chromedriver to run using the legacy JSONWire protocol (not required in Chrome 78)
-          // w3c: false,
           // More info on Chromedriver: https://sites.google.com/a/chromium.org/chromedriver/
           args: [
-            //'--no-sandbox',
-            //'--ignore-certificate-errors',
-            //'--allow-insecure-localhost',
-            //'--headless'
+            '--no-sandbox',
+            '--ignore-certificate-errors',
+            '--allow-insecure-localhost',
+            '--headless'
           ]
         }
       },
@@ -65,7 +63,7 @@ module.exports = {
         port: 9515,
         server_path: (Services.chromedriver ? Services.chromedriver.path : ''),
         cli_args: [
-          // --verbose
+          --verbose
         ]
       }
     },
