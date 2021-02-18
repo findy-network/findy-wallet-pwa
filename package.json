@@ -31,6 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
+    "test:e2e": "nightwatch ./e2e",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -63,8 +64,10 @@
   },
   "devDependencies": {
     "async": "^3.2.0",
+    "chromedriver": "^88.0.0",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.1",
+    "nightwatch": "^1.5.1",
     "npm-outdated-to-latest": "^1.0.3",
     "prettier": "^2.1.2"
   }
