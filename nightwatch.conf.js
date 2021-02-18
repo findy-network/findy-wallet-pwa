@@ -27,24 +27,11 @@ module.exports = {
       launch_url: 'https://nightwatchjs.org',
 
       screenshots: {
-        enabled: false,
-        path: 'screens',
+        enabled: true,
+        path: './tests_output/screens',
         on_failure: true
       },
 
-      desiredCapabilities: {
-        browserName: 'chrome'
-      },
-
-      webdriver: {
-        start_process: true,
-        port: 9515,
-        server_path: (Services.chromedriver ? Services.chromedriver.path : '')
-      }
-    },
-
-
-    chrome: {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
@@ -62,13 +49,9 @@ module.exports = {
         start_process: true,
         port: 9515,
         server_path: (Services.chromedriver ? Services.chromedriver.path : ''),
-        cli_args: [
-          --verbose
-        ]
+        cli_args: []
       }
-    },
-
-
+    }
   }
 };
 

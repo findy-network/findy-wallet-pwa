@@ -1,14 +1,9 @@
 module.exports = {
-    'Demo test ecosia.org': function (browser) {
+    'Demo test OP Lab': function (browser) {
         browser
-            .url('https://www.ecosia.org/')
+            .url('https://www.op-lab.fi/')
             .waitForElementVisible('body')
-            .assert.titleContains('Ecosia')
-            .assert.visible('input[type=search]')
-            .setValue('input[type=search]', 'nightwatch')
-            .assert.visible('button[type=submit]')
-            .click('button[type=submit]')
-            .assert.containsText('.mainline-results', 'Nightwatch.js')
+            .assert.titleContains('OP Lab')
             .end();
     }
 };
