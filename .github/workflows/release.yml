@@ -1,0 +1,19 @@
+name: release
+on:  
+  push:
+    tags:
+      - '*'
+jobs:
+  merge:
+#    needs: e2e TODO: implement proper acceptance tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: merge
+        run:  |
+          git fetch --tags origin
+          git merge $GITHUB_REF
+          git push origin master

@@ -1,4 +1,4 @@
-name: test
+name: e2e
 on: push
 jobs:
   build:
@@ -14,9 +14,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: install deps
         run: npm ci
-      - name: build
-        run: CI=true npm run build
-      - name: lint
-        run: npm run test:lint
+      - name: start app
+        run: CI=true npm start &
+        env:
+          REACT_APP_MOCK_RESOLVER: true
       - name: test
-        run: CI=true npm test
+        run: npm run test:e2e

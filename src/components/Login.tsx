@@ -23,6 +23,7 @@ function Login({ children }: IProps) {
   const unauthenticated = error?.graphQLErrors.find(
     (item) => item.extensions && item.extensions.code === 'UNAUTHENTICATED'
   )
+
   return (
     <>
       {unauthenticated ? (
@@ -39,18 +40,18 @@ function Login({ children }: IProps) {
           {window.PublicKeyCredential ? (
             <WebauthnLogin />
           ) : (
-            <div>Wallet login not supported in this browser :(</div>
-          )}
+              <div>Wallet login not supported in this browser :(</div>
+            )}
         </div>
       ) : (
-        <>
-          {loading || error ? (
-            <Waiting loading={loading} error={error} />
-          ) : (
-            children
-          )}
-        </>
-      )}
+          <>
+            {loading || error ? (
+              <Waiting loading={loading} error={error} />
+            ) : (
+                children
+              )}
+          </>
+        )}
     </>
   )
 }
