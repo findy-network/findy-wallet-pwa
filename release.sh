@@ -23,7 +23,8 @@ if [ -z "$(git status --porcelain)" ]; then
   git pull origin dev
 
   VERSION=v$VERSION_NBR
-  npm test
+  npm run test:lint
+  CI=true npm test
 
   git tag -a $VERSION -m "Version $VERSION"
   git push origin dev --tags
