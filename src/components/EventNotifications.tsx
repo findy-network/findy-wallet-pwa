@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { DataProxy, useReactiveVar } from '@apollo/client'
+import { DataProxy } from '@apollo/client'
 
 import {
   IEdge,
@@ -167,8 +167,8 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
 }
 
 function EventNotifications() {
-  const addedEventIds = useReactiveVar(addedEventIdsVar)
-  const { data, subscribeToMore } = useQuery(EVENTS_QUERY, {
+  /* const addedEventIds = useReactiveVar(addedEventIdsVar)*/
+  const { /*data,*/ subscribeToMore } = useQuery(EVENTS_QUERY, {
     fetchPolicy: 'cache-only',
   })
   const [subscribed, setSubscribed] = useState(false)
