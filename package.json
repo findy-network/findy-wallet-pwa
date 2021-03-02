@@ -27,7 +27,7 @@
   },
   "scripts": {
     "deps:update": "npm-outdated-to-latest",
-    "start": "NODE_ENV=test && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
