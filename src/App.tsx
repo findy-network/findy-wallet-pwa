@@ -24,15 +24,8 @@ function App() {
           <Navi>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/events/:id" component={Event} />
-              <Route exact path="/jobs/:id" component={Job} />
-              <Route exact path="/connections" component={Connections} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
-              <Route exact path="/credentials/:id" component={Credential} />
-              <Route exact path="/messages/:id" component={Message} />
-              <Route exact path="/proofs/:id" component={Proof} />
-              <Route exact path="/me" component={Me} />
               <Route exact path="/connect/:invitation" component={URLConnect} />
             </Switch>
           </Navi>

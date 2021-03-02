@@ -4,22 +4,32 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import Messages from './Messages'
-import Credentials from './Credentials'
-import Proofs from './Proofs'
-import Jobs from './Jobs'
-import Events from './Events'
 import { fragments } from './ConnectionFragments'
+import Event from './Event'
+import Utils from './Utils'
+import { IEventEdge } from './Types'
+
 
 Connection.fragments = fragments
 
 export const CONNECTION_QUERY = gql`
-  query GetConnection($id: ID!) {
+  query GetConnection($id: ID!, $cursor: String) {
     connection(id: $id) {
       ...PairwiseNodeFragment
+      events(last: 3, before: $cursor) {
+        edges {
+          ...FullEventEdgeFragment
+        }
+        pageInfo {
+          ...PageInfoFragment
+        }
+      }
+
     }
   }
   ${Connection.fragments.node}
+  ${Event.fragments.fullEdge}
+  ${Utils.fragments.pageInfo}
 `
 
 type TParams = { id: string }
@@ -36,23 +46,13 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box>
-          <Heading level={2}>Connection {node.theirLabel}</Heading>
           <Box>
+            <Heading level={2}>Connection {node.theirLabel}</Heading>
             <Box>
-              <div>ID</div>
-              <div>{node.id}</div>
-              <div>My DID</div>
-              <div>{node.ourDid}</div>
-              <Jobs connectionId={node.id} />
-              <Events connectionId={node.id} />
-              <Credentials connectionId={node.id} />
-              <Proofs connectionId={node.id} />
-              <Messages connectionId={node.id} />
+              {[...node.events.edges].reverse().map(({ node }: IEventEdge) => (<div key={node.id}>{node.description}</div>))}
             </Box>
           </Box>
-        </Box>
-      )}
+        )}
     </>
   )
 }
