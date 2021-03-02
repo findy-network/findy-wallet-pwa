@@ -4,9 +4,8 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import { fragments } from './ConnectionFragments'
+import { pairwise as fragments, pageInfo } from './Fragments'
 import Event from './Event'
-import Utils from './Utils'
 import { IEventEdge } from './Types'
 
 
@@ -29,7 +28,7 @@ export const CONNECTION_QUERY = gql`
   }
   ${Connection.fragments.node}
   ${Event.fragments.fullEdge}
-  ${Utils.fragments.pageInfo}
+  ${pageInfo}
 `
 
 type TParams = { id: string }

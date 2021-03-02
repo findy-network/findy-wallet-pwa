@@ -11,6 +11,7 @@ import Waiting from './Waiting'
 import Unread from './Unread'
 import Event from './Event'
 import Utils from './Utils'
+import { pageInfo } from './Fragments'
 
 export const EVENTS_QUERY = gql`
   query GetEvents($cursor: String) {
@@ -24,7 +25,7 @@ export const EVENTS_QUERY = gql`
     }
   }
   ${Event.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${pageInfo}
 `
 
 export const CONNECTION_EVENTS_QUERY = gql`
@@ -41,7 +42,7 @@ export const CONNECTION_EVENTS_QUERY = gql`
     }
   }
   ${Event.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${pageInfo}
 `
 
 const RelativeBox = styled(Box)`
@@ -72,7 +73,7 @@ function Events({ connectionId }: IProps) {
     }
   )
 
-  const doFetchMore = fetchMore || (() => {})
+  const doFetchMore = fetchMore || (() => { })
   const isLoading = loading || (!error && !data)
   const showWaiting = isLoading || error
 
@@ -83,53 +84,53 @@ function Events({ connectionId }: IProps) {
       {showWaiting ? (
         <Waiting loading={isLoading} error={error} />
       ) : (
-        <RelativeBox margin="small">
-          <Heading level={3}>Events</Heading>
+          <RelativeBox margin="small">
+            <Heading level={3}>Events</Heading>
 
-          {[...events.edges].reverse().map(({ node }: IEventEdge) => (
-            <Link key={node.id} to={`/events/${node.id}`}>
-              <RelativeBox
-                background="light-1"
-                border="bottom"
-                pad="medium"
-                height={{ min: '8rem' }}
-              >
-                <Unread show={!node.read} />
-                <Text>{Utils.toTimeString(node.createdMs)}</Text>
-                <Box direction="row" align="center">
-                  <Box>
-                    {node.connection ? (
-                      <>
-                        <User />
-                        <Text>{node.connection.theirLabel}</Text>
-                      </>
-                    ) : (
-                      <Fireball />
-                    )}
+            {[...events.edges].reverse().map(({ node }: IEventEdge) => (
+              <Link key={node.id} to={`/events/${node.id}`}>
+                <RelativeBox
+                  background="light-1"
+                  border="bottom"
+                  pad="medium"
+                  height={{ min: '8rem' }}
+                >
+                  <Unread show={!node.read} />
+                  <Text>{Utils.toTimeString(node.createdMs)}</Text>
+                  <Box direction="row" align="center">
+                    <Box>
+                      {node.connection ? (
+                        <>
+                          <User />
+                          <Text>{node.connection.theirLabel}</Text>
+                        </>
+                      ) : (
+                          <Fireball />
+                        )}
+                    </Box>
+                    <Box>
+                      <Heading margin="medium" level="4">
+                        {node.description}
+                      </Heading>
+                    </Box>
                   </Box>
-                  <Box>
-                    <Heading margin="medium" level="4">
-                      {node.description}
-                    </Heading>
-                  </Box>
-                </Box>
-              </RelativeBox>
-            </Link>
-          ))}
-          {events.pageInfo.hasPreviousPage && (
-            <Button
-              label="Load older"
-              onClick={() =>
-                doFetchMore({
-                  variables: {
-                    cursor: events.pageInfo.startCursor,
-                  },
-                })
-              }
-            ></Button>
-          )}
-        </RelativeBox>
-      )}
+                </RelativeBox>
+              </Link>
+            ))}
+            {events.pageInfo.hasPreviousPage && (
+              <Button
+                label="Load older"
+                onClick={() =>
+                  doFetchMore({
+                    variables: {
+                      cursor: events.pageInfo.startCursor,
+                    },
+                  })
+                }
+              ></Button>
+            )}
+          </RelativeBox>
+        )}
     </Box>
   )
 }

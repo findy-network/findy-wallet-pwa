@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 import Connections from './Connections';
 
-const mocks = [];
+const mocks: ReadonlyArray<MockedResponse> = [];
 const wrapToProvider = (component: ReactElement) =>
     <MockedProvider mocks={mocks} addTypename={false}>{component}</MockedProvider>
 

@@ -31,7 +31,9 @@ function Home() {
   const showWaiting = isLoading || error
 
 
-  return showWaiting ? <Waiting loading={loading} error={error} /> : <div>No connections</div>
+  return showWaiting ? <Waiting loading={loading} error={error} /> : (
+    <div>No connections</div>
+  )
 }
 
 export default Home

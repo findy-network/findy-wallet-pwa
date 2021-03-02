@@ -6,9 +6,9 @@ import { useQuery, gql } from '@apollo/client'
 
 import { ICredentialEdge } from './Types'
 import { Link } from 'react-router-dom'
-import Credential from './Credential'
 import Waiting from './Waiting'
 import Utils from './Utils'
+import { credential as fragments, pageInfo } from './Fragments'
 
 export const CREDENTIALS_QUERY = gql`
   query GetCredentials($cursor: String) {
@@ -21,8 +21,8 @@ export const CREDENTIALS_QUERY = gql`
       }
     }
   }
-  ${Credential.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${fragments.edge}
+  ${pageInfo}
 `
 
 export const CONNECTION_CREDENTIALS_QUERY = gql`
@@ -38,8 +38,8 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
       }
     }
   }
-  ${Credential.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${fragments.edge}
+  ${pageInfo}
 `
 
 interface IProps {
@@ -64,43 +64,43 @@ function Credentials({ connectionId }: IProps) {
       {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="small">
-          {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-            <Link key={node.id} to={`/credentials/${node.id}`}>
-              <Box
-                background="light-1"
-                direction="row"
-                align="center"
-                pad="medium"
-                border="bottom"
-                height={{ min: '8rem' }}
-              >
-                <Certificate />
-                <Box>
-                  <Text>
-                    {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
-                  </Text>
-                  <Heading margin="medium" level="6">
-                    {`${node.schemaId} ${node.id}`}
-                  </Heading>
+          <Box margin="small">
+            {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
+              <Link key={node.id} to={`/credentials/${node.id}`}>
+                <Box
+                  background="light-1"
+                  direction="row"
+                  align="center"
+                  pad="medium"
+                  border="bottom"
+                  height={{ min: '8rem' }}
+                >
+                  <Certificate />
+                  <Box>
+                    <Text>
+                      {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
+                    </Text>
+                    <Heading margin="medium" level="6">
+                      {`${node.schemaId} ${node.id}`}
+                    </Heading>
+                  </Box>
                 </Box>
-              </Box>
-            </Link>
-          ))}
-          {credentials.pageInfo.hasNextPage && (
-            <Button
-              label="Load more"
-              onClick={() =>
-                fetchMore({
-                  variables: {
-                    cursor: credentials.pageInfo.endCursor,
-                  },
-                })
-              }
-            ></Button>
-          )}
-        </Box>
-      )}
+              </Link>
+            ))}
+            {credentials.pageInfo.hasNextPage && (
+              <Button
+                label="Load more"
+                onClick={() =>
+                  fetchMore({
+                    variables: {
+                      cursor: credentials.pageInfo.endCursor,
+                    },
+                  })
+                }
+              ></Button>
+            )}
+          </Box>
+        )}
     </Box>
   )
 }

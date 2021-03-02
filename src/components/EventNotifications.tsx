@@ -10,16 +10,13 @@ import {
   JobStatus,
   ProtocolType,
 } from './Types'
-import Notification from './Notification'
 import client, { addedEventIdsVar, cache } from '../apollo'
 import { EVENTS_QUERY, CONNECTION_EVENTS_QUERY } from './Events'
 import Event from './Event'
 import { useQuery, gql } from '@apollo/client'
-import { CONNECTION_JOBS_QUERY, JOBS_QUERY } from './Jobs'
 import { CONNECTIONS_QUERY } from './Connections'
-import { MESSAGES_QUERY } from './Messages'
+import { MESSAGES_QUERY, PROOFS_QUERY, CONNECTION_JOBS_QUERY, JOBS_QUERY } from './Queries'
 import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
-import { PROOFS_QUERY } from './Proofs'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -228,25 +225,8 @@ function EventNotifications() {
     }
   }, [subscribeToMore, subscribed])
   return (
-    // TODO: hide previous notification when new one is displayed
     <>
-      {data &&
-        data.events.edges
-          .filter((item: IEventEdge) => addedEventIds.includes(item.node.id))
-          .map((item: IEventEdge) => (
-            <Notification
-              key={item.node.id}
-              text={`${
-                item.node.connection
-                  ? `${item.node.connection?.theirLabel}:`
-                  : ''
-              } ${item.node.description}`}
-              onClose={() => {
-                const newItems = addedEventIds.filter((i) => i !== item.node.id)
-                addedEventIdsVar(newItems)
-              }}
-            />
-          ))}
+      { /* TODO: show notification of new event? */}
     </>
   )
 }

@@ -4,9 +4,8 @@ import { Box, Button, Heading } from 'grommet'
 
 import { useQuery, useMutation, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import { fragments as connFragments } from './ConnectionFragments'
 import Message from './Message'
-import Credential from './Credential'
+import { credential as credentialFragments, pairwise as connFragments } from './Fragments'
 import Proof from './Proof'
 import { IJobNode, JobStatus, ProtocolType } from './Types'
 
@@ -36,7 +35,7 @@ const nodeFragment = gql`
   }
   ${connFragments.edge}
   ${Message.fragments.edge}
-  ${Credential.fragments.edge}
+  ${credentialFragments.edge}
   ${Proof.fragments.edge}
 `
 
@@ -94,53 +93,53 @@ function Job({ match }: RouteComponentProps<TParams>) {
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <>
-          <Heading level={2}>Job {node.id}</Heading>
-          <Box>
-            {node.protocol === ProtocolType.CREDENTIAL &&
-              node.output.credential && (
-                <Box>
-                  <Heading level={4}>Credential offer</Heading>
-                  <Box> {node.output.credential?.node.schemaId}</Box>
+          <>
+            <Heading level={2}>Job {node.id}</Heading>
+            <Box>
+              {node.protocol === ProtocolType.CREDENTIAL &&
+                node.output.credential && (
                   <Box>
-                    {node.output.credential?.node.attributes.map((item) => (
+                    <Heading level={4}>Credential offer</Heading>
+                    <Box> {node.output.credential?.node.schemaId}</Box>
+                    <Box>
+                      {node.output.credential?.node.attributes.map((item) => (
+                        <div key={item.name}>
+                          {item.name}: {item.value}
+                        </div>
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+              {node.protocol === ProtocolType.PROOF && node.output.proof && (
+                <Box>
+                  <Heading level={4}>Proof request</Heading>
+                  <Box>
+                    {node.output.proof?.node.attributes.map((item) => (
                       <div key={item.name}>
-                        {item.name}: {item.value}
+                        <div>
+                          {item.name} ({item.credDefId})
+                      </div>
                       </div>
                     ))}
                   </Box>
                 </Box>
               )}
-            {node.protocol === ProtocolType.PROOF && node.output.proof && (
-              <Box>
-                <Heading level={4}>Proof request</Heading>
-                <Box>
-                  {node.output.proof?.node.attributes.map((item) => (
-                    <div key={item.name}>
-                      <div>
-                        {item.name} ({item.credDefId})
-                      </div>
-                    </div>
-                  ))}
-                </Box>
-              </Box>
-            )}
-            {node.status === JobStatus.PENDING && (
-              <div>
-                <Button
-                  onClick={() => doResume(false)}
-                  label="Decline"
-                ></Button>
-                <Button
-                  disabled={!enableAccept}
-                  onClick={() => doResume(true)}
-                  label="Accept"
-                ></Button>
-              </div>
-            )}
-          </Box>
-        </>
-      )}
+              {node.status === JobStatus.PENDING && (
+                <div>
+                  <Button
+                    onClick={() => doResume(false)}
+                    label="Decline"
+                  ></Button>
+                  <Button
+                    disabled={!enableAccept}
+                    onClick={() => doResume(true)}
+                    label="Accept"
+                  ></Button>
+                </div>
+              )}
+            </Box>
+          </>
+        )}
     </>
   )
 }

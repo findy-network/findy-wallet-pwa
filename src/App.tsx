@@ -4,15 +4,9 @@ import { Box, Grommet, grommet } from 'grommet'
 
 import Navi from './components/Navi'
 import Home from './components/Home'
-import Event from './components/Event'
-import Connections from './components/Connections'
 import Connection from './components/Connection'
-import Job from './components/Job'
 import Credentials from './components/Credentials'
-import Credential from './components/Credential'
-import Message from './components/Message'
-import Proof from './components/Proof'
-import Me from './components/Me'
+import Connections from './components/Connections'
 import Login from './components/Login'
 import URLConnect from './components/URLConnect'
 
@@ -26,6 +20,8 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
+              {/* TODO: remove connections route once we have connections in navi */}
+              <Route exact path="/connections" component={Connections} />
               <Route exact path="/connect/:invitation" component={URLConnect} />
             </Switch>
           </Navi>
