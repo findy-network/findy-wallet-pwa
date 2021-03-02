@@ -30,6 +30,7 @@ if [ -z "$(git status --porcelain)" ]; then
   git push origin dev --tags
 
   npm --no-git-tag-version version $SEMVER
+  NEW_VERSION=$(node -e "console.log(require('./package.json').version);")
   git commit -a -m "Start dev for v$NEW_VERSION."
   git push origin dev
 else 
