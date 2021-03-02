@@ -16,5 +16,7 @@ jobs:
         run: npm ci
       - name: start app
         run: CI=true npm start &
+        env:
+          REACT_APP_MOCK_RESOLVER: true
       - name: test
         run: npm run test:e2e

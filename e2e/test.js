@@ -1,9 +1,9 @@
 module.exports = {
-    'Demo test OP Lab': function (browser) {
+    'Check app loads': function (browser) {
         browser
-            .url('https://www.op-lab.fi/')
+            .url('http://localhost:3000/')
             .waitForElementVisible('body')
-            .assert.titleContains('OP Lab')
+            .assert.titleContains('Wallet')
             .end();
     }
 };
