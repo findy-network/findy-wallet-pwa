@@ -11,12 +11,18 @@ import {
   ProtocolType,
 } from './Types'
 import client, { addedEventIdsVar, cache } from '../apollo'
-import { EVENTS_QUERY, CONNECTION_EVENTS_QUERY } from './Events'
-import Event from './Event'
 import { useQuery, gql } from '@apollo/client'
 import { CONNECTIONS_QUERY } from './Connections'
-import { MESSAGES_QUERY, PROOFS_QUERY, CONNECTION_JOBS_QUERY, JOBS_QUERY } from './Queries'
+import {
+  MESSAGES_QUERY,
+  PROOFS_QUERY,
+  CONNECTION_JOBS_QUERY,
+  JOBS_QUERY,
+  EVENTS_QUERY,
+  CONNECTION_EVENTS_QUERY
+} from './Queries'
 import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
+import { event as eventFragments } from './Fragments'
 
 const EVENTS_SUBSCRIPTION = gql`
   subscription OnEventAdded {
@@ -24,7 +30,7 @@ const EVENTS_SUBSCRIPTION = gql`
       ...FullEventEdgeFragment
     }
   }
-  ${Event.fragments.fullEdge}
+  ${eventFragments.fullEdge}
 `
 
 const stateWithNewItem = (

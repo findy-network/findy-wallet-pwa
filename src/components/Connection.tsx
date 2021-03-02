@@ -4,8 +4,7 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import { pairwise as fragments, pageInfo } from './Fragments'
-import Event from './Event'
+import { pairwise as fragments, pageInfo, event as eventFragments } from './Fragments'
 import { IEventEdge } from './Types'
 
 
@@ -27,7 +26,7 @@ export const CONNECTION_QUERY = gql`
     }
   }
   ${Connection.fragments.node}
-  ${Event.fragments.fullEdge}
+  ${eventFragments.fullEdge}
   ${pageInfo}
 `
 

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-import { pageInfo, proof, message, job } from './Fragments'
+import { pageInfo, proof, message, job, event } from './Fragments'
 
 export const PROOFS_QUERY = gql`
 query GetConnectionProofs($id: ID!, $cursor: String) {
@@ -64,5 +64,37 @@ export const CONNECTION_JOBS_QUERY = gql`
     }
   }
   ${job.edge}
+  ${pageInfo}
+`
+
+export const EVENTS_QUERY = gql`
+  query GetEvents($cursor: String) {
+    events(last: 5, before: $cursor) {
+      edges {
+        ...EventEdgeFragment
+      }
+      pageInfo {
+        ...PageInfoFragment
+      }
+    }
+  }
+  ${event.edge}
+  ${pageInfo}
+`
+
+export const CONNECTION_EVENTS_QUERY = gql`
+  query GetConnectionEvents($id: ID!, $cursor: String) {
+    connection(id: $id) {
+      events(last: 3, before: $cursor) {
+        edges {
+          ...EventEdgeFragment
+        }
+        pageInfo {
+          ...PageInfoFragment
+        }
+      }
+    }
+  }
+  ${event.edge}
   ${pageInfo}
 `

@@ -159,6 +159,53 @@ export const job = {
   `,
 }
 
+const eventNodeFragment = gql`
+  fragment EventNodeFragment on Event {
+    id
+    read
+    description
+    createdMs
+    connection {
+      id
+      theirLabel
+    }
+  }
+`
+
+const fullEventNodeFragment = gql`
+  fragment FullEventNodeFragment on Event {
+    ...EventNodeFragment
+    job {
+      ...JobEdgeFragment
+    }
+  }
+  ${eventNodeFragment}
+  ${job.edge}
+`
+
+export const event = {
+    node: eventNodeFragment,
+    fullNode: fullEventNodeFragment,
+    edge: gql`
+    fragment EventEdgeFragment on EventEdge {
+      cursor
+      node {
+        ...EventNodeFragment
+      }
+    }
+    ${eventNodeFragment}
+  `,
+    fullEdge: gql`
+    fragment FullEventEdgeFragment on EventEdge {
+      cursor
+      node {
+        ...FullEventNodeFragment
+      }
+    }
+    ${fullEventNodeFragment}
+  `,
+}
+
 
 export const pageInfo = gql`
       fragment PageInfoFragment on PageInfo {
