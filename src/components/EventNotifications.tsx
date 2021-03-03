@@ -19,7 +19,7 @@ import {
   CONNECTION_JOBS_QUERY,
   JOBS_QUERY,
   EVENTS_QUERY,
-  CONNECTION_EVENTS_QUERY
+  CONNECTION_EVENTS_QUERY,
 } from './Queries'
 import { CREDENTIALS_QUERY, CONNECTION_CREDENTIALS_QUERY } from './Credentials'
 import { event as eventFragments } from './Fragments'
@@ -230,11 +230,7 @@ function EventNotifications() {
       })
     }
   }, [subscribeToMore, subscribed])
-  return (
-    <>
-      { /* TODO: show notification of new event? */}
-    </>
-  )
+  return <>{/* TODO: show notification of new event? */}</>
 }
 
 export default EventNotifications

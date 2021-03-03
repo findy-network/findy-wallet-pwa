@@ -14,16 +14,16 @@ const pairwiseNodeFragment = gql`
 `
 
 export const pairwise = {
-    node: pairwiseNodeFragment,
-    edge: gql`
-        fragment PairwiseEdgeFragment on PairwiseEdge {
-          cursor
-          node {
-            ...PairwiseNodeFragment
-          }
-        }
-        ${pairwiseNodeFragment}
-      `,
+  node: pairwiseNodeFragment,
+  edge: gql`
+    fragment PairwiseEdgeFragment on PairwiseEdge {
+      cursor
+      node {
+        ...PairwiseNodeFragment
+      }
+    }
+    ${pairwiseNodeFragment}
+  `,
 }
 
 const credentialNodeFragment = gql`
@@ -33,6 +33,7 @@ const credentialNodeFragment = gql`
     schemaId
     credDefId
     attributes {
+      id
       name
       value
     }
@@ -44,16 +45,16 @@ const credentialNodeFragment = gql`
 `
 
 export const credential = {
-    node: credentialNodeFragment,
-    edge: gql`
-          fragment CredentialEdgeFragment on CredentialEdge {
-            cursor
-            node {
-              ...CredentialNodeFragment
-            }
-          }
-          ${credentialNodeFragment}
-        `,
+  node: credentialNodeFragment,
+  edge: gql`
+    fragment CredentialEdgeFragment on CredentialEdge {
+      cursor
+      node {
+        ...CredentialNodeFragment
+      }
+    }
+    ${credentialNodeFragment}
+  `,
 }
 
 const proofNodeFragment = gql`
@@ -81,16 +82,16 @@ const proofNodeFragment = gql`
 `
 
 export const proof = {
-    node: proofNodeFragment,
-    edge: gql`
-          fragment ProofEdgeFragment on ProofEdge {
-            cursor
-            node {
-              ...ProofNodeFragment
-            }
-          }
-          ${proofNodeFragment}
-        `,
+  node: proofNodeFragment,
+  edge: gql`
+    fragment ProofEdgeFragment on ProofEdge {
+      cursor
+      node {
+        ...ProofNodeFragment
+      }
+    }
+    ${proofNodeFragment}
+  `,
 }
 
 const messageNodeFragment = gql`
@@ -104,8 +105,8 @@ const messageNodeFragment = gql`
 `
 
 export const message = {
-    node: messageNodeFragment,
-    edge: gql`
+  node: messageNodeFragment,
+  edge: gql`
     fragment MessageEdgeFragment on BasicMessageEdge {
       cursor
       node {
@@ -147,8 +148,8 @@ const jobNodeFragment = gql`
 `
 
 export const job = {
-    node: jobNodeFragment,
-    edge: gql`
+  node: jobNodeFragment,
+  edge: gql`
     fragment JobEdgeFragment on JobEdge {
       node {
         ...JobNodeFragment
@@ -184,9 +185,9 @@ const fullEventNodeFragment = gql`
 `
 
 export const event = {
-    node: eventNodeFragment,
-    fullNode: fullEventNodeFragment,
-    edge: gql`
+  node: eventNodeFragment,
+  fullNode: fullEventNodeFragment,
+  edge: gql`
     fragment EventEdgeFragment on EventEdge {
       cursor
       node {
@@ -195,7 +196,7 @@ export const event = {
     }
     ${eventNodeFragment}
   `,
-    fullEdge: gql`
+  fullEdge: gql`
     fragment FullEventEdgeFragment on EventEdge {
       cursor
       node {
@@ -206,12 +207,11 @@ export const event = {
   `,
 }
 
-
 export const pageInfo = gql`
-      fragment PageInfoFragment on PageInfo {
-        endCursor
-        startCursor
-        hasPreviousPage
-        hasNextPage
-      }
-    `
+  fragment PageInfoFragment on PageInfo {
+    endCursor
+    startCursor
+    hasPreviousPage
+    hasNextPage
+  }
+`

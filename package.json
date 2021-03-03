@@ -29,6 +29,7 @@
     "deps:update": "npm-outdated-to-latest",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "format": "prettier --write src/**/*.{ts,tsx}",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
     "test:e2e": "nightwatch ./e2e",

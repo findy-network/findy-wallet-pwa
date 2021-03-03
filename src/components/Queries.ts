@@ -3,20 +3,20 @@ import { gql } from '@apollo/client'
 import { pageInfo, proof, message, job, event } from './Fragments'
 
 export const PROOFS_QUERY = gql`
-query GetConnectionProofs($id: ID!, $cursor: String) {
-  connection(id: $id) {
-    proofs(first: 3, after: $cursor) {
-      edges {
-        ...ProofEdgeFragment
-      }
-      pageInfo {
-        ...PageInfoFragment
+  query GetConnectionProofs($id: ID!, $cursor: String) {
+    connection(id: $id) {
+      proofs(first: 3, after: $cursor) {
+        edges {
+          ...ProofEdgeFragment
+        }
+        pageInfo {
+          ...PageInfoFragment
+        }
       }
     }
   }
-}
-${proof.edge}
-${pageInfo}
+  ${proof.edge}
+  ${pageInfo}
 `
 
 export const MESSAGES_QUERY = gql`
@@ -97,4 +97,12 @@ export const CONNECTION_EVENTS_QUERY = gql`
   }
   ${event.edge}
   ${pageInfo}
+`
+
+export const RESUME_JOB_MUTATION = gql`
+  mutation ResumeJob($input: ResumeJobInput!) {
+    resume(input: $input) {
+      ok
+    }
+  }
 `

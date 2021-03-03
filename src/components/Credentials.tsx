@@ -64,43 +64,43 @@ function Credentials({ connectionId }: IProps) {
       {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
-          <Box margin="small">
-            {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-              <Link key={node.id} to={`/credentials/${node.id}`}>
-                <Box
-                  background="light-1"
-                  direction="row"
-                  align="center"
-                  pad="medium"
-                  border="bottom"
-                  height={{ min: '8rem' }}
-                >
-                  <Certificate />
-                  <Box>
-                    <Text>
-                      {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
-                    </Text>
-                    <Heading margin="medium" level="6">
-                      {`${node.schemaId} ${node.id}`}
-                    </Heading>
-                  </Box>
+        <Box margin="small">
+          {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
+            <Link key={node.id} to={`/credentials/${node.id}`}>
+              <Box
+                background="light-1"
+                direction="row"
+                align="center"
+                pad="medium"
+                border="bottom"
+                height={{ min: '8rem' }}
+              >
+                <Certificate />
+                <Box>
+                  <Text>
+                    {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
+                  </Text>
+                  <Heading margin="medium" level="6">
+                    {`${node.schemaId} ${node.id}`}
+                  </Heading>
                 </Box>
-              </Link>
-            ))}
-            {credentials.pageInfo.hasNextPage && (
-              <Button
-                label="Load more"
-                onClick={() =>
-                  fetchMore({
-                    variables: {
-                      cursor: credentials.pageInfo.endCursor,
-                    },
-                  })
-                }
-              ></Button>
-            )}
-          </Box>
-        )}
+              </Box>
+            </Link>
+          ))}
+          {credentials.pageInfo.hasNextPage && (
+            <Button
+              label="Load more"
+              onClick={() =>
+                fetchMore({
+                  variables: {
+                    cursor: credentials.pageInfo.endCursor,
+                  },
+                })
+              }
+            ></Button>
+          )}
+        </Box>
+      )}
     </Box>
   )
 }
