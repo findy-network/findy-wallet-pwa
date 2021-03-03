@@ -6,9 +6,9 @@ import { useQuery, gql } from '@apollo/client'
 
 import { IConnectionEdge } from './Types'
 import { Link } from 'react-router-dom'
-import Connection from './Connection'
 import Waiting from './Waiting'
-import Utils from './Utils'
+import { pageInfo } from './Fragments'
+import { pairwise as fragments } from './Fragments'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
@@ -21,8 +21,8 @@ export const CONNECTIONS_QUERY = gql`
       }
     }
   }
-  ${Connection.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${fragments.edge}
+  ${pageInfo}
 `
 
 function Connections() {

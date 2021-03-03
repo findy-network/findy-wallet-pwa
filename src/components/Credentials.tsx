@@ -6,9 +6,9 @@ import { useQuery, gql } from '@apollo/client'
 
 import { ICredentialEdge } from './Types'
 import { Link } from 'react-router-dom'
-import Credential from './Credential'
 import Waiting from './Waiting'
 import Utils from './Utils'
+import { credential as fragments, pageInfo } from './Fragments'
 
 export const CREDENTIALS_QUERY = gql`
   query GetCredentials($cursor: String) {
@@ -21,8 +21,8 @@ export const CREDENTIALS_QUERY = gql`
       }
     }
   }
-  ${Credential.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${fragments.edge}
+  ${pageInfo}
 `
 
 export const CONNECTION_CREDENTIALS_QUERY = gql`
@@ -38,8 +38,8 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
       }
     }
   }
-  ${Credential.fragments.edge}
-  ${Utils.fragments.pageInfo}
+  ${fragments.edge}
+  ${pageInfo}
 `
 
 interface IProps {

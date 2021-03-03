@@ -1,76 +1,32 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import { Box, Heading } from 'grommet'
+import { Box } from 'grommet'
 
-import { useQuery, gql } from '@apollo/client'
-import Waiting from './Waiting'
+import { ICredentialNode, ICredentialValue, IJobNode } from './Types'
+import AcceptableJob from './AcceptableJob'
 
-const nodeFragment = gql`
-  fragment CredentialNodeFragment on Credential {
-    id
-    role
-    schemaId
-    credDefId
-    attributes {
-      name
-      value
-    }
-    initiatedByUs
-    createdMs
-    approvedMs
-    issuedMs
-  }
-`
+type IProps = { credential: ICredentialNode; job: IJobNode }
 
-Credential.fragments = {
-  node: nodeFragment,
-  edge: gql`
-    fragment CredentialEdgeFragment on CredentialEdge {
-      cursor
-      node {
-        ...CredentialNodeFragment
-      }
-    }
-    ${nodeFragment}
-  `,
-}
-
-export const CREDENTIAL_QUERY = gql`
-  query GetCredential($id: ID!) {
-    credential(id: $id) {
-      ...CredentialNodeFragment
-    }
-  }
-  ${Credential.fragments.node}
-`
-
-type TParams = { id: string }
-
-function Credential({ match }: RouteComponentProps<TParams>) {
-  const { loading, error, data } = useQuery(CREDENTIAL_QUERY, {
-    variables: {
-      id: match.params.id,
-    },
-  })
-  const node = data?.credential
+function Credential({ credential, job }: IProps) {
   return (
-    <>
-      {loading || error ? (
-        <Waiting loading={loading} error={error} />
-      ) : (
-        <>
-          <Heading level={2}>Credential {node.schemaId}</Heading>
-          <Box>
-            <Box>
-              <div>ID</div>
-              <div>{node.id}</div>
-              <div>CredDefId</div>
-              <div>{node.credDefId}</div>
-            </Box>
-          </Box>
-        </>
-      )}
-    </>
+    <AcceptableJob job={job} canAccept={true}>
+      <strong>Credential {credential.id}</strong>
+      <Box>
+        {credential.attributes.map((item: ICredentialValue) => {
+          return (
+            <div key={item.id}>
+              <div>
+                <strong>Attribute:</strong>
+                <span>{item.name}</span>
+              </div>
+              <div>
+                <span>Value:</span>
+                <span>{item.value}</span>
+              </div>
+            </div>
+          )
+        })}
+      </Box>
+    </AcceptableJob>
   )
 }
 

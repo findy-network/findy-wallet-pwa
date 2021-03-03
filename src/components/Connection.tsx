@@ -4,22 +4,31 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
-import Messages from './Messages'
-import Credentials from './Credentials'
-import Proofs from './Proofs'
-import Jobs from './Jobs'
-import Events from './Events'
-import { fragments } from './ConnectionFragments'
-
-Connection.fragments = fragments
+import {
+  pairwise as fragments,
+  pageInfo,
+  event as eventFragments,
+} from './Fragments'
+import { IEventEdge, ProtocolType } from './Types'
+import Job from './Job'
 
 export const CONNECTION_QUERY = gql`
-  query GetConnection($id: ID!) {
+  query GetConnection($id: ID!, $cursor: String) {
     connection(id: $id) {
       ...PairwiseNodeFragment
+      events(last: 20, before: $cursor) {
+        edges {
+          ...FullEventEdgeFragment
+        }
+        pageInfo {
+          ...PageInfoFragment
+        }
+      }
     }
   }
-  ${Connection.fragments.node}
+  ${fragments.node}
+  ${eventFragments.fullEdge}
+  ${pageInfo}
 `
 
 type TParams = { id: string }
@@ -31,6 +40,19 @@ function Connection({ match }: RouteComponentProps<TParams>) {
     },
   })
   const node = data?.connection
+  const jobIds: Array<string> = []
+
+  // TODO: figure out how we should render
+  // jobs that receive multiple events
+  const events = node?.events.edges.map((item: IEventEdge) => {
+    if (item.node.job) {
+      if (jobIds.includes(item.node.job.node.id)) {
+        return { ...item, node: { ...item.node, job: null } }
+      }
+      jobIds.push(item.node.job.node.id)
+    }
+    return item
+  })
   return (
     <>
       {loading || error ? (
@@ -39,17 +61,17 @@ function Connection({ match }: RouteComponentProps<TParams>) {
         <Box>
           <Heading level={2}>Connection {node.theirLabel}</Heading>
           <Box>
-            <Box>
-              <div>ID</div>
-              <div>{node.id}</div>
-              <div>My DID</div>
-              <div>{node.ourDid}</div>
-              <Jobs connectionId={node.id} />
-              <Events connectionId={node.id} />
-              <Credentials connectionId={node.id} />
-              <Proofs connectionId={node.id} />
-              <Messages connectionId={node.id} />
-            </Box>
+            {events.map(({ node }: IEventEdge) => (
+              <div key={node.id}>
+                {node.job && node.job?.node.protocol !== ProtocolType.NONE ? (
+                  <div>
+                    <Job job={node.job.node} />
+                  </div>
+                ) : (
+                  `Event: ${node.description}`
+                )}
+              </div>
+            ))}
           </Box>
         </Box>
       )}

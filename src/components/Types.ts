@@ -77,6 +77,7 @@ export interface ICredentialEdge extends IEdge {
 }
 
 export interface ICredentialValue {
+  id: string
   name: string
   value: string
 }
