@@ -8,7 +8,7 @@ import Connection from './components/Connection'
 import Credentials from './components/Credentials'
 import Login from './components/Login'
 import URLConnect from './components/URLConnect'
-import {findyTheme} from "./theme"
+import { findyTheme } from "./theme"
 
 function App() {
   return (
