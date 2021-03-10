@@ -9,6 +9,8 @@ import { ApolloProvider } from '@apollo/client'
 
 import client from './apollo'
 
+import './App.css'
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
