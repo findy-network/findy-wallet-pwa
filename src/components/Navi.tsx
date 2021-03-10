@@ -1,65 +1,82 @@
-import React, { ReactNode, useState } from 'react'
-import styled, { css } from 'styled-components'
-import { Link } from 'react-router-dom'
+import React, { ReactNode, useState, CSSProperties } from 'react'
+import styled from 'styled-components'
+import { Menu as MenuIco } from '@material-ui/icons'
 
 import {
+  Anchor,
   Box,
   Button as GrommetButton,
   Header,
-  Heading,
+  Image,
   Sidebar as GrommetSidebar,
-  Nav as GrommetNav,
+  Nav,
   BoxProps,
+  Collapsible
 } from 'grommet'
-import {
-  Scan as MeIcon,
-  Home as HomeIcon,
-  Menu as MenuIcon,
-  Projects as ProjectsIcon,
-  Certificate as CertificateIcon,
-  Logout as LogoutIcon,
-} from 'grommet-icons'
 
-import EventNotifications from './EventNotifications'
 import Add from './Add'
+import Connections from './Connections';
 
-const Button = styled(GrommetButton)`
-  padding: 12px;
+const MenuIcon = styled(MenuIco)`
+  vertical-align: middle;
 `
 
-const cssHideInWide = css`
+const BrandBox = styled(Box)`
+  width: 154px;
+  padding: 1rem 2rem;
+  text-decoration: none;
+`
+
+const MenuButton = styled(GrommetButton)`
   display: inline-block;
+  margin-right: .5rem;
+  margin-top: .25rem;
+  padding: .25rem .75rem;
+  line-height: 1;
+  border-radius: .2rem;
+  box-shadow: black;
   @media screen and (min-width: 768px) {
     display: none;
   }
 `
-const cssShowInWide = css`
-  display: none;
-  @media screen and (min-width: 768px) {
-    display: inline-block;
-  }
-`
-
-const WideNav = styled(Box)`
-  ${cssShowInWide}
-  nav {
-    justify-content: flex-end;
-  }
-`
-
-const Nav = styled(GrommetNav)`
-  a {
-    color: inherit;
-  }
-`
-
-const MenuButton = styled(GrommetButton)`
-  ${cssHideInWide}
-`
 
 const Sidebar = styled(GrommetSidebar)`
-  ${cssHideInWide}
+  padding: 0px;
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+    flex: 0 0 auto;
+    width: 16.6666666667%;
+  }
 `
+
+const DropBox = styled(Box)`
+  position: fixed;
+  z-index: 100;
+  display: inline-block;
+  width: 100%;
+  background: #2C2C31;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`
+
+const ConnectionBox = styled(Box)`
+  margin: 1rem 0rem .5rem;
+  @media screen and (min-width: 768px) {
+    margin: 5rem 0rem .5rem;
+  }
+`
+
+const headerStyle: CSSProperties = {
+  boxShadow: "0 .125rem .25rem rgba(0,0,0,.075)",
+  textDecoration: "none",
+  position: "sticky",
+  top: (0),
+  zIndex: (1020),
+  background: "#FFFFFF",
+  padding: ".5rem 0rem"
+};
 
 interface IProps {
   children: ReactNode
@@ -69,61 +86,35 @@ function Navi({ children }: IProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const nav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
-      <Link to="/">
-        <Button icon={<HomeIcon />} hoverIndicator label="Home" plain />
-      </Link>
-      <Link to="/me">
-        <Button icon={<MeIcon />} hoverIndicator label="Me" plain />
-      </Link>
-      <Link to="/connections">
-        <Button
-          icon={<ProjectsIcon />}
-          hoverIndicator
-          label="Connections"
-          plain
-        />
-      </Link>
-      <Link to="/credentials">
-        <Button
-          icon={<CertificateIcon />}
-          hoverIndicator
-          label="Credentials"
-          plain
-        />
-      </Link>
-      <Button
-        icon={<LogoutIcon />}
-        hoverIndicator
-        label="Logout"
-        plain
-        onClick={() => {
-          localStorage.clear()
-          window.location.reload()
-        }}
-      />
+      <ConnectionBox margin="5rem 0rem .5rem">
+        <Connections ></Connections>
+      </ConnectionBox>
+      <Add></Add>
     </Nav>
   )
 
   return (
     <>
-      <Header pad="small" background="brand" justify="start">
-        <MenuButton
-          icon={<MenuIcon />}
-          hoverIndicator
-          onClick={() => setMenuOpen(!menuOpen)}
-        />
-        <Heading level={3} margin="none">
-          <strong>Wallet</strong>
-        </Heading>
-        <WideNav fill>{nav('row')}</WideNav>
+      <Header justify="start" style={headerStyle}>
+        <Anchor href="/">
+          <BrandBox>
+            <Image fit="cover" src="/img/logo.svg"/>
+          </BrandBox>
+        </Anchor>
+        <Box style={{marginLeft:"auto"}}>
+          <MenuButton
+            icon={<MenuIcon style={{fontSize: "24px", color: "#0000008C"}} />}
+            onClick={() => setMenuOpen(!menuOpen)}
+          />
+        </Box>
       </Header>
+      <Collapsible open={menuOpen}>
+        <DropBox animation={{"type": "slideDown", "duration": 800, "size": "xlarge"}}>{nav('column')}</DropBox>
+      </Collapsible>
       <Box direction="row" fill>
-        <EventNotifications />
-
-        {menuOpen && <Sidebar background="brand">{nav('column')}</Sidebar>}
-        <Box pad="medium">{children}</Box>
+        <Sidebar background="brand">{nav('column')}</Sidebar>
+        <Box style={{position: "relative"}} pad="medium">{children}</Box>
       </Box>
-      <Add />
     </>
   )
 }
