@@ -6,6 +6,11 @@ const colors = {
   };
   
 export const findyTheme = {
+    button: {
+        border: {
+            width: "0px"
+        }
+    },
     global: {
         colors,
         font: {

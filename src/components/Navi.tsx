@@ -1,11 +1,12 @@
 import React, { ReactNode, useState, CSSProperties } from 'react'
 import styled from 'styled-components'
-import { Menu as MenuIco } from '@material-ui/icons'
+import { Menu as MenuIco, Settings } from '@material-ui/icons'
+
+import { Link } from 'react-router-dom'
 
 import {
-  Anchor,
   Box,
-  Button as GrommetButton,
+  Button,
   Header,
   Image,
   Sidebar as GrommetSidebar,
@@ -27,7 +28,7 @@ const BrandBox = styled(Box)`
   text-decoration: none;
 `
 
-const MenuButton = styled(GrommetButton)`
+const MenuButton = styled(Button)`
   display: inline-block;
   margin-right: .5rem;
   margin-top: .25rem;
@@ -78,6 +79,23 @@ const headerStyle: CSSProperties = {
   padding: ".5rem 0rem"
 };
 
+const OptionBtn = styled(Button)`
+  color: #FFFFFF;
+  padding: 1rem;
+  @media screen and (min-width: 768px) {
+    color: #2C2C31;
+    padding: .2rem 1.2rem;
+    margin: 0rem 0.4rem;
+  }
+`
+
+const WideOption= styled(Box)`
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: block;
+  }
+`
+
 interface IProps {
   children: ReactNode
 }
@@ -87,29 +105,41 @@ function Navi({ children }: IProps) {
   const nav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
       <ConnectionBox margin="5rem 0rem .5rem">
-        <Connections ></Connections>
+        <Connections></Connections>
       </ConnectionBox>
       <Add></Add>
     </Nav>
   )
 
+  const options = (direction: BoxProps['direction'] = 'row') => (
+    <Box direction={direction} style={{marginLeft:"auto"}}>
+      <Link to="/connect/:invitation">
+        <OptionBtn label="Connect" />
+      </Link>
+      <Link to="/credentials">
+        <OptionBtn label="Credentials" style={{marginRight: "1rem"}}/>
+      </Link>
+    </Box>
+  )
+
   return (
     <>
       <Header justify="start" style={headerStyle}>
-        <Anchor href="/">
+        <Link to="/">
           <BrandBox>
             <Image fit="cover" src="/img/logo.svg"/>
           </BrandBox>
-        </Anchor>
+        </Link>
         <Box style={{marginLeft:"auto"}}>
           <MenuButton
             icon={<MenuIcon style={{fontSize: "24px", color: "#0000008C"}} />}
             onClick={() => setMenuOpen(!menuOpen)}
           />
         </Box>
+        <WideOption>{options()}</WideOption>
       </Header>
       <Collapsible open={menuOpen}>
-        <DropBox animation={{"type": "slideDown", "duration": 800, "size": "xlarge"}}>{nav('column')}</DropBox>
+        <DropBox animation={{"type": "slideDown", "duration": 800, "size": "xlarge"}}>{options('column')}{nav('column')}</DropBox>
       </Collapsible>
       <Box direction="row" fill>
         <Sidebar background="brand">{nav('column')}</Sidebar>
