@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, CSSProperties } from 'react'
 import styled from 'styled-components'
-import { Menu as MenuIco, Settings } from '@material-ui/icons'
+import { Menu as MenuIco } from '@material-ui/icons'
 
 import { Link } from 'react-router-dom'
 
