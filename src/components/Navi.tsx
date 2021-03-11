@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, CSSProperties } from 'react'
 import styled from 'styled-components'
-import { Menu as MenuIco } from '@material-ui/icons'
+import { Menu as MenuIco } from 'grommet-icons'
 
 import { Link } from 'react-router-dom'
 
@@ -12,11 +12,11 @@ import {
   Sidebar as GrommetSidebar,
   Nav,
   BoxProps,
-  Collapsible
+  Collapsible,
 } from 'grommet'
 
 import Add from './Add'
-import Connections from './Connections';
+import Connections from './Connections'
 
 const MenuIcon = styled(MenuIco)`
   vertical-align: middle;
@@ -30,11 +30,11 @@ const BrandBox = styled(Box)`
 
 const MenuButton = styled(Button)`
   display: inline-block;
-  margin-right: .5rem;
-  margin-top: .25rem;
-  padding: .25rem .75rem;
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.75rem;
   line-height: 1;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   box-shadow: black;
   @media screen and (min-width: 768px) {
     display: none;
@@ -56,40 +56,40 @@ const DropBox = styled(Box)`
   z-index: 100;
   display: inline-block;
   width: 100%;
-  background: #2C2C31;
+  background: #2c2c31;
   @media screen and (min-width: 768px) {
     display: none;
   }
 `
 
 const ConnectionBox = styled(Box)`
-  margin: 1rem 0rem .5rem;
+  margin: 1rem 0rem 0.5rem;
   @media screen and (min-width: 768px) {
-    margin: 5rem 0rem .5rem;
+    margin: 5rem 0rem 0.5rem;
   }
 `
 
 const headerStyle: CSSProperties = {
-  boxShadow: "0 .125rem .25rem rgba(0,0,0,.075)",
-  textDecoration: "none",
-  position: "sticky",
-  top: (0),
-  zIndex: (1020),
-  background: "#FFFFFF",
-  padding: ".5rem 0rem"
-};
+  boxShadow: '0 .125rem .25rem rgba(0,0,0,.075)',
+  textDecoration: 'none',
+  position: 'sticky',
+  top: 0,
+  zIndex: 1020,
+  background: '#FFFFFF',
+  padding: '.5rem 0rem',
+}
 
 const OptionBtn = styled(Button)`
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 1rem;
   @media screen and (min-width: 768px) {
-    color: #2C2C31;
-    padding: .2rem 1.2rem;
+    color: #2c2c31;
+    padding: 0.2rem 1.2rem;
     margin: 0rem 0.4rem;
   }
 `
 
-const WideOption= styled(Box)`
+const WideOption = styled(Box)`
   display: none;
   @media screen and (min-width: 768px) {
     display: block;
@@ -112,13 +112,21 @@ function Navi({ children }: IProps) {
   )
 
   const options = (direction: BoxProps['direction'] = 'row') => (
-    <Box direction={direction} style={{marginLeft:"auto"}}>
+    <Box direction={direction} style={{ marginLeft: 'auto' }}>
       <Link to="/connect/:invitation">
         <OptionBtn label="Connect" />
       </Link>
       <Link to="/credentials">
-        <OptionBtn label="Credentials" style={{marginRight: "1rem"}}/>
+        <OptionBtn label="Credentials" style={{ marginRight: '1rem' }} />
       </Link>
+      <OptionBtn
+        label="Logout"
+        style={{ marginRight: '1rem' }}
+        onClick={() => {
+          localStorage.clear()
+          window.location.reload()
+        }}
+      />
     </Box>
   )
 
@@ -127,23 +135,30 @@ function Navi({ children }: IProps) {
       <Header justify="start" style={headerStyle}>
         <Link to="/">
           <BrandBox>
-            <Image fit="cover" src="/img/logo.svg"/>
+            <Image fit="cover" src="/img/logo.svg" />
           </BrandBox>
         </Link>
-        <Box style={{marginLeft:"auto"}}>
+        <Box style={{ marginLeft: 'auto' }}>
           <MenuButton
-            icon={<MenuIcon style={{fontSize: "24px", color: "#0000008C"}} />}
+            icon={<MenuIcon style={{ fontSize: '24px', color: '#0000008C' }} />}
             onClick={() => setMenuOpen(!menuOpen)}
           />
         </Box>
         <WideOption>{options()}</WideOption>
       </Header>
       <Collapsible open={menuOpen}>
-        <DropBox animation={{"type": "slideDown", "duration": 800, "size": "xlarge"}}>{options('column')}{nav('column')}</DropBox>
+        <DropBox
+          animation={{ type: 'slideDown', duration: 800, size: 'xlarge' }}
+        >
+          {options('column')}
+          {nav('column')}
+        </DropBox>
       </Collapsible>
       <Box direction="row" fill>
         <Sidebar background="brand">{nav('column')}</Sidebar>
-        <Box style={{position: "relative"}} pad="medium">{children}</Box>
+        <Box style={{ position: 'relative' }} pad="medium">
+          {children}
+        </Box>
       </Box>
     </>
   )
