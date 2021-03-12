@@ -4,13 +4,13 @@ import { Button } from 'grommet'
 import AddDialog from './AddDialog'
 
 const AddButton = styled(Button)`
-  font-size: .9rem;
-  font-weight:500;
+  font-size: 0.9rem;
+  font-weight: 500;
   border-radius: 40px;
   color: #fff;
   padding: 1rem;
-  background-color: #FFFFFF26;
-  padding: .5rem 3rem .5rem 3rem;
+  background-color: #ffffff26;
+  padding: 0.5rem 3rem 0.5rem 3rem;
   text-align: center;
   margin-bottom: 1rem;
 `
