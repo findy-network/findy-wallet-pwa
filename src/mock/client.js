@@ -2,15 +2,17 @@ import typeDefs from './schema'
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
+import { connections, connectionNode, events } from './data'
+
 export const cache = new InMemoryCache({
   typePolicies: {
     Pairwise: {
       fields: {
         events: {
           read() {
-            return [];
-          }
-        } 
+            return events
+          },
+        },
       },
     },
     Query: {
@@ -19,7 +21,17 @@ export const cache = new InMemoryCache({
           read() {
             return { name: 'Minnie Mouse' }
           },
-        },  
+        },
+        connections: {
+          read() {
+            return connections
+          },
+        },
+        connection: {
+          read() {
+            return connectionNode
+          },
+        },
       },
     },
   },

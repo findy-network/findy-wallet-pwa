@@ -4,7 +4,7 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing'
 import Connections, { CONNECTIONS_QUERY } from './Connections'
 import { MemoryRouter } from 'react-router'
 
-const connectionName = 'Schowalter Ltd'
+import { connections, connectionName } from '../mock/data'
 
 const mocks: ReadonlyArray<MockedResponse> = [
   {
@@ -13,33 +13,7 @@ const mocks: ReadonlyArray<MockedResponse> = [
     },
     result: {
       data: {
-        connections: {
-          edges: [
-            {
-              cursor: 'UGFpcndpc2U6MTYxNTQ2MTYwODE0MA==',
-              node: {
-                id: '9f7e3ccb-ec6c-4922-8a45-5993a816436a',
-                ourDid: 'GFUdCdxMPPvaxZPXFoybklCGO',
-                theirDid: 'hFMwUXaWNBJSvGNwtKtvxTkdf',
-                theirEndpoint: 'http://DwcpVQN.com/ZowrgMH.php',
-                theirLabel: connectionName,
-                createdMs: '1615461608140',
-                approvedMs: '',
-                invited: true,
-                __typename: 'Pairwise',
-              },
-              __typename: 'PairwiseEdge',
-            },
-          ],
-          pageInfo: {
-            endCursor: 'UGFpcndpc2U6MTYxNTQ2MTYwODE0Ng==',
-            startCursor: 'UGFpcndpc2U6MTYxNTQ2MTYwODE0MA==',
-            hasPreviousPage: false,
-            hasNextPage: false,
-            __typename: 'PageInfo',
-          },
-          __typename: 'PairwiseConnection',
-        },
+        connections,
       },
     },
   },
