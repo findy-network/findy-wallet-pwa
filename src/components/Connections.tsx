@@ -12,8 +12,6 @@ import { pairwise as fragments } from './Fragments'
 import { User as PersonIco } from 'grommet-icons'
 import { colors } from '../theme'
 
-import { defaultProps } from 'grommet'
-
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
     connections(first: 10, after: $cursor) {
