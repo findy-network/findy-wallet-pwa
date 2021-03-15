@@ -28,8 +28,8 @@ const MenuIcon = styled(MenuIco)`
 
 const BrandBox = styled(Box)`
   width: 154px;
+  height: 57.31px;
   padding: 1rem 2rem;
-  text-decoration: none;
 `
 
 const MenuBox = styled(Box)`
