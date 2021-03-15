@@ -8,6 +8,7 @@ import Connection from './components/Connection'
 import Credentials from './components/Credentials'
 import Login from './components/Login'
 import URLConnect from './components/URLConnect'
+import Me from './components/Me'
 import { findyTheme } from "./theme"
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
               <Route exact path="/connect/:invitation" component={URLConnect} />
+              <Route exact path="/me" component={Me} />
             </Switch>
           </Navi>
         </Login>

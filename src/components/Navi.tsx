@@ -123,7 +123,7 @@ function Navi({ children }: IProps) {
   const nav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
       <ConnectionBox margin="5rem 0rem 0.5rem">
-        <Connections></Connections>
+        <Connections hideMenu={setMenuOpen}></Connections>
       </ConnectionBox>
       <Add></Add>
     </Nav>
@@ -131,11 +131,11 @@ function Navi({ children }: IProps) {
 
   const options = (direction: BoxProps['direction'] = 'row') => (
     <OptionsBox direction={direction}>
-      <Link to="/connect/:invitation">
-        <OptionBtn label="Connect" />
+      <Link to="/me">
+        <OptionBtn label="Connect" onClick={() => setMenuOpen(!menuOpen)} />
       </Link>
       <Link to="/credentials">
-        <OptionBtn label="Credentials" />
+        <OptionBtn label="Credentials" onClick={() => setMenuOpen(!menuOpen)} />
       </Link>
       <OptionBtn
         label="Logout"

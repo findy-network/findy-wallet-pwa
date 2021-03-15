@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Box, Button, Paragraph as P } from 'grommet'
 import styled from 'styled-components'
 
@@ -56,7 +56,11 @@ const Paragraph = styled(P)`
   font-weight: 500;
 `
 
-function Connections() {
+function Connections({
+  hideMenu,
+}: {
+  hideMenu: Dispatch<SetStateAction<boolean>>
+}) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
   return (
     <>
@@ -65,7 +69,11 @@ function Connections() {
       ) : (
         <Box margin="none">
           {data.connections.edges.map(({ node }: IConnectionEdge) => (
-            <Row key={node.id} to={`/connections/${node.id}`}>
+            <Row
+              onClick={() => hideMenu(false)}
+              key={node.id}
+              to={`/connections/${node.id}`}
+            >
               <Box direction="row" align="center" pad="1rem">
                 <Icon />
                 <Paragraph margin="none">{node.theirLabel}</Paragraph>
