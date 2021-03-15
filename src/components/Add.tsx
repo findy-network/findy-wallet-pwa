@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from 'grommet'
 import AddDialog from './AddDialog'
+import { colors } from '../theme'
 
 const AddButton = styled(Button)`
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 40px;
-  color: #fff;
+  color: white;
   padding: 1rem;
-  background-color: #ffffff26;
+  background-color: ${colors.lightgrey};
   padding: 0.5rem 3rem 0.5rem 3rem;
   text-align: center;
   margin-bottom: 1rem;
