@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, CSSProperties } from 'react'
+import React, { ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
 
