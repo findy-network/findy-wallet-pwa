@@ -4,10 +4,12 @@ export const colors = {
   inactive: 'rgba(255, 255, 255, 0.5)',
   active: '#FFFFFF',
   text: '#2C2C31',
+  darkBtnText: '#FFFFFF',
   focus: '#2C2C31',
-  lightgrey: '#ffffff26',
-  lightgrey2: '#0000008C',
+  darkBtnBackground: '#ffffff26',
+  menuIcon: '#0000008C',
   shadow: 'rgba(0, 0, 0, 0.075)',
+  background: '#FFFFFF',
 }
 
 export const findyTheme = {

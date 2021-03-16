@@ -23,7 +23,7 @@ import { colors } from '../theme'
 const MenuIcon = styled(MenuIco)`
   vertical-align: middle;
   font-size: 24px;
-  color: ${colors.lightgrey2};
+  color: ${colors.menuIcon};
 `
 
 const BrandBox = styled(Box)`
@@ -44,7 +44,7 @@ const MenuButton = styled(Button)`
   padding: 0.25rem 0.75rem;
   line-height: 1;
   border-radius: 0.2rem;
-  box-shadow: black;
+  box-shadow: ${colors.shadow};
   @media screen and (min-width: 768px) {
     display: none;
   }
@@ -65,7 +65,7 @@ const DropBox = styled(Box)`
   z-index: 100;
   display: inline-block;
   width: 100%;
-  background: #2c2c31;
+  background: ${colors.brand};
   @media screen and (min-width: 768px) {
     display: none;
   }
@@ -83,7 +83,7 @@ const OptionsBox = styled(Box)`
 `
 
 const OptionBtn = styled(Button)`
-  color: white;
+  color: ${colors.darkBtnText};
   padding: 1rem;
   margin-right: 1rem;
   @media screen and (min-width: 768px) {
@@ -110,7 +110,7 @@ const Header = styled(Head)`
   position: sticky;
   top: 0;
   zindex: 1020;
-  background: white;
+  background: ${colors.background};
   padding: 0.5rem 0rem;
 `
 

@@ -8,9 +8,9 @@ const AddButton = styled(Button)`
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 40px;
-  color: white;
+  color: ${colors.darkBtnText};
   padding: 1rem;
-  background-color: ${colors.lightgrey};
+  background-color: ${colors.darkBtnBackground};
   padding: 0.5rem 3rem 0.5rem 3rem;
   text-align: center;
   margin-bottom: 1rem;
