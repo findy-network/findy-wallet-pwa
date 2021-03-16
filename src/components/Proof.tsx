@@ -4,12 +4,14 @@ import { Box, Heading } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
+import { IProofAttribute, IProofValue } from './Types'
 
 const nodeFragment = gql`
   fragment ProofNodeFragment on Proof {
     id
     role
     attributes {
+      id
       name
       credDefId
     }
@@ -18,6 +20,13 @@ const nodeFragment = gql`
     createdMs
     approvedMs
     verifiedMs
+    values {
+      attributeId
+      value
+    }
+    provable {
+      provable
+    }
   }
 `
 
@@ -63,6 +72,27 @@ function Proof({ match }: RouteComponentProps<TParams>) {
             <Box>
               <div>ID</div>
               <div>{node.id}</div>
+              {node.attributes.map((item: IProofAttribute) => {
+                const value = node.values.find(
+                  (val: IProofValue) => val.attributeId === item.id
+                )
+                return (
+                  <div key={item.id}>
+                    <div>
+                      <strong>Name:</strong>
+                      <span>{item.name}</span>
+                    </div>
+                    <div>
+                      <span>Cred def ID:</span>
+                      <span>{item.credDefId}</span>
+                    </div>
+                    <div>
+                      <span>Value:</span>
+                      <span>{value?.value}</span>
+                    </div>
+                  </div>
+                )
+              })}
             </Box>
           </Box>
         </>

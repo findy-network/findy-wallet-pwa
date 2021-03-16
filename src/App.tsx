@@ -1,6 +1,5 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-//import logo from './logo.svg'
 import { Box, Grommet, grommet } from 'grommet'
 import { deepMerge } from 'grommet/utils'
 
@@ -18,6 +17,7 @@ import Message from './components/Message'
 import Proof from './components/Proof'
 import Me from './components/Me'
 import Login from './components/Login'
+import URLConnect from './components/URLConnect'
 
 const appTheme = deepMerge(grommet, theme)
 
@@ -38,6 +38,7 @@ function App() {
               <Route exact path="/messages/:id" component={Message} />
               <Route exact path="/proofs/:id" component={Proof} />
               <Route exact path="/me" component={Me} />
+              <Route exact path="/connect/:invitation" component={URLConnect} />
             </Switch>
           </Navi>
         </Login>

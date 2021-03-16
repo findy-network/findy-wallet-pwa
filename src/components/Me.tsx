@@ -4,13 +4,25 @@ import { Box, Button, TextArea } from 'grommet'
 import { useMutation, gql } from '@apollo/client'
 import Notification from './Notification'
 
+const invitationFragment = gql`
+  fragment InvitationFragment on InvitationResponse {
+    id
+    endpoint
+    label
+    raw
+    imageB64
+  }
+`
+
+Me.fragment = invitationFragment
+
 const INVITATION_MUTATION = gql`
   mutation Invitation {
     invite {
-      invitation
-      imageB64
+      ...InvitationFragment
     }
   }
+  ${invitationFragment}
 `
 
 function Me() {
@@ -65,6 +77,7 @@ function Me() {
             setCopyNotification(false)
           }}
         />
+
       )}
     </>
   )

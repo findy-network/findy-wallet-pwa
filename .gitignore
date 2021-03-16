@@ -24,3 +24,6 @@ yarn-error.log*
 
 *generated/
 .envrc
+.vscode
+*.log
+tests_output

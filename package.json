@@ -6,11 +6,11 @@
     "@apollo/client": "^3.2.7",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.0",
-    "@testing-library/user-event": "^12.2.2",
+    "@testing-library/user-event": "^12.8.0",
     "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.8",
-    "@types/react": "^16.9.56",
-    "@types/react-dom": "^16.9.9",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.6",
     "@types/styled-components": "^5.1.4",
     "graphql": "^15.4.0",
@@ -20,18 +20,19 @@
     "react-dom": "^17.0.1",
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.0",
+    "react-scripts": "^4.0.3",
     "styled-components": "^5.2.1",
     "subscriptions-transport-ws": "^0.9.18",
-    "typescript": "^4.0.5"
+    "typescript": "^4.2.2"
   },
   "scripts": {
     "deps:update": "npm-outdated-to-latest",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "tools:server": "./tools/server/run-server.sh"
+    "test:lint": "eslint ./src",
+    "test:e2e": "nightwatch ./e2e",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -63,8 +64,10 @@
   },
   "devDependencies": {
     "async": "^3.2.0",
-    "husky": "^4.3.0",
+    "chromedriver": "^88.0.0",
+    "husky": "^5.1.3",
     "lint-staged": "^10.5.1",
+    "nightwatch": "^1.5.1",
     "npm-outdated-to-latest": "^1.0.3",
     "prettier": "^2.1.2"
   }
