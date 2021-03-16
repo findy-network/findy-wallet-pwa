@@ -18,7 +18,7 @@ import {
 import Add from './Add'
 import Connections from './Connections'
 
-import { colors } from '../theme'
+import { colors, device } from '../theme'
 
 const MenuIcon = styled(MenuIco)`
   vertical-align: middle;
@@ -45,7 +45,7 @@ const MenuButton = styled(Button)`
   line-height: 1;
   border-radius: 0.2rem;
   box-shadow: ${colors.shadow};
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     display: none;
   }
 `
@@ -53,7 +53,7 @@ const MenuButton = styled(Button)`
 const Sidebar = styled(GrommetSidebar)`
   padding: 0px;
   display: none;
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     display: block;
     flex: 0 0 auto;
     width: 16.6666666667%;
@@ -66,14 +66,14 @@ const DropBox = styled(Box)`
   display: inline-block;
   width: 100%;
   background: ${colors.brand};
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     display: none;
   }
 `
 
 const ConnectionBox = styled(Box)`
   margin: 1rem 0rem 0.5rem;
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     margin: 5rem 0rem 0.5rem;
   }
 `
@@ -86,7 +86,7 @@ const OptionBtn = styled(Button)`
   color: ${colors.darkBtnText};
   padding: 1rem;
   margin-right: 1rem;
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     color: ${colors.text};
     padding: 0.2rem 1.2rem;
     margin: 0rem 0.4rem;
@@ -95,7 +95,7 @@ const OptionBtn = styled(Button)`
 
 const WideOption = styled(Box)`
   display: none;
-  @media screen and (min-width: 768px) {
+  @media ${device.tablet} {
     display: block;
   }
 `
