@@ -18,7 +18,7 @@ import {
 import Add from './Add'
 import Connections from './Connections'
 
-import { colors, device } from '../theme'
+import { colors, device, GreyButton } from '../theme'
 
 const MenuIcon = styled(MenuIco)`
   vertical-align: middle;
@@ -65,6 +65,7 @@ const DropBox = styled(Box)`
   z-index: 100;
   display: inline-block;
   width: 100%;
+  height: 100%;
   background: ${colors.brand};
   @media ${device.tablet} {
     display: none;
@@ -72,10 +73,7 @@ const DropBox = styled(Box)`
 `
 
 const ConnectionBox = styled(Box)`
-  margin: 1rem 0rem 0.5rem;
-  @media ${device.tablet} {
-    margin: 5rem 0rem 0.5rem;
-  }
+  margin: 0.5rem 0rem 0.5rem;
 `
 
 const OptionsBox = styled(Box)`
@@ -114,28 +112,53 @@ const Header = styled(Head)`
   padding: 0.5rem 0rem;
 `
 
+const Invite = styled(Link)`
+  align-self: center;
+  min-width: 205px;
+`
+
 interface IProps {
   children: ReactNode
 }
 
 function Navi({ children }: IProps) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const nav = (direction: BoxProps['direction'] = 'row') => (
+  const [connectionsOpen, setConnectionsOpen] = useState(true)
+  const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
-      <ConnectionBox margin="5rem 0rem 0.5rem">
+      <Add></Add>
+      <Invite style={{}} to="/me">
+        <GreyButton
+          label="New invitation"
+          plain
+          onClick={() => setMenuOpen(false)}
+        />
+      </Invite>
+      <ConnectionBox>
         <Connections hideMenu={setMenuOpen}></Connections>
       </ConnectionBox>
-      <Add></Add>
     </Nav>
   )
 
   const options = (direction: BoxProps['direction'] = 'row') => (
     <OptionsBox direction={direction}>
-      <Link to="/me">
-        <OptionBtn label="Connect" onClick={() => setMenuOpen(!menuOpen)} />
+      <Link to="/">
+        <OptionBtn
+          label="Connections"
+          onClick={() => {
+            setMenuOpen(false)
+            setConnectionsOpen(true)
+          }}
+        />
       </Link>
       <Link to="/credentials">
-        <OptionBtn label="Credentials" onClick={() => setMenuOpen(!menuOpen)} />
+        <OptionBtn
+          label="Credentials"
+          onClick={() => {
+            setMenuOpen(false)
+            setConnectionsOpen(false)
+          }}
+        />
       </Link>
       <OptionBtn
         label="Logout"
@@ -151,7 +174,12 @@ function Navi({ children }: IProps) {
     <>
       <Header justify="start">
         <Link to="/">
-          <BrandBox>
+          <BrandBox
+            onClick={() => {
+              setMenuOpen(false)
+              setConnectionsOpen(true)
+            }}
+          >
             <Image fit="cover" src="/img/logo.svg" />
           </BrandBox>
         </Link>
@@ -168,11 +196,13 @@ function Navi({ children }: IProps) {
           animation={{ type: 'slideDown', duration: 800, size: 'xlarge' }}
         >
           {options('column')}
-          {nav('column')}
+          {connectionNav('column')}
         </DropBox>
       </Collapsible>
       <Box direction="row" fill>
-        <Sidebar background="brand">{nav('column')}</Sidebar>
+        <Sidebar background="brand">
+          {connectionsOpen && connectionNav('column')}
+        </Sidebar>
         <Content pad="medium">{children}</Content>
       </Box>
     </>
