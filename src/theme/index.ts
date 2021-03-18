@@ -1,3 +1,6 @@
+import { Button } from 'grommet'
+import styled from 'styled-components'
+
 export const colors = {
   brand: '#2C2C31',
   selected: '#006EE6',
@@ -32,6 +35,17 @@ export const device = {
   desktop: `(min-width: ${size.desktop})`,
   desktopL: `(min-width: ${size.desktop})`,
 }
+
+export const GreyButton = styled(Button)`
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 40px;
+  color: ${colors.darkBtnText};
+  background-color: ${colors.darkBtnBackground};
+  padding: 0.5rem 3rem 0.5rem 3rem;
+  text-align: center;
+  min-width: 205px;
+`
 
 export const findyTheme = {
   button: {
