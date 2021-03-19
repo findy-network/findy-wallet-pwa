@@ -1,18 +1,19 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { Box, Grommet, grommet } from 'grommet'
+import { Box, Grommet } from 'grommet'
 
 import Navi from './components/Navi'
 import Home from './components/Home'
 import Connection from './components/Connection'
 import Credentials from './components/Credentials'
-import Connections from './components/Connections'
 import Login from './components/Login'
 import URLConnect from './components/URLConnect'
+import Me from './components/Me'
+import { findyTheme } from "./theme"
 
 function App() {
   return (
-    <Grommet theme={grommet} full={true}>
+    <Grommet theme={findyTheme} full={true}>
       <Box fill={true}>
         <Login>
           <Navi>
@@ -20,9 +21,8 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
-              {/* TODO: remove connections route once we have connections in navi */}
-              <Route exact path="/connections" component={Connections} />
               <Route exact path="/connect/:invitation" component={URLConnect} />
+              <Route exact path="/me" component={Me} />
             </Switch>
           </Navi>
         </Login>

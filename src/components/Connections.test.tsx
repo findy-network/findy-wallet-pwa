@@ -1,18 +1,31 @@
 import React, { ReactElement } from 'react'
-import { render } from '@testing-library/react'
-import { MockedProvider } from '@apollo/client/testing'
-import Connections from './Connections'
+import { render, waitFor } from '@testing-library/react'
+import { MockedProvider, MockedResponse } from '@apollo/client/testing'
+import Connections, { CONNECTIONS_QUERY } from './Connections'
+import { MemoryRouter } from 'react-router'
 
-const mocks: ReadonlyArray<MockedResponse> = []
+import { connections, connectionName } from '../mock/data'
+
+const mocks: ReadonlyArray<MockedResponse> = [
+  {
+    request: {
+      query: CONNECTIONS_QUERY,
+    },
+    result: {
+      data: {
+        connections,
+      },
+    },
+  },
+]
 const wrapToProvider = (component: ReactElement) => (
-  <MockedProvider mocks={mocks} addTypename={false}>
-    {component}
-  </MockedProvider>
+  <MemoryRouter>
+    <MockedProvider mocks={mocks}>{component}</MockedProvider>
+  </MemoryRouter>
 )
 
-test('renders connections text', () => {
+test('renders connection name', async () => {
   const component = wrapToProvider(<Connections />)
   const { getByText } = render(component)
-  const linkElement = getByText(/connections/i)
-  expect(linkElement).toBeInTheDocument()
+  await waitFor(() => expect(getByText(connectionName)).toBeInTheDocument())
 })

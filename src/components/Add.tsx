@@ -1,17 +1,10 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Button } from 'grommet'
-import { Add as AddIcon } from 'grommet-icons'
 import AddDialog from './AddDialog'
+import { GreyButton } from '../theme'
+import styled from 'styled-components'
 
-const AddButton = styled(Button)`
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  border-radius: 50%;
-  border: 3px solid gray;
-  padding: 1rem;
-  background-color: white;
+const AddButton = styled(GreyButton)`
+  margin-top: 1rem;
 `
 
 function Add() {
@@ -21,14 +14,12 @@ function Add() {
   }
   return (
     <>
-      {!dialogOpen && (
-        <AddButton
-          icon={<AddIcon />}
-          label=""
-          plain
-          onClick={() => setOpen(true)}
-        />
-      )}
+      <AddButton
+        label="Add connection"
+        plain
+        alignSelf="center"
+        onClick={() => setOpen(true)}
+      />
       {dialogOpen && <AddDialog onClose={close} initialCode="" />}
     </>
   )

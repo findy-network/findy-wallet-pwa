@@ -1,14 +1,16 @@
-import React from 'react'
-import { Box, Button, Heading } from 'grommet'
-import { User } from 'grommet-icons'
+import React, { Dispatch, SetStateAction } from 'react'
+import { Box, Button, Paragraph as P } from 'grommet'
+import styled from 'styled-components'
 
 import { useQuery, gql } from '@apollo/client'
 
 import { IConnectionEdge } from './Types'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Waiting from './Waiting'
 import { pageInfo } from './Fragments'
 import { pairwise as fragments } from './Fragments'
+import { User as PersonIco } from 'grommet-icons'
+import { colors } from '../theme'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
@@ -25,32 +27,58 @@ export const CONNECTIONS_QUERY = gql`
   ${pageInfo}
 `
 
-function Connections() {
-  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
+const activeClassName = 'nav-item-active'
 
+const Row = styled(NavLink).attrs({ activeClassName })`
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  color: ${colors.inactive};
+  svg {
+    stroke: ${colors.inactive};
+  }
+
+  &.${activeClassName} {
+    border-left: 3px solid ${colors.selected};
+    color: ${colors.active};
+    svg {
+      stroke: ${colors.selected};
+    }
+  }
+`
+
+const Icon = styled(PersonIco)`
+  font-size: 1.5;
+  margin-right: 0.5rem;
+`
+
+const Paragraph = styled(P)`
+  font-size: 0.95rem;
+  font-weight: 500;
+`
+
+function Connections({
+  hideMenu,
+}: {
+  hideMenu: Dispatch<SetStateAction<boolean>>
+}) {
+  const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
   return (
     <>
-      <Heading level={2}>Connections</Heading>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="small">
+        <Box margin="none">
           {data.connections.edges.map(({ node }: IConnectionEdge) => (
-            <Link key={node.id} to={`/connections/${node.id}`}>
-              <Box
-                background="light-1"
-                direction="row"
-                align="center"
-                pad="medium"
-                border="bottom"
-                height={{ min: '8rem' }}
-              >
-                <User />
-                <Heading margin="medium" level="6">
-                  {node.theirLabel}
-                </Heading>
+            <Row
+              onClick={() => hideMenu(false)}
+              key={node.id}
+              to={`/connections/${node.id}`}
+            >
+              <Box direction="row" align="center" pad="1rem">
+                <Icon />
+                <Paragraph margin="none">{node.theirLabel}</Paragraph>
               </Box>
-            </Link>
+            </Row>
           ))}
           {data.connections.pageInfo.hasNextPage && (
             <Button

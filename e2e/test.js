@@ -1,9 +1,10 @@
 module.exports = {
-    'Check app loads': function (browser) {
-        browser
-            .url('http://localhost:3000/')
-            .waitForElementVisible('body')
-            .assert.containsText('h3', 'Wallet')
-            .end();
-    }
-};
+  'Check app loads': (browser) => {
+    const addButton = '//button[contains(.,"Add connection")]'
+    browser
+      .url('http://localhost:3000/')
+      .useXpath()
+      .waitForElementVisible(addButton)
+      .end()
+  },
+}

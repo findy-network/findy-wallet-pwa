@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
-import * as serviceWorker from './serviceWorker'
-
 import { ApolloProvider } from '@apollo/client'
-
 import client from './apollo'
+import GlobalStyle from './theme/globalStyle'
+import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyle />
     <BrowserRouter>
       <ApolloProvider client={client}>
         <App />

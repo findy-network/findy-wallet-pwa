@@ -25,7 +25,6 @@ function Home() {
     }
   }
   const { loading, error, data } = useQuery(CONNECTIONS_QUERY, {
-    fetchPolicy: 'cache-only',
     onCompleted,
   })
   const isLoading = loading || (!error && !data)
