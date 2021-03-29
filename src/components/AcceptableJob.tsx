@@ -1,9 +1,18 @@
 import React, { ReactNode } from 'react'
-import { Button } from 'grommet'
+import { Button, Box } from 'grommet'
+import styled from 'styled-components'
+import { chat, colors } from '../theme'
 
 import { useMutation } from '@apollo/client'
 import { IJobNode, JobStatus } from './Types'
 import { RESUME_JOB_MUTATION } from './Queries'
+
+const Btn = styled(Button)`
+  border: 1px solid;
+  margin: 0.2rem;
+  font-size: ${chat.buttonFontSize};
+  color: ${colors.chatText};
+`
 
 type IProps = {
   job: IJobNode
@@ -21,14 +30,14 @@ function AcceptableJob({ job, children, canAccept }: IProps) {
     <div>
       {children}
       {job.status === JobStatus.PENDING && (
-        <div>
-          <Button onClick={() => doResume(false)} label="Decline"></Button>
-          <Button
+        <Box direction="row" pad="1rem">
+          <Btn onClick={() => doResume(false)} label="Decline"></Btn>
+          <Btn
             disabled={!canAccept}
             onClick={() => doResume(true)}
             label="Accept"
-          ></Button>
-        </div>
+          ></Btn>
+        </Box>
       )}
     </div>
   )
