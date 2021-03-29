@@ -106,3 +106,20 @@ export const RESUME_JOB_MUTATION = gql`
     }
   }
 `
+
+export const SEND_MESSAGE_MUTATION = gql`
+  mutation SendMessage($input: MessageInput!) {
+    sendMessage(input: $input) {
+      ok
+    }
+  }
+`
+
+export const MARK_EVENTREAD_MUTATION = gql`
+  mutation MarkEventRead($input: MarkReadInput!) {
+    markEventRead(input: $input) {
+      ...EventNodeFragment
+    }
+  }
+  ${event.node}
+`

@@ -1,5 +1,17 @@
 import React, { ReactNode, useEffect } from 'react'
-import { Layer, LayerPositionType } from 'grommet'
+import { Layer as Lay, LayerPositionType } from 'grommet'
+import styled from 'styled-components'
+import { device, colors } from '../theme'
+
+const Layer = styled(Lay)`
+  background: ${colors.background};
+  padding: 9px;
+  z-index: 1020;
+  width: 90%;
+  @media ${device.tablet} {
+    width: 30%;
+  }
+`
 
 interface IProps {
   children: ReactNode
