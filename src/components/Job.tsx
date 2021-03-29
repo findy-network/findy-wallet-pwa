@@ -3,6 +3,7 @@ import { IJobNode, ProtocolType } from './Types'
 import Message from './Message'
 import Proof from './Proof'
 import Credential from './Credential'
+import JobBox from './Chat/JobBox'
 
 type IProps = { job: IJobNode }
 
@@ -10,21 +11,27 @@ function Job({ job }: IProps) {
   switch (job.protocol) {
     case ProtocolType.BASIC_MESSAGE: {
       return job.output.message ? (
-        <Message message={job.output.message?.node} />
+        <JobBox sentByMe={job.output.message?.node.sentByMe}>
+          <Message message={job.output.message?.node} />
+        </JobBox>
       ) : (
         <div />
       )
     }
     case ProtocolType.PROOF: {
       return job.output.proof ? (
-        <Proof proof={job.output.proof?.node} job={job} />
+        <JobBox>
+          <Proof proof={job.output.proof?.node} job={job} />
+        </JobBox>
       ) : (
         <div />
       )
     }
     case ProtocolType.CREDENTIAL: {
       return job.output.credential ? (
-        <Credential credential={job.output.credential?.node} job={job} />
+        <JobBox>
+          <Credential credential={job.output.credential?.node} job={job} />
+        </JobBox>
       ) : (
         <div />
       )
