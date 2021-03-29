@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Box, Button, Heading, TextInput } from 'grommet'
+import { Box, Button, Heading, Paragraph, TextInput } from 'grommet'
 import Dialog from './Dialog'
 import QrReader from './QrReader'
+import { colors, Smoke } from '../theme'
+import { Close } from 'grommet-icons'
 
 import { useMutation, gql } from '@apollo/client'
 
@@ -14,14 +16,70 @@ const CONNECT_MUTATION = gql`
   }
 `
 
-const Smoke = styled.div`
-  position: fixed;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: gray;
-  opacity: 0.6;
+const ConfirmButton = styled(Button)`
+  background: ${colors.selected};
+  color: ${colors.darkBtnText};
+  border-radius: 0.3rem;
+  font-size: 15.3px;
+  padding: 8.5px 17px;
+  width: 100%;
+  margin-top: 1rem;
+`
+const Line = styled(Paragraph)`
+  text-align: center;
+  border-bottom: 1px solid ${colors.chatBorder};
+  line-height: 0.1em;
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+`
+
+const Span = styled.span`
+  background: ${colors.background};
+  padding: 0 10px;
+  color: ${colors.smallText};
+  font-size: 0.9rem;
+  margin-right: 0%;
+  font-weight: 500;
+`
+
+const Input = styled(TextInput)`
+  width: 100%;
+  position: relative;
+  height: 60px;
+  font: 400 17px Inter;
+  border-radius: 0;
+  border: 1px solid ${colors.chatBorder};
+  opacity: 0.5;
+`
+
+const CloseIcon = styled(Close)`
+  stroke: ${colors.icon};
+  font-size: 1.25rem;
+  font-weight: 500;
+`
+
+const CloseButton = styled(Button)`
+  margin: 0 0 0 auto;
+  padding: 0;
+  &:hover ${CloseIcon} {
+    stroke: ${colors.close};
+  }
+`
+
+const Head = styled(Heading)`
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+`
+
+const Content = styled(Box)`
+  background: ${colors.background};
+`
+
+const Row = styled(Box)`
+  padding: 0 0 17px 0;
+  width: 100%;
 `
 
 interface IProps {
@@ -54,8 +112,15 @@ function AddDialog({ onClose, initialCode }: IProps) {
         onClose={close}
         onEsc={close}
       >
-        <Box round margin="medium">
-          <Heading level="2">Add connection</Heading>
+        <Content margin="small">
+          <Row direction="row">
+            <Head level="3">Add connection</Head>
+            <CloseButton
+              plain
+              icon={<CloseIcon />}
+              onClick={() => close()}
+            ></CloseButton>
+          </Row>
           {errorMessage ? (
             <Box pad="small">
               {errorMessage.split('\n').map((item) => (
@@ -67,37 +132,38 @@ function AddDialog({ onClose, initialCode }: IProps) {
               direction="column"
               align="center"
               justify="between"
-              gap="small"
-              round
-              pad="small"
-              margin="medium"
+              pad="none"
+              margin="none"
             >
               {' '}
-              <TextInput
-                placeholder="Copy paste invitation here"
+              <Input
+                placeholder="Enter invitation code"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
               />
+              <Line>
+                <Span>OR</Span>
+              </Line>
               <QrReader
                 onRead={(res: string) => {
                   // console.log(res)
                   setCode(res)
                 }}
               />
+              <ConfirmButton
+                label="Confirm"
+                onClick={() => {
+                  if (code) {
+                    connect({ variables: { input: { invitation: code } } })
+                    setCode('')
+                  } else {
+                    close()
+                  }
+                }}
+              ></ConfirmButton>
             </Box>
           )}
-          <Button
-            label="OK"
-            onClick={() => {
-              if (code) {
-                connect({ variables: { input: { invitation: code } } })
-                setCode('')
-              } else {
-                close()
-              }
-            }}
-          ></Button>
-        </Box>
+        </Content>
       </Dialog>
     </Smoke>
   )

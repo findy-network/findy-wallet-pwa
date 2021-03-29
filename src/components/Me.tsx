@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box, Button, Heading, TextArea } from 'grommet'
-
+import { Box, Button, TextArea } from 'grommet'
 import { useMutation, gql } from '@apollo/client'
+import styled from 'styled-components'
 
 const invitationFragment = gql`
   fragment InvitationFragment on InvitationResponse {
@@ -24,24 +24,33 @@ const INVITATION_MUTATION = gql`
   ${invitationFragment}
 `
 
+const RawInvitation = styled(TextArea)`
+  font-weight: 400;
+`
+
+const Generate = styled(Button)`
+  margin: 3rem 0 0 0;
+  max-width: 500px;
+  border: 1px solid;
+`
+
 function Me() {
   const [doInvite, { data }] = useMutation(INVITATION_MUTATION)
 
   return (
     <>
-      <Heading level={2}>Me</Heading>
-
-      <Button
+      <Generate
+        alignSelf="center"
         label="Generate new invitation"
         onClick={() => doInvite()}
-      ></Button>
+      ></Generate>
       {data && (
         <Box margin="large" direction="row">
           <img
             alt="invitation QR code"
             src={`data:image/png;base64,${data.invite.imageB64}`}
           />
-          <TextArea readOnly resize={false} fill value={data.invite.raw} />
+          <RawInvitation readOnly resize={false} fill value={data.invite.raw} />
         </Box>
       )}
     </>
