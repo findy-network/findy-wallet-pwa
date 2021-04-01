@@ -20,6 +20,7 @@ export const colors = {
   close: '#000',
   hover: '#f7f7f5',
   smoke: '#000',
+  eventDot: '#FF0000',
 }
 
 const size = {
@@ -95,9 +96,9 @@ export const findyTheme = {
       },
     },
     colors,
-    input: {
+    input: {
       font: {
-        weight: 400
+        weight: 400,
       },
     },
   },

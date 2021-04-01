@@ -112,7 +112,7 @@ function Credentials({ connectionId }: IProps) {
                     {Utils.parseSchemaName(node.schemaId)}
                   </Text>
                   <Text size="small" color={colors.smallText}>
-                  {Utils.parseIssuer(node.credDefId)}
+                    {Utils.parseIssuer(node.credDefId)}
                   </Text>
                 </Box>
                 <Text size="xsmall" color={colors.smallText}>

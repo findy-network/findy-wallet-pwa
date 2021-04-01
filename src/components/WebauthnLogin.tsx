@@ -3,7 +3,6 @@ import { Anchor, Button, Box, TextInput, Text } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
 
-
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
   return Uint8Array.from(atob(value), (c) => c.charCodeAt(0))

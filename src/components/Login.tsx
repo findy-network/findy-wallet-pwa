@@ -40,7 +40,7 @@ function Login({ children }: IProps) {
   return (
     <>
       {unauthenticated ? (
-        <LoginBox elevation="medium" >
+        <LoginBox elevation="medium">
           <PlaygroundButton
             label="Playground login"
             onClick={() =>

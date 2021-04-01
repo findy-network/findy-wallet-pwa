@@ -56,6 +56,13 @@ const Paragraph = styled(P)`
   font-weight: 500;
 `
 
+const RedDot = styled(Box)`
+  background: ${colors.eventDot};
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+`
+
 function Connections({
   hideMenu,
 }: {
@@ -78,14 +85,7 @@ function Connections({
                 <Stack anchor="top-right">
                   <Icon />
                   {node.events?.nodes[0] && !node.events?.nodes[0].read && (
-                    <Box
-                      style={{
-                        background: 'red',
-                        borderRadius: '50%',
-                        width: '10px',
-                        height: '10px',
-                      }}
-                    ></Box>
+                    <RedDot />
                   )}
                 </Stack>
                 <Paragraph margin="none">{node.theirLabel}</Paragraph>

@@ -13,7 +13,7 @@ const P = styled(Paragraph)`
   margin: 0;
   font-size: ${chat.fontSize};
   color: ${colors.smallText};
-  overflow: hidden; 
+  overflow: hidden;
 `
 
 const Content = styled(Box)`
@@ -22,12 +22,20 @@ const Content = styled(Box)`
   display: inline-block;
 `
 
+const Strong = styled.strong`
+  color: ${colors.chatText};
+`
+
+const Span = styled.strong`
+  color: ${colors.smallText};
+`
+
 function Proof({ proof, job }: IProps) {
   return (
     <AcceptableJob job={job} canAccept={proof.provable.provable}>
       <Content>
         <P>
-          Proof: <strong style={{ color: colors.chatText }}>{proof.id}</strong>
+          Proof: <Strong>{proof.id}</Strong>
         </P>
         {proof.provable.provable && <span>This proof is provable!</span>}
         {proof.attributes.map((item: IProofAttribute) => {
@@ -38,9 +46,7 @@ function Proof({ proof, job }: IProps) {
             <div key={item.id}>
               <div>
                 <span>{item.name} </span>
-                <span style={{ color: colors.smallText }}>
-                  {item.credDefId}
-                </span>
+                <Span>{item.credDefId}</Span>
               </div>
               <div>
                 <span>Value:</span>

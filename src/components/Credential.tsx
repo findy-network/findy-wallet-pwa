@@ -14,13 +14,21 @@ const P = styled(Paragraph)`
   margin: 0;
   font-size: ${chat.fontSize};
   color: ${colors.smallText};
-  overflow: hidden; 
+  overflow: hidden;
 `
 
 const Content = styled(Box)`
   padding: ${chat.contentPadding};
   margin: 0;
   display: inline-block;
+`
+const Strong = styled.strong`
+  color: ${colors.chatText};
+  overflow-x: scroll;
+`
+
+const Span = styled.strong`
+  color: ${colors.smallText};
 `
 
 function Credential({ credential, job }: IProps) {
@@ -29,15 +37,13 @@ function Credential({ credential, job }: IProps) {
       <Content>
         <P>
           Credential Offer:{' '}
-          <strong style={{ color: colors.chatText, overflowX: "scroll" }}>
-            {Utils.parseSchemaName(credential.schemaId)}
-          </strong>
+          <Strong>{Utils.parseSchemaName(credential.schemaId)}</Strong>
         </P>
         {credential.attributes.map((item: ICredentialValue) => {
           return (
             <div key={item.id}>
               <Box pad="0 0 0 0" direction="row">
-                <span style={{ color: colors.smallText }}>{item.name}:</span>
+                <Span>{item.name}:</Span>
                 <Box pad="0 0 0 0.5rem">
                   <strong>{item.value}</strong>
                 </Box>
