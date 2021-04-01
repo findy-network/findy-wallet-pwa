@@ -15,7 +15,7 @@ border-radius: 50%;
 `
 
 const LeftIcon = styled(Icon)`
-background-image: url(/img/person-icon.svg);
+background-image: url(/img/robot-icon.svg);
 margin: 6px 6px 0 0;
 @media ${device.tablet} {
   margin: 6px 12px 0 0;
