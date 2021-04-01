@@ -14,6 +14,7 @@ const P = styled(Paragraph)`
   margin: 0;
   font-size: ${chat.fontSize};
   color: ${colors.smallText};
+  overflow: hidden; 
 `
 
 const Content = styled(Box)`
@@ -27,9 +28,9 @@ function Credential({ credential, job }: IProps) {
     <AcceptableJob job={job} canAccept={true}>
       <Content>
         <P>
-          Credential:{' '}
-          <strong style={{ color: colors.chatText }}>
-            {Utils.getSchemaName(credential.schemaId)}
+          Credential Offer:{' '}
+          <strong style={{ color: colors.chatText, overflowX: "scroll" }}>
+            {Utils.parseSchemaName(credential.schemaId)}
           </strong>
         </P>
         {credential.attributes.map((item: ICredentialValue) => {

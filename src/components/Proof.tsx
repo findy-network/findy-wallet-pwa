@@ -13,6 +13,7 @@ const P = styled(Paragraph)`
   margin: 0;
   font-size: ${chat.fontSize};
   color: ${colors.smallText};
+  overflow: hidden; 
 `
 
 const Content = styled(Box)`
