@@ -11,9 +11,9 @@ import {
   event as eventFragments,
 } from './Fragments'
 import { IEventEdge, ProtocolType } from './Types'
+import Event from './Event'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
-import JobBox from './Chat/JobBox'
 import { useMutation } from '@apollo/client'
 
 import ScrollableFeed from 'react-scrollable-feed'
@@ -67,7 +67,6 @@ const InputStack = styled(Stack)`
 
 const Input = styled(TextInput)`
   position: absolute;
-  font: 400 17px Inter;
   border-radius: ${chat.inputRadius};
   border: 1px solid ${colors.chatBorder};
   height: ${chat.inputHeight};
@@ -158,9 +157,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                   {node.job && node.job?.node.protocol !== ProtocolType.NONE ? (
                     <Job job={node.job.node} />
                   ) : (
-                    <JobBox>
-                      <Box pad={chat.contentPadding}>{node.description}</Box>
-                    </JobBox>
+                    <Event description={node.description} />
                   )}
                 </Box>
               ))}
