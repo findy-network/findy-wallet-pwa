@@ -95,5 +95,10 @@ export const findyTheme = {
       },
     },
     colors,
+    input: {
+      font: {
+        weight: 400
+      },
+    },
   },
 }
