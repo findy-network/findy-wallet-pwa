@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-
 import { Anchor, Button, Box, TextInput, Text } from 'grommet'
-
 import config from '../config'
+import styled from 'styled-components'
+
 
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
@@ -50,6 +50,10 @@ const doFetch = async (
       : {}),
   })
 }
+
+const Login = styled(Box)`
+  margin: auto;
+`
 
 function WebauthnLogin() {
   const [register, setRegister] = useState(false)
@@ -165,7 +169,7 @@ function WebauthnLogin() {
     setOperationResult('')
   }
   return (
-    <Box width="medium" margin="medium">
+    <Login width="medium" margin="medium">
       <Text>{operationResult}</Text>
       <TextInput
         name="email"
@@ -201,7 +205,7 @@ function WebauthnLogin() {
           </>
         )}
       </Box>
-    </Box>
+    </Login>
   )
 }
 
