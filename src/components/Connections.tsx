@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Box, Button, Paragraph as P } from 'grommet'
+import { Box, Button, Stack, Paragraph as P } from 'grommet'
 import styled from 'styled-components'
 
 import { useQuery, gql } from '@apollo/client'
@@ -75,7 +75,19 @@ function Connections({
               to={`/connections/${node.id}`}
             >
               <Box direction="row" align="center" pad="1rem">
-                <Icon />
+                <Stack anchor="top-right">
+                  <Icon />
+                  {node.events?.nodes[0] && !node.events?.nodes[0].read && (
+                    <Box
+                      style={{
+                        background: 'red',
+                        borderRadius: '50%',
+                        width: '10px',
+                        height: '10px',
+                      }}
+                    ></Box>
+                  )}
+                </Stack>
                 <Paragraph margin="none">{node.theirLabel}</Paragraph>
               </Box>
             </Row>
