@@ -27,7 +27,7 @@ const Strong = styled.strong`
   overflow-x: scroll;
 `
 
-const Span = styled.strong`
+const Span = styled.span`
   color: ${colors.smallText};
 `
 

@@ -23,11 +23,11 @@ type IProps = {
 function AcceptableJob({ job, children, canAccept }: IProps) {
   const [resumeJob] = useMutation(RESUME_JOB_MUTATION)
 
-  const doResume = (accept: boolean) => (
-    disableAccept(true),
-    disableDecline(true),
+  function doResume(accept: boolean) {
     resumeJob({ variables: { input: { id: job.id, accept } } })
-  )
+    disableAccept(true)
+    disableDecline(true)
+  }
 
   const [accept, disableAccept] = useState(!canAccept)
   const [decline, disableDecline] = useState(false)
