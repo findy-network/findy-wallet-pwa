@@ -109,10 +109,10 @@ function Credentials({ connectionId }: IProps) {
               <Box direction="row" align="center" pad="medium">
                 <Box direction="column" width="300px">
                   <Text size="small" weight="bold">
-                    {`${node.schemaId}`}
+                    {Utils.parseSchemaName(node.schemaId)}
                   </Text>
                   <Text size="small" color={colors.smallText}>
-                    {`${node.connection?.theirLabel}`}
+                  {Utils.parseIssuer(node.credDefId)}
                   </Text>
                 </Box>
                 <Text size="xsmall" color={colors.smallText}>

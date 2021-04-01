@@ -77,7 +77,7 @@ function CredentialInfo({ onClose, credential }: IProps) {
             </Text>
             <Box pad="10px 0 0 0" direction="row">
               <Attribute>Issuer: </Attribute>
-              <Value>&nbsp;{credential!.connection?.theirLabel}</Value>
+              <Value>&nbsp;{Utils.parseIssuer(credential!.credDefId)}</Value>
             </Box>
             <Box pad="5px 0 0 0" direction="row">
               <Attribute>Credential definition:</Attribute>
