@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { Button, Box } from 'grommet'
 import styled from 'styled-components'
 import { chat, colors } from '../theme'
@@ -23,17 +23,27 @@ type IProps = {
 function AcceptableJob({ job, children, canAccept }: IProps) {
   const [resumeJob] = useMutation(RESUME_JOB_MUTATION)
 
-  const doResume = (accept: boolean) =>
+  const doResume = (accept: boolean) => (
+    disableAccept(true),
+    disableDecline(true),
     resumeJob({ variables: { input: { id: job.id, accept } } })
+  )
+
+  const [accept, disableAccept] = useState(!canAccept)
+  const [decline, disableDecline] = useState(false)
 
   return (
     <div>
       {children}
       {job.status === JobStatus.PENDING && (
         <Box direction="row" pad="1rem">
-          <Btn onClick={() => doResume(false)} label="Decline"></Btn>
           <Btn
-            disabled={!canAccept}
+            disabled={decline}
+            onClick={() => doResume(false)}
+            label="Decline"
+          ></Btn>
+          <Btn
+            disabled={accept}
             onClick={() => doResume(true)}
             label="Accept"
           ></Btn>
