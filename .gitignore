@@ -11,6 +11,10 @@
 # production
 /build
 
+# licenses
+licenses.json
+licenses-unresolved.json
+
 # misc
 .DS_Store
 .env.local

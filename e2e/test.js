@@ -5,6 +5,7 @@ module.exports = {
     const connectionsBtn = '//button[contains(.,"Connections")]'
     const credentialsBtn = '//button[contains(.,"Credentials")]'
     const logouBtn = '//button[contains(.,"Logout")]'
+    const addButton = '//button[contains(.,"Add connection")]'
     browser
       .url('http://localhost:3000/')
       .useXpath()
