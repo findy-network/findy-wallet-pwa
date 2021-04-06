@@ -66,7 +66,7 @@ const RedDot = styled(Box)`
 function Connections({
   hideMenu,
 }: {
-  hideMenu: Dispatch<SetStateAction<boolean>>
+  hideMenu?: Dispatch<SetStateAction<boolean>>
 }) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
   return (
@@ -77,7 +77,7 @@ function Connections({
         <Box margin="none">
           {data.connections.edges.map(({ node }: IConnectionEdge) => (
             <Row
-              onClick={() => hideMenu(false)}
+              onClick={() => hideMenu!(false)}
               key={node.id}
               to={`/connections/${node.id}`}
             >

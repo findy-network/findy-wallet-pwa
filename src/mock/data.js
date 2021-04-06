@@ -9,6 +9,7 @@ export const connectionNode = {
   createdMs: '1615461608140',
   approvedMs: '',
   invited: true,
+  events: null,
   __typename: 'Pairwise',
 }
 
@@ -392,7 +393,7 @@ export const events = {
                 node: {
                   id: '60bfde0e-3a3d-4e5d-be86-b76d32f0b0a3',
                   message:
-                    'Sit perferendis aut accusantium voluptatem consequatur.',
+                    'Accept',
                   sentByMe: true,
                   delivered: null,
                   createdMs: '1615552712067',
@@ -441,7 +442,7 @@ export const events = {
                 node: {
                   id: '60bfde0e-3a3d-4e5d-be86-b76d32f0b0a3',
                   message:
-                    'Sit perferendis aut accusantium voluptatem consequatur.',
+                    'Hello! I\'m Credential Service for Findy. I can issue credentials for you. First, I would like to establish connection',
                   sentByMe: false,
                   delivered: null,
                   createdMs: '1615552712067',
