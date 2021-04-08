@@ -41,6 +41,10 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100%;
   }
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
 `
 
 export default GlobalStyle

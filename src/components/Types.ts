@@ -19,6 +19,10 @@ export interface IEventNode extends INode {
   job?: IJobEdge
 }
 
+export interface IEventNodes {
+  nodes: IEventNode[]
+}
+
 export interface IConnectionEdge extends IEdge {
   node: IConnectionNode
 }
@@ -26,6 +30,7 @@ export interface IConnectionEdge extends IEdge {
 export interface IConnectionNode extends INode {
   theirLabel: string
   theirDid: string
+  events?: IEventNodes
 }
 
 export interface IConnectionArgs {

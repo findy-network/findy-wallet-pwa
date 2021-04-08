@@ -20,6 +20,11 @@ export const pairwise = {
       cursor
       node {
         ...PairwiseNodeFragment
+        events(last: 1) {
+          nodes {
+            read
+          }
+        }
       }
     }
     ${pairwiseNodeFragment}

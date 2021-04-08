@@ -1,9 +1,18 @@
-import React, { ReactNode } from 'react'
-import { Button } from 'grommet'
+import React, { ReactNode, useState } from 'react'
+import { Button, Box } from 'grommet'
+import styled from 'styled-components'
+import { chat, colors } from '../theme'
 
 import { useMutation } from '@apollo/client'
 import { IJobNode, JobStatus } from './Types'
 import { RESUME_JOB_MUTATION } from './Queries'
+
+const Btn = styled(Button)`
+  border: 1px solid;
+  margin: 0.2rem;
+  font-size: ${chat.buttonFontSize};
+  color: ${colors.chatText};
+`
 
 type IProps = {
   job: IJobNode
@@ -14,21 +23,31 @@ type IProps = {
 function AcceptableJob({ job, children, canAccept }: IProps) {
   const [resumeJob] = useMutation(RESUME_JOB_MUTATION)
 
-  const doResume = (accept: boolean) =>
+  function doResume(accept: boolean) {
     resumeJob({ variables: { input: { id: job.id, accept } } })
+    disableAccept(true)
+    disableDecline(true)
+  }
+
+  const [accept, disableAccept] = useState(!canAccept)
+  const [decline, disableDecline] = useState(false)
 
   return (
     <div>
       {children}
       {job.status === JobStatus.PENDING && (
-        <div>
-          <Button onClick={() => doResume(false)} label="Decline"></Button>
-          <Button
-            disabled={!canAccept}
+        <Box direction="row" pad="1rem">
+          <Btn
+            disabled={decline}
+            onClick={() => doResume(false)}
+            label="Decline"
+          ></Btn>
+          <Btn
+            disabled={accept}
             onClick={() => doResume(true)}
             label="Accept"
-          ></Button>
-        </div>
+          ></Btn>
+        </Box>
       )}
     </div>
   )

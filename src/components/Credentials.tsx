@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Heading, Text } from 'grommet'
-import { Certificate } from 'grommet-icons'
 
 import { useQuery, gql } from '@apollo/client'
 
-import { ICredentialEdge } from './Types'
-import { Link } from 'react-router-dom'
+import { ICredentialEdge, ICredentialNode } from './Types'
 import Waiting from './Waiting'
 import Utils from './Utils'
 import { credential as fragments, pageInfo } from './Fragments'
+import styled from 'styled-components'
+import { colors } from '../theme'
+import CredentialInfo from './CredentialInfo'
 
 export const CREDENTIALS_QUERY = gql`
   query GetCredentials($cursor: String) {
@@ -41,6 +42,26 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
   ${fragments.edge}
   ${pageInfo}
 `
+const CredentialsBox = styled(Box)`
+  position: relative;
+  overflow: scroll;
+`
+
+// change color name
+const Header = styled(Heading)`
+  box-shadow: 0px 10px 12px -12px ${colors.shadow};
+  padding: 1rem 0rem;
+  font-weight: 400;
+  color: ${colors.icon};
+  margin: 0;
+  z-index: 1;
+`
+
+const BButton = styled(Button)`
+  box-shadow: -2px 2px 6px 0px ${colors.shadow};
+  padding: 5px;
+  margin: 2px;
+`
 
 interface IProps {
   connectionId?: string
@@ -58,34 +79,47 @@ function Credentials({ connectionId }: IProps) {
 
   const credentials = data?.credentials || data?.connection?.credentials
 
+  const [credentialOpen, setOpen] = useState(false)
+  const close = () => {
+    setOpen(false)
+  }
+
+  const [info, setInfo] = useState<ICredentialNode>()
+
   return (
-    <Box height={{ min: 'initial' }}>
-      <Heading level={2}>Credentials</Heading>
+    <Box>
+      <Header level={2} fill={true}>
+        Credentials
+      </Header>
       {showWaiting ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="small">
+        <CredentialsBox margin="none">
           {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-            <Link key={node.id} to={`/credentials/${node.id}`}>
-              <Box
-                background="light-1"
-                direction="row"
-                align="center"
-                pad="medium"
-                border="bottom"
-                height={{ min: '8rem' }}
-              >
-                <Certificate />
-                <Box>
-                  <Text>
-                    {`${index + 1}. ${Utils.toTimeString(node.createdMs)}`}
+            <BButton
+              hoverIndicator={{ color: colors.hover }}
+              focusIndicator={false}
+              plain
+              key={node.id}
+              onClick={() => {
+                setOpen(true)
+                setInfo(node)
+              }}
+            >
+              <Box direction="row" align="center" pad="medium">
+                <Box direction="column" width="300px">
+                  <Text size="small" weight="bold">
+                    {Utils.parseSchemaName(node.schemaId)}
                   </Text>
-                  <Heading margin="medium" level="6">
-                    {`${node.schemaId} ${node.id}`}
-                  </Heading>
+                  <Text size="small" color={colors.smallText}>
+                    {Utils.parseIssuer(node.credDefId)}
+                  </Text>
                 </Box>
+                <Text size="xsmall" color={colors.smallText}>
+                  {Utils.toDateString(node.createdMs)}
+                </Text>
               </Box>
-            </Link>
+            </BButton>
           ))}
           {credentials.pageInfo.hasNextPage && (
             <Button
@@ -99,8 +133,9 @@ function Credentials({ connectionId }: IProps) {
               }
             ></Button>
           )}
-        </Box>
+        </CredentialsBox>
       )}
+      {credentialOpen && <CredentialInfo onClose={close} credential={info} />}
     </Box>
   )
 }

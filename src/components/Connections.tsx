@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { Box, Button, Paragraph as P } from 'grommet'
+import { Box, Button, Stack, Paragraph as P } from 'grommet'
 import styled from 'styled-components'
 
 import { useQuery, gql } from '@apollo/client'
@@ -56,10 +56,17 @@ const Paragraph = styled(P)`
   font-weight: 500;
 `
 
+const RedDot = styled(Box)`
+  background: ${colors.eventDot};
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+`
+
 function Connections({
   hideMenu,
 }: {
-  hideMenu: Dispatch<SetStateAction<boolean>>
+  hideMenu?: Dispatch<SetStateAction<boolean>>
 }) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
   return (
@@ -70,12 +77,17 @@ function Connections({
         <Box margin="none">
           {data.connections.edges.map(({ node }: IConnectionEdge) => (
             <Row
-              onClick={() => hideMenu(false)}
+              onClick={() => hideMenu!(false)}
               key={node.id}
               to={`/connections/${node.id}`}
             >
               <Box direction="row" align="center" pad="1rem">
-                <Icon />
+                <Stack anchor="top-right">
+                  <Icon />
+                  {node.events?.nodes[0] && !node.events?.nodes[0].read && (
+                    <RedDot />
+                  )}
+                </Stack>
                 <Paragraph margin="none">{node.theirLabel}</Paragraph>
               </Box>
             </Row>

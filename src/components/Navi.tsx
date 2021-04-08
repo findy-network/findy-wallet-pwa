@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
+import EventNotifications from './EventNotifications'
 
 import { Link } from 'react-router-dom'
 
@@ -23,7 +24,7 @@ import { colors, device, GreyButton } from '../theme'
 const MenuIcon = styled(MenuIco)`
   vertical-align: middle;
   font-size: 24px;
-  color: ${colors.menuIcon};
+  color: ${colors.icon};
 `
 
 const BrandBox = styled(Box)`
@@ -99,15 +100,16 @@ const WideOption = styled(Box)`
 `
 
 const Content = styled(Box)`
-  position: relative;
+  position: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.8rem;
 `
-
 const Header = styled(Head)`
   box-shadow: 0 0.125rem 0.25rem ${colors.shadow};
   text-decoration: none;
   position: sticky;
   top: 0;
-  zindex: 1020;
   background: ${colors.background};
   padding: 0.5rem 0rem;
 `
@@ -127,7 +129,7 @@ function Navi({ children }: IProps) {
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
       <Add></Add>
-      <Invite style={{}} to="/me">
+      <Invite to="/me">
         <GreyButton
           label="New invitation"
           plain
@@ -200,6 +202,7 @@ function Navi({ children }: IProps) {
         </DropBox>
       </Collapsible>
       <Box direction="row" fill>
+        <EventNotifications />
         <Sidebar background="brand">
           {connectionsOpen && connectionNav('column')}
         </Sidebar>
