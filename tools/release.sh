@@ -4,12 +4,14 @@ set -e
 
 SEMVER=$1
 
+CURRENT_DIR=$(dirname "$BASH_SOURCE")
+
 if [ -z "$1" ]; then
   SEMVER=minor
   echo "No argument given, starting work for default ($SEMVER) version"
 fi
 
-VERSION_NBR=$(node -e "console.log(require('./package.json').version);")
+VERSION_NBR=$($CURRENT_DIR/version.sh)
 echo "Attempt to release version $VERSION_NBR"
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
