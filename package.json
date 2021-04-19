@@ -30,7 +30,8 @@
   "scripts": {
     "deps:update": "npm-outdated-to-latest",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run build:version",
+    "build:version": "echo v$(./tools/version.sh) > build/version.txt",
     "format": "prettier --write src/**/*.{ts,tsx}",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
