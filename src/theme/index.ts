@@ -66,11 +66,11 @@ export const GreyButton = styled(Button)`
   min-width: 205px;
 `
 export const chat = {
+  timeFont: '10px',
   fontSize: '16px',
   buttonFontSize: '14px',
-  mediaPad: '9px 17px 11px 17px',
-  contentPad: '14px 21px',
-  contentPadding: '9px 17px 11px 17px',
+  mediaPad: '9px 17px 0px 17px',
+  contentPadding: '9px 17px 0px 17px',
   inputHeight: '4rem',
   inputRadius: '0',
   inputMargin: '10px 0',

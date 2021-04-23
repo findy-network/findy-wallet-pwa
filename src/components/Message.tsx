@@ -1,9 +1,13 @@
 import React from 'react'
-import { Paragraph } from 'grommet'
+import { Paragraph, Box } from 'grommet'
 import styled from 'styled-components'
 import { device, chat, colors } from '../theme'
 
 import { IMessageNode } from './Types'
+
+const Content = styled(Box)`
+  width: 100%;
+`
 
 const P = styled(Paragraph)`
   padding: ${chat.mediaPad};
@@ -12,14 +16,18 @@ const P = styled(Paragraph)`
   font-size: ${chat.fontSize};
   color: ${colors.chatText};
   @media ${device.tablet} {
-    padding: ${chat.contentPad};
+    padding: ${chat.contentPadding};
   }
 `
 
 type IProps = { message: IMessageNode }
 
 function Message({ message }: IProps) {
-  return <P>{message.message}</P>
+  return (
+    <Content>
+      <P>{message.message}</P>
+    </Content>
+  )
 }
 
 export default Message
