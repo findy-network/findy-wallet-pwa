@@ -18,6 +18,10 @@ const P = styled(Paragraph)`
   overflow: hidden;
 `
 
+const Heading = styled(P)`
+  font-weight: bold;
+`
+
 const Content = styled(Box)`
   padding: ${chat.contentPadding};
   margin: 0;
@@ -46,12 +50,12 @@ function Credential({ credential, job }: IProps) {
   return (
     <AcceptableJob job={job} canAccept={true}>
       <Content>
-        <P style={{ fontWeight: 'bold' }}>
+        <Heading>
           Credential Offer{' '}
           {job.status === JobStatus.COMPLETE && (
             <Checkmark color={colors.selected} size="16px" />
           )}
-        </P>
+        </Heading>
         <Line></Line>
         <P>{Utils.parseSchemaName(credential.schemaId)}</P>
         <Box pad="0 0 10px 0">
