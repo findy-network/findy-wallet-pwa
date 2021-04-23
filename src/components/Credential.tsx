@@ -56,13 +56,13 @@ function Credential({ credential, job }: IProps) {
             <Checkmark color={colors.selected} size="16px" />
           )}
         </Heading>
-        <Line></Line>
         <P>{Utils.parseSchemaName(credential.schemaId)}</P>
-        <Box pad="0 0 10px 0">
+        <Line></Line>
+        <Box pad="0 0 3px 0">
           {credential.attributes.map((item: ICredentialValue) => {
             return (
               <div key={item.id}>
-                <Box pad="0 20px" direction="row">
+                <Box direction="row">
                   <Span>{item.name}:</Span>
                   <ValueSpan>{item.value}</ValueSpan>
                 </Box>
