@@ -101,5 +101,9 @@ export const findyTheme = {
         weight: 400,
       },
     },
+    
+  },
+  heading: {
+      weight: 500,
   },
 }

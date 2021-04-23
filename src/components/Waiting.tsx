@@ -11,10 +11,11 @@ function Waiting({ loading, error }: IProps) {
   if (loading) {
     return <Text></Text>
   }
-  const text = loading ? '' : 'API Error'
+  const text = loading ? '' : ''
+  console.log("Errors: " + error?.message)
   return (
     <>
-      <Header pad="small" background="brand" justify="start"></Header>
+      <Header pad="small" background="" justify="start"></Header>
       <Box direction="row" fill>
         <Box pad="medium">
           <Text>{text}</Text>

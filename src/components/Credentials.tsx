@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Heading, Text } from 'grommet'
+import { Box, Button, Heading, Text, Image, Grid, Card } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 
@@ -54,13 +54,17 @@ const Header = styled(Heading)`
   font-weight: 400;
   color: ${colors.icon};
   margin: 0;
-  z-index: 1;
 `
 
 const BButton = styled(Button)`
   box-shadow: -2px 2px 6px 0px ${colors.shadow};
   padding: 5px;
   margin: 2px;
+`
+
+export const CartoonBox = styled(Box)`
+  justify-content: center;
+  align-items: center;
 `
 
 interface IProps {
@@ -76,6 +80,7 @@ function Credentials({ connectionId }: IProps) {
   )
   const isLoading = loading || (!error && !data)
   const showWaiting = isLoading || error
+  const showIntroduction = !loading && (error || !data)
 
   const credentials = data?.credentials || data?.connection?.credentials
 
@@ -86,14 +91,41 @@ function Credentials({ connectionId }: IProps) {
 
   const [info, setInfo] = useState<ICredentialNode>()
 
-  return (
-    <Box>
+/*
       <Header level={2} fill={true}>
         Credentials
       </Header>
-      {showWaiting ? (
-        <Waiting loading={loading} error={error} />
-      ) : (
+*/
+
+  return (
+    <Box>
+      {showWaiting && (
+        <Box>
+          <Waiting loading={loading} error={error} />
+        </Box>
+      )}
+      {showIntroduction && (
+        <div>
+          <CartoonBox direction="row-responsive" align="start" gap="small">
+            <Box align="start" width="medium" pad="medium">
+              <Heading level={2}>Your wallet is empty</Heading>
+              <Text size="medium">
+                You can see your credentials here. 
+                When you receive credentials, they are saved here. 
+                These credentials can be used in the connections chat.
+              </Text>
+              <br/>
+              <Text size="medium">
+                Get credentials by creating a <i>connection</i> with an issuer
+              </Text>
+            </Box>
+            <Box height="medium" width="small">
+              <Image src="/img/wallet-empty-m1.svg" fit="contain" />
+            </Box>
+          </CartoonBox>
+        </div>
+      )}
+      {!showWaiting && (
         <CredentialsBox margin="none">
           {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
             <BButton
