@@ -21,11 +21,13 @@ const LoginBox = styled(Box)`
   }
   width: 80%;
   margin: auto;
-  padding: 10px;
+  padding: 20px;
 `
 
 const PlaygroundButton = styled(Button)`
-  margin: 1rem;
+  margin: auto;
+  margin-bottom: 10px;
+  width: 60%;
 `
 interface IProps {
   children: ReactNode
@@ -42,6 +44,7 @@ function Login({ children }: IProps) {
       {unauthenticated ? (
         <LoginBox elevation="medium">
           <PlaygroundButton
+            size="small"
             label="Playground login"
             onClick={() =>
               fetch(`${config.gqlUrl}/token`).then(async (data) => {
@@ -53,7 +56,7 @@ function Login({ children }: IProps) {
           {window.PublicKeyCredential ? (
             <WebauthnLogin />
           ) : (
-            <div>Wallet login not supported in this browser :(</div>
+            <div>Wallet login not supported in this browser.</div>
           )}
         </LoginBox>
       ) : (
