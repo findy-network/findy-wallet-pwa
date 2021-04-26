@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Paragraph } from 'grommet'
 import styled from 'styled-components'
-import { chat, colors } from '../theme'
+import { chat, colors, Line } from '../theme'
 import Utils from './Utils'
 
 import { ICredentialNode, ICredentialValue, IJobNode, JobStatus } from './Types'
@@ -27,14 +27,6 @@ const Content = styled(Box)`
   margin: 0;
   display: inline-block;
   width: 100%;
-`
-const Line = styled(Paragraph)`
-  text-align: center;
-  border-bottom: 1px solid ${colors.chatBorder};
-  line-height: 0.1em;
-  width: 100%;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
 `
 
 const Span = styled.span`
