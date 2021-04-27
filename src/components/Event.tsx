@@ -2,11 +2,14 @@ import React from 'react'
 import JobBox from './Chat/JobBox'
 import styled from 'styled-components'
 import { device, chat, colors } from '../theme'
-import { Paragraph } from 'grommet'
+import { Paragraph, Box } from 'grommet'
 import { IEventNode } from './Types'
 
 type IProps = { node: IEventNode }
 
+const Content = styled(Box)`
+  width: 100%;
+`
 const P = styled(Paragraph)`
   padding: ${chat.mediaPad};
   margin: 0;
@@ -14,7 +17,7 @@ const P = styled(Paragraph)`
   font-size: ${chat.fontSize};
   color: ${colors.chatText};
   @media ${device.tablet} {
-    padding: ${chat.contentPad};
+    padding: ${chat.contentPadding};
   }
 `
 
@@ -45,8 +48,10 @@ function Event({ node }: IProps) {
     }*/
     default: {
       return node.description ? (
-        <JobBox>
-          <P>{node.description}</P>
+        <JobBox time={node.createdMs}>
+          <Content>
+            <P>{node.description}</P>
+          </Content>
         </JobBox>
       ) : (
         <div />
