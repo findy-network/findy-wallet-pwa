@@ -1,4 +1,4 @@
-import { Button } from 'grommet'
+import { Button, Paragraph } from 'grommet'
 import styled from 'styled-components'
 
 export const colors = {
@@ -64,6 +64,15 @@ export const GreyButton = styled(Button)`
   padding: 0.5rem 3rem 0.5rem 3rem;
   text-align: center;
   min-width: 205px;
+`
+
+export const Line = styled(Paragraph)`
+  text-align: center;
+  border-bottom: 1px solid ${colors.chatBorder};
+  line-height: 0.1em;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `
 export const chat = {
   fontSize: '16px',
