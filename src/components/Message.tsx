@@ -18,6 +18,7 @@ const P = styled(Paragraph)`
   @media ${device.tablet} {
     padding: ${chat.contentPadding};
   }
+  white-space: pre-wrap;
 `
 
 type IProps = { message: IMessageNode }
