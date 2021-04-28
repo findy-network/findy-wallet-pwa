@@ -1,0 +1,21 @@
+{
+  "greenLicenses": [
+    "0BSD",
+    "Apache-2.0",
+    "BSD",
+    "BSD-3-Clause",
+    "CC0-1.0",
+    "CC-BY-3.0",
+    "CC-BY-4.0",
+    "ISC",
+    "MIT",
+    "MIT OR X11",
+    "MPL-1.1",
+    "MPL-2.0",
+    "ODC-By-1.0",
+    "PD",
+    "Unlicense",
+    "WTFPL"
+  ],
+  "packageAllowlist": []
+}
