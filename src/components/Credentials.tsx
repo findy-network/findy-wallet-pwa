@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import { Box, Button, Heading, Text, Image, Grid, Card } from 'grommet'
+import { useState } from 'react'
+import { Box, Button, Heading, Text, Image,  Collapsible } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 
-import { ICredentialEdge, ICredentialNode } from './Types'
+import { ICredentialEdge, ICredentialNode, ICredentialValue } from './Types'
 import Waiting from './Waiting'
 import Utils from './Utils'
 import { credential as fragments, pageInfo } from './Fragments'
 import styled from 'styled-components'
-import { colors } from '../theme'
-import CredentialInfo from './CredentialInfo'
+import { colors, device } from '../theme'
+import { Certificate, FormDown, FormUp } from 'grommet-icons'
+
 
 export const CREDENTIALS_QUERY = gql`
   query GetCredentials($cursor: String) {
@@ -42,33 +43,202 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
   ${fragments.edge}
   ${pageInfo}
 `
-const CredentialsBox = styled(Box)`
-  position: relative;
-  overflow: scroll;
-`
 
-// change color name
-const Header = styled(Heading)`
-  box-shadow: 0px 10px 12px -12px ${colors.shadow};
-  padding: 1rem 0rem;
-  font-weight: 400;
-  color: ${colors.icon};
-  margin: 0;
-`
 
-const BButton = styled(Button)`
-  box-shadow: -2px 2px 6px 0px ${colors.shadow};
-  padding: 5px;
-  margin: 2px;
-`
-
-export const CartoonBox = styled(Box)`
+const CartoonBox = styled(Box)`
   justify-content: center;
   align-items: center;
 `
 
+const CredentialWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: initial;
+  align-items: start;
+  height: max-content;
+  margin: auto;
+  padding: 1rem;
+  @media screen and ${device.mobileS} {
+    justify-content: center;
+  }
+  @media screen and ${device.tablet} {
+    justify-content: initial;
+  }
+`
+
+const CredentialCard = styled(Box)`
+  border: 1px solid #efefef;
+  border-radius: 12px;
+  background: white;
+  font-weight: 400;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+
+  flex: 0 1 100%;
+  @media screen and ${device.mobileS} {
+    flex: 0 1 100%;
+    max-width: 22rem;
+  }
+
+  @media screen and ${device.laptop} {
+    flex: 0 1 32%;
+    max-width: 22rem;
+    min-width: 22rem;
+  }
+`
+
+const CredentialRow = styled(Box)`
+  justify-content: space-between;
+  margin-left: 2.2rem;
+  margin-right: 2.2rem;
+  margin-top: 0.2rem;
+`
+
+
+interface CredentialProps {
+  node: ICredentialNode
+}
+
+const CredentialBox = ({ node } : CredentialProps) => {
+  const [open, setOpen] = useState(false)
+  const CollapseIcon = open ? FormUp : FormDown;
+
+  /*
+    for(let i = 0; i < node.attributes.length; i += 1) {
+      console.log(node.attributes[i].name + " " + node.attributes[i].value);
+    }
+    console.log(node);
+  */
+
+  return (
+     <CredentialCard pad="small" elevation="small">
+      <Box direction="row" margin={{ bottom: 'xsmall' }} >
+        <Box pad={{right: "small"}}>
+          <Certificate color={colors.brand} />
+        </Box>
+        <Box direction="row" fill="horizontal" alignContent="between">
+          <Text size="medium" color={colors.brand}>
+            {Utils.parseSchemaName(node.schemaId)}
+          </Text>
+        </Box>
+      </Box>
+      <Box direction="row" margin={{ left: 'medium'}} pad={{ bottom: 'small' }} >
+          <Text size="small" margin={{left: "small"}} color={colors.smallText}>
+            {Utils.parseIssuer(node.credDefId)}
+          </Text>
+          <Text size="small" color={colors.smallText}>
+            &nbsp;{Utils.toDateString(node.createdMs)}
+          </Text>
+      </Box>
+
+      <Box>
+        <Box 
+          border={{ side: 'top', size: 'xsmall' }} 
+          pad={{ top: 'small' }} >
+
+          {node.attributes.map((item: ICredentialValue) => {
+            return (
+              <div key={item.id}>
+                <CredentialRow 
+                  direction="row">
+                  <Text size="small" color={colors.smallText}>
+                    {item.name}
+                  </Text>
+                  <Text wordBreak="break-word" size="small" color={colors.brand}>
+                    {item.value}
+                  </Text>
+                </CredentialRow>
+              </div>
+            )
+          })}
+
+          <Collapsible key={node.id} open={open}>
+            <Box margin={{top: 'small'}} direction="column" color="dark-3">
+              <CredentialRow 
+                direction="row-responsive">
+                <Text size="small" color={colors.smallText}>
+                  Created
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.createdMs}
+                </Text>
+              </CredentialRow>
+              <CredentialRow 
+                direction="row-responsive">
+                <Text size="small" color={colors.smallText}>
+                  Issued
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.issuedMs}
+                </Text>
+              </CredentialRow>
+              <CredentialRow 
+                direction="row-responsive">
+                <Text size="small" color={colors.smallText}>
+                  Approved
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.approvedMs}
+                </Text>
+              </CredentialRow>
+              <CredentialRow 
+                direction="column">
+                <Text size="small" color={colors.smallText}>
+                  Schema ID
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.schemaId}
+                </Text>
+              </CredentialRow>
+              <CredentialRow 
+                direction="column">
+                <Text size="small" color={colors.smallText}>
+                  Credential definition ID
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.credDefId}
+                </Text>
+              </CredentialRow>
+              <CredentialRow 
+                direction="column">
+                <Text size="small" color={colors.smallText}>
+                  Credential ID
+                </Text>
+                <Text wordBreak="break-all" size="small">
+                  {node.id}
+                </Text>
+              </CredentialRow>
+            </Box>
+          </Collapsible>
+
+          <Box 
+            margin={{ top: 'small' }}
+            alignContent="between"
+            justify="between" 
+            direction="row">
+            <Box alignSelf="center" direction="row">
+            </Box>
+            <Box align="end" >
+              <Button
+                key={node.id}
+                hoverIndicator="light-4"
+                plain={true}
+                icon={<CollapseIcon color={colors.selected} />}
+                onClick={() => setOpen(!open)} 
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </CredentialCard>
+  );
+}
+
+
 interface IProps {
-  connectionId?: string
+  connectionId?: string,
 }
 
 function Credentials({ connectionId }: IProps) {
@@ -83,19 +253,6 @@ function Credentials({ connectionId }: IProps) {
   const showIntroduction = !loading && (error || !data)
 
   const credentials = data?.credentials || data?.connection?.credentials
-
-  const [credentialOpen, setOpen] = useState(false)
-  const close = () => {
-    setOpen(false)
-  }
-
-  const [info, setInfo] = useState<ICredentialNode>()
-
-/*
-      <Header level={2} fill={true}>
-        Credentials
-      </Header>
-*/
 
   return (
     <Box>
@@ -126,33 +283,12 @@ function Credentials({ connectionId }: IProps) {
         </div>
       )}
       {!showWaiting && (
-        <CredentialsBox margin="none">
-          {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-            <BButton
-              hoverIndicator={{ color: colors.hover }}
-              focusIndicator={false}
-              plain
-              key={node.id}
-              onClick={() => {
-                setOpen(true)
-                setInfo(node)
-              }}
-            >
-              <Box direction="row" align="center" pad="medium">
-                <Box direction="column" width="300px">
-                  <Text size="small" weight="bold">
-                    {Utils.parseSchemaName(node.schemaId)}
-                  </Text>
-                  <Text size="small" color={colors.smallText}>
-                    {Utils.parseIssuer(node.credDefId)}
-                  </Text>
-                </Box>
-                <Text size="xsmall" color={colors.smallText}>
-                  {Utils.toDateString(node.createdMs)}
-                </Text>
-              </Box>
-            </BButton>
-          ))}
+        <Box>
+          <CredentialWrapper>
+            {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
+              <CredentialBox key={node.id} node={node} />
+            ))}
+          </CredentialWrapper>
           {credentials.pageInfo.hasNextPage && (
             <Button
               label="Load more"
@@ -165,9 +301,8 @@ function Credentials({ connectionId }: IProps) {
               }
             ></Button>
           )}
-        </CredentialsBox>
+        </Box>
       )}
-      {credentialOpen && <CredentialInfo onClose={close} credential={info} />}
     </Box>
   )
 }
