@@ -157,7 +157,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                   {node.job && node.job?.node.protocol !== ProtocolType.NONE ? (
                     <Job job={node.job.node} />
                   ) : (
-                    <Event description={node.description} />
+                    <Event node={node} />
                   )}
                 </Box>
               ))}

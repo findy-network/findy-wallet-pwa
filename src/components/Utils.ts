@@ -8,6 +8,22 @@ Utils.toDateString = (str: string) => {
   return d.toLocaleDateString()
 }
 
+Utils.toDateDotString = (str: string) => {
+  const d = new Date(parseInt(str, 10))
+  return d.toLocaleDateString('et-EE')
+}
+
+Utils.toDateMsgString = (str: string) => {
+  let options: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: 'numeric',
+    month: 'numeric',
+  }
+  const d = new Date(parseInt(str, 10))
+  return d.toLocaleDateString('et-EE', options)
+}
+
 Utils.parseSchemaName = (schemaId: string) => {
   var splitted = schemaId.split(':', 3)
   if (splitted[2]) {

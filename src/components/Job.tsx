@@ -11,7 +11,10 @@ function Job({ job }: IProps) {
   switch (job.protocol) {
     case ProtocolType.BASIC_MESSAGE: {
       return job.output.message ? (
-        <JobBox sentByMe={job.output.message?.node.sentByMe}>
+        <JobBox
+          time={job.createdMs}
+          sentByMe={job.output.message?.node.sentByMe}
+        >
           <Message message={job.output.message?.node} />
         </JobBox>
       ) : (
@@ -20,7 +23,7 @@ function Job({ job }: IProps) {
     }
     case ProtocolType.PROOF: {
       return job.output.proof ? (
-        <JobBox>
+        <JobBox time={job.createdMs}>
           <Proof proof={job.output.proof?.node} job={job} />
         </JobBox>
       ) : (
@@ -29,7 +32,7 @@ function Job({ job }: IProps) {
     }
     case ProtocolType.CREDENTIAL: {
       return job.output.credential ? (
-        <JobBox>
+        <JobBox time={job.createdMs}>
           <Credential credential={job.output.credential?.node} job={job} />
         </JobBox>
       ) : (

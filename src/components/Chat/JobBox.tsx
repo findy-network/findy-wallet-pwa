@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react'
-import { Box } from 'grommet'
+import { Box, Paragraph } from 'grommet'
 import styled from 'styled-components'
 import { device, chat, colors } from '../../theme'
 import ChatIcon from './ChatIcon'
+import Utils from '../Utils'
 
 const StyleBox = styled(Box)`
   display: inline-block;
@@ -25,22 +26,33 @@ const SentBox = styled(StyleBox)`
   margin-right: 0;
 `
 
+const Time = styled(Paragraph)`
+  font-size: ${chat.timeFont};
+  color: ${colors.smallText};
+  margin: 0px 10px 4px 27px;
+  @media ${device.tablet} {
+    margin: 0px 10px 4px 31px;
+  }
+  float: right;
+`
+
 
 interface IProps {
   children: ReactNode
   sentByMe?: boolean
+  time: string
 }
 
-function JobBox({ children, sentByMe }: IProps) {
+function JobBox({ children, sentByMe, time }: IProps) {
   return sentByMe ? (
     <Box direction="row">
-      <SentBox>{children}</SentBox>
+      <SentBox>{children}<Time>{Utils.toDateMsgString(time)}</Time></SentBox>
       <ChatIcon right={true}></ChatIcon>
     </Box>
   ) : (
     <Box direction="row">
       <ChatIcon></ChatIcon>
-      <ReceivedBox>{children}</ReceivedBox>
+      <ReceivedBox>{children}<Time>{Utils.toDateMsgString(time)}</Time></ReceivedBox>
     </Box>
   )
 }

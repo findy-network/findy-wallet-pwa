@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Anchor, Button, Box, TextInput, Text } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
+import { RotateRight } from 'grommet-icons'
+import { Line } from '../theme'
 
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
@@ -54,11 +56,18 @@ const Login = styled(Box)`
   margin: auto;
 `
 
+const Btn = styled(Button)`
+  border: 1px solid;
+  margin-bottom: 5px;
+`
+
 function WebauthnLogin() {
   const [register, setRegister] = useState(false)
+  const [waiting, setWaiting] = useState(false)
   const [email, setEmail] = useState('')
   const [operationResult, setOperationResult] = useState('')
   const doRegister = async () => {
+    setOperationResult('')
     const setError = () => {
       setOperationResult(`Unable to register this device for email ${email}`)
       setEmail('')
@@ -95,6 +104,7 @@ function WebauthnLogin() {
       rawId,
       response: { attestationObject, clientDataJSON },
     } = credential
+    setWaiting(true)
     const result = await doFetch(`${config.authUrl}/register/finish/${email}`, {
       id,
       rawId: bufferEncode(rawId),
@@ -105,21 +115,26 @@ function WebauthnLogin() {
       },
     })
     if (result.status !== 200) {
+      setWaiting(false)
       setError()
       return
     } else {
+      setWaiting(false)
       setOperationResult(`Registration succeeded. You can now login.`)
       setRegister(false)
     }
   }
 
   const doLogin = async () => {
+    setOperationResult('')
     const setError = () => {
       setOperationResult(`Unable to login with this device for email ${email}`)
       setEmail('')
     }
+
     const response = await doFetch(`${config.authUrl}/login/begin/${email}`)
     if (response.status !== 200) {
+      setWaiting(false)
       setError()
       return
     }
@@ -142,6 +157,7 @@ function WebauthnLogin() {
       rawId,
       response: { authenticatorData, clientDataJSON, signature, userHandle },
     } = credential
+    setWaiting(true)
     const result = await doFetch(`${config.authUrl}/login/finish/${email}`, {
       id,
       rawId: bufferEncode(rawId),
@@ -154,9 +170,11 @@ function WebauthnLogin() {
       },
     })
     if (result.status !== 200) {
+      setWaiting(false)
       setError()
       return
     } else {
+      setWaiting(false)
       const token = await result.json()
       localStorage.setItem('token', token.token)
       window.location.reload()
@@ -169,7 +187,6 @@ function WebauthnLogin() {
   }
   return (
     <Login width="medium" margin="medium">
-      <Text>{operationResult}</Text>
       <TextInput
         name="email"
         placeholder="email"
@@ -180,28 +197,43 @@ function WebauthnLogin() {
       <Box direction="column" margin="small" align="center">
         {register ? (
           <>
-            <Button
-              disabled={email.length === 0}
+            <Btn
+              disabled={email.length === 0 || waiting}
               label="Register"
               onClick={doRegister}
-            ></Button>
+            ></Btn>
             <Text size="small">
               Existing user?{' '}
-              <Anchor onClick={() => toggleRegister(false)}>Login</Anchor>
+              <Anchor disabled={waiting} onClick={() => toggleRegister(false)}>
+                Login
+              </Anchor>
             </Text>
           </>
         ) : (
           <>
-            <Button
-              disabled={email.length === 0}
+            <Btn
+              disabled={email.length === 0 || waiting}
               label="Login"
               onClick={doLogin}
-            ></Button>
+            ></Btn>
             <Text size="small">
               New user?{' '}
-              <Anchor onClick={() => toggleRegister(true)}>Register</Anchor>
+              <Anchor disabled={waiting} onClick={() => toggleRegister(true)}>
+                Register
+              </Anchor>
             </Text>
           </>
+        )}
+        {operationResult !== '' && (
+          <Text textAlign="center">
+            <Line></Line>
+            {operationResult}
+          </Text>
+        )}
+        {waiting && (
+          <Box width="24px" animation="rotateRight">
+            <RotateRight />
+          </Box>
         )}
       </Box>
     </Login>
