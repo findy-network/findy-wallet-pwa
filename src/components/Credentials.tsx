@@ -8,7 +8,7 @@ import Waiting from './Waiting'
 import Utils from './Utils'
 import { credential as fragments, pageInfo } from './Fragments'
 import styled from 'styled-components'
-import { colors, device } from '../theme'
+import { colors, device, chat } from '../theme'
 import { Certificate, FormDown, FormUp } from 'grommet-icons'
 
 
@@ -67,7 +67,7 @@ const CredentialWrapper = styled.div`
 `
 
 const CredentialCard = styled(Box)`
-  border: 1px solid #efefef;
+  border: 1px solid ${colors.chatBorder};
   border-radius: 12px;
   background: white;
   font-weight: 400;
@@ -75,25 +75,59 @@ const CredentialCard = styled(Box)`
   margin-bottom: 0.4rem;
   margin-left: 0.4rem;
   margin-right: 0.4rem;
+  padding: 1rem 1rem 0.8rem 1.2rem;
 
-  flex: 0 1 100%;
   @media screen and ${device.mobileS} {
     flex: 0 1 100%;
     max-width: 22rem;
+    padding: 1rem 1rem 0.8rem 1rem;
   }
 
-  @media screen and ${device.laptop} {
+  @media screen and ${device.mobileL} {
     flex: 0 1 32%;
     max-width: 22rem;
     min-width: 22rem;
-  }
+    padding: 1rem 1rem 0.8rem 1.2rem;
+`
+
+const CredentialCardHeader = styled(Box)`
+  margin-bottom: 1rem;
+`
+
+
+const CredentialCardFooter = styled(Box)`
+  margin-top: 1rem;
+  align-content: space-between;
+  justify-content: space-between;
 `
 
 const CredentialRow = styled(Box)`
   justify-content: space-between;
-  margin-left: 2.2rem;
-  margin-right: 2.2rem;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
+  margin-left: 1.9rem;
+  margin-right: 1rem;
+
+  @media screen and ${device.mobileL} {
+    margin-left: 2.2rem;
+    margin-right: 2.2rem;
+  }
+`
+
+const CredentialText = styled(Text)`
+  font-size: 14px;
+
+  @media screen and ${device.mobileL} {
+    font-size: 16px;
+  }
+`
+const CredentialCardIcon = styled(Certificate)`
+  margin-right: 0.5rem;
+  margin-top: 0rem;
+
+  @media screen and ${device.mobileL} {
+    margin-right: 0.7rem;
+    margin-top: 0.1rem;
+  }
 `
 
 
@@ -113,42 +147,43 @@ const CredentialBox = ({ node } : CredentialProps) => {
   */
 
   return (
-     <CredentialCard pad="small" elevation="small">
-      <Box direction="row" margin={{ bottom: 'xsmall' }} >
-        <Box pad={{right: "small"}}>
-          <Certificate color={colors.brand} />
+     <CredentialCard>
+       <CredentialCardHeader>
+        <Box direction="row">
+          <CredentialCardIcon color={colors.selected} />
+          <Box direction="column">
+            <Box direction="row" fill="horizontal" alignContent="between">
+              <Text size="medium" color={colors.brand}>
+                {Utils.parseSchemaName(node.schemaId)}
+              </Text>
+            </Box>
+            <Box direction="row">
+              <CredentialText color={colors.smallText}>
+                {Utils.parseIssuer(node.credDefId)}
+              </CredentialText>
+              <CredentialText color={colors.smallText}>
+                &nbsp;{Utils.toDateString(node.createdMs)}
+              </CredentialText>
+            </Box>
+          </Box>
         </Box>
-        <Box direction="row" fill="horizontal" alignContent="between">
-          <Text size="medium" color={colors.brand}>
-            {Utils.parseSchemaName(node.schemaId)}
-          </Text>
-        </Box>
-      </Box>
-      <Box direction="row" margin={{ left: 'medium'}} pad={{ bottom: 'small' }} >
-          <Text size="small" margin={{left: "small"}} color={colors.smallText}>
-            {Utils.parseIssuer(node.credDefId)}
-          </Text>
-          <Text size="small" color={colors.smallText}>
-            &nbsp;{Utils.toDateString(node.createdMs)}
-          </Text>
-      </Box>
+
+      </CredentialCardHeader>
 
       <Box>
-        <Box 
-          border={{ side: 'top', size: 'xsmall' }} 
-          pad={{ top: 'small' }} >
+        <Box>
 
           {node.attributes.map((item: ICredentialValue) => {
             return (
               <div key={item.id}>
                 <CredentialRow 
                   direction="row">
-                  <Text size="small" color={colors.smallText}>
+                  <CredentialText color={colors.smallText}>
                     {item.name}
-                  </Text>
-                  <Text wordBreak="break-word" size="small" color={colors.brand}>
+                  </CredentialText>
+                  <CredentialText wordBreak="break-word" color={colors.brand}>
                     {item.value}
-                  </Text>
+                  </CredentialText>
                 </CredentialRow>
               </div>
             )
@@ -158,67 +193,66 @@ const CredentialBox = ({ node } : CredentialProps) => {
             <Box margin={{top: 'small'}} direction="column" color="dark-3">
               <CredentialRow 
                 direction="row-responsive">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Created
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.createdMs}
-                </Text>
+                </CredentialText>
               </CredentialRow>
               <CredentialRow 
                 direction="row-responsive">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Issued
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.issuedMs}
-                </Text>
+                </CredentialText>
               </CredentialRow>
               <CredentialRow 
                 direction="row-responsive">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Approved
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.approvedMs}
-                </Text>
+                </CredentialText>
               </CredentialRow>
               <CredentialRow 
+                pad={{top: 'small'}}
                 direction="column">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Schema ID
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.schemaId}
-                </Text>
+                </CredentialText>
               </CredentialRow>
               <CredentialRow 
+                pad={{top: 'small'}}
                 direction="column">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Credential definition ID
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.credDefId}
-                </Text>
+                </CredentialText>
               </CredentialRow>
               <CredentialRow 
+                pad={{top: 'small'}}
                 direction="column">
-                <Text size="small" color={colors.smallText}>
+                <CredentialText size="small" color={colors.smallText}>
                   Credential ID
-                </Text>
-                <Text wordBreak="break-all" size="small">
+                </CredentialText>
+                <CredentialText wordBreak="break-all" size="small">
                   {node.id}
-                </Text>
+                </CredentialText>
               </CredentialRow>
             </Box>
           </Collapsible>
 
-          <Box 
-            margin={{ top: 'small' }}
-            alignContent="between"
-            justify="between" 
-            direction="row">
-            <Box alignSelf="center" direction="row">
+          <CredentialCardFooter direction="row">
+            <Box>
             </Box>
             <Box align="end" >
               <Button
@@ -229,7 +263,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                 onClick={() => setOpen(!open)} 
               />
             </Box>
-          </Box>
+          </CredentialCardFooter>
         </Box>
       </Box>
     </CredentialCard>
