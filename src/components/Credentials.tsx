@@ -8,7 +8,7 @@ import Waiting from './Waiting'
 import Utils from './Utils'
 import { credential as fragments, pageInfo } from './Fragments'
 import styled from 'styled-components'
-import { colors, device, chat } from '../theme'
+import { colors, device } from '../theme'
 import { Certificate, FormDown, FormUp } from 'grommet-icons'
 
 
