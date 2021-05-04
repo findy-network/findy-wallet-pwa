@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     font-family: Inter, Helvetica, Sans-Serif;
-    font-size: 17px;
+    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

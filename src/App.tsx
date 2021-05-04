@@ -18,7 +18,7 @@ function App() {
         <Login>
           <Navi>
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/connections" component={Home} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />
               <Route exact path="/connect/:invitation" component={URLConnect} />

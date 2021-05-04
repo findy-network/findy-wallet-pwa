@@ -2,8 +2,8 @@ import { Button, Paragraph } from 'grommet'
 import styled from 'styled-components'
 
 export const colors = {
-  brand: '#2C2C31',
-  selected: '#006EE6',
+  brand: '#2C2C31', // charcoal gray
+  selected: '#006EE6', // kaamos blue
   inactive: 'rgba(255, 255, 255, 0.5)',
   active: '#FFFFFF',
   text: '#2C2C31',
@@ -110,5 +110,12 @@ export const findyTheme = {
         weight: 400,
       },
     },
+    
   },
+  heading: {
+      weight: 500,
+  },
+  anchor: {
+    fontWeight: 500,
+  }
 }
