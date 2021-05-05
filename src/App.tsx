@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { Box, Grommet } from 'grommet'
 
 import Navi from './components/Navi'
@@ -18,6 +18,9 @@ function App() {
         <Login>
           <Navi>
             <Switch>
+              <Route exact path="/">
+                <Redirect to="/connections" />
+              </Route>
               <Route exact path="/connections" component={Home} />
               <Route exact path="/connections/:id" component={Connection} />
               <Route exact path="/credentials" component={Credentials} />

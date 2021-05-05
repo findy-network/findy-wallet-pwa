@@ -59,7 +59,7 @@ function Home() {
               </Text>
               <br/>
               <Text size="medium">
-                Use <b>add connection</b> for connecting existing invitation from service or person.
+                Use <b>add connection</b> for connecting existing invitation from services or persons.
               </Text>
               <br/>
               <Text size="medium">
