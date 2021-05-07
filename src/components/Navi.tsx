@@ -174,7 +174,7 @@ function Navi({ children }: IProps) {
   const options = (direction: BoxProps['direction'] = 'row') => (
     <OptionsBox direction={direction}>
       <MenuLink to="/connections"
-        activeClassName="menuActive"
+        activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
           setConnectionsOpen(true)
@@ -182,7 +182,7 @@ function Navi({ children }: IProps) {
         Connections
       </MenuLink>
       <MenuLink to="/credentials"
-        activeClassName="menuActive"
+        activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
           setConnectionsOpen(false)
@@ -192,7 +192,7 @@ function Navi({ children }: IProps) {
       <MenuLink
         to="/logout"
         exact
-        activeClassName="menuActive"
+        activeClassName="active"
         label="Logout"
         onClick={() => {
           localStorage.clear()

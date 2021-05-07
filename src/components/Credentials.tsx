@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Heading, Text, Image,  Collapsible } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
@@ -10,7 +10,6 @@ import { credential as fragments, pageInfo } from './Fragments'
 import styled from 'styled-components'
 import { colors, device } from '../theme'
 import { Certificate, FormDown, FormUp } from 'grommet-icons'
-
 
 export const CREDENTIALS_QUERY = gql`
   query GetCredentials($cursor: String) {
@@ -43,7 +42,6 @@ export const CONNECTION_CREDENTIALS_QUERY = gql`
   ${fragments.edge}
   ${pageInfo}
 `
-
 
 const CartoonBox = styled(Box)`
   justify-content: center;
@@ -298,7 +296,7 @@ function Credentials({ connectionId }: IProps) {
       {showIntroduction && (
         <div>
           <CartoonBox direction="row-responsive" align="start" gap="small">
-            <Box align="start" width="medium" pad="medium">
+            <Box align="start" width="medium" pad="small">
               <Heading level={2}>Your wallet is empty</Heading>
               <Text size="medium">
                 You can see your credentials here. 
@@ -307,7 +305,7 @@ function Credentials({ connectionId }: IProps) {
               </Text>
               <br/>
               <Text size="medium">
-                Get credentials by creating a <i>connection</i> with an issuer
+                Get credentials by creating <b>connections</b> with services
               </Text>
             </Box>
             <Box height="medium" width="small">
