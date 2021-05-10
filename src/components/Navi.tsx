@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
 import EventNotifications from './EventNotifications'
@@ -22,6 +22,7 @@ import Add from './Add'
 import Connections from './Connections'
 
 import { colors, device, GreyButton } from '../theme'
+import { UserContext } from './Login'
 
 export const AnchorLink: React.FC<AnchorLinkProps> = (props) => {
   return (
@@ -149,11 +150,24 @@ const Invite = styled(Link)`
   min-width: 205px;
 `
 
+const Username = styled(Box)`
+  display: inline-block;
+  color: ${colors.selected};
+  padding: 1rem;
+  margin-right: 1rem;
+  @media ${device.tablet} {
+    color: ${colors.darkBtnText};
+    padding: 0.2rem 1.2rem;
+    margin: 0rem 0.4rem;
+  }
+`
+
 interface IProps {
   children: ReactNode
 }
 
 function Navi({ children }: IProps) {
+  const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
   const [connectionsOpen, setConnectionsOpen] = useState(true)
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
@@ -204,6 +218,9 @@ function Navi({ children }: IProps) {
           window.location.reload()
         }}
       />
+      <Username round="large" background="brand">
+        {username}
+      </Username>
     </OptionsBox>
   )
 
