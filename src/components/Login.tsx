@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, createContext, useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import Waiting from './Waiting'
 import { Box, Heading, Text, Image } from 'grommet'
@@ -44,12 +44,17 @@ interface IProps {
   children: ReactNode
 }
 
+export const UserContext = createContext({ username: '' })
+
 function Login({ children }: IProps) {
-  const { error, loading } = useQuery(USER_QUERY, { errorPolicy: 'all' })
+  const [username, setUsername] = useState('username')
+  const { error, loading } = useQuery(USER_QUERY, {
+    errorPolicy: 'all',
+    onCompleted: (data) => setUsername(data.user.name),
+  })
   const unauthenticated = error?.graphQLErrors.find(
     (item) => item.extensions && item.extensions.code === 'UNAUTHENTICATED'
   )
-
   return (
     <>
       {unauthenticated ? (
@@ -106,7 +111,9 @@ function Login({ children }: IProps) {
           {loading || error ? (
             <Waiting loading={loading} error={error} />
           ) : (
-            children
+            <UserContext.Provider value={{ username }}>
+              {children}
+            </UserContext.Provider>
           )}
         </>
       )}
