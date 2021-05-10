@@ -92,10 +92,17 @@ const Send = styled(Button)`
   }
 `
 
+const MoreButton = styled(Button)`
+  width: 100%;
+  border-radius: 0;
+  padding: 10px;
+  box-shadow: 40px 0px 30px 10px ${colors.shadow};
+`
+
 type TParams = { id: string }
 
 function Connection({ match }: RouteComponentProps<TParams>) {
-  const { loading, error, data } = useQuery(CONNECTION_QUERY, {
+  const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
     variables: {
       id: match.params.id,
     },
@@ -118,8 +125,8 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   const [message, setMessage] = useState('')
   const [sendMessage] = useMutation(SEND_MESSAGE_MUTATION, {
     onCompleted: () => setMessage(''),
-    onError: () => {
-      console.log('ERROR')
+    onError: (e) => {
+      console.log('ERROR: ' + e)
     },
   })
 
@@ -149,6 +156,19 @@ function Connection({ match }: RouteComponentProps<TParams>) {
         <Chat>
           <ChatContent>
             <ScrollableFeed forceScroll={true}>
+              {data.connection.events.pageInfo.hasPreviousPage && (
+                <MoreButton
+                  hoverIndicator={{ color: colors.focus, opacity: 'medium' }}
+                  label="Load more"
+                  onClick={() =>
+                    fetchMore({
+                      variables: {
+                        cursor: data.connection.events.pageInfo.startCursor,
+                      },
+                    })
+                  }
+                ></MoreButton>
+              )}
               {events.map(({ node }: IEventEdge) => (
                 <Box
                   animation={{ type: 'fadeIn', duration: 1500 }}
