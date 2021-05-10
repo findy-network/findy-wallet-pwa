@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react'
 import { useQuery, gql } from '@apollo/client'
-
 import Waiting from './Waiting'
-import { Button, Box, Heading, Text, Image } from 'grommet'
+import { Box, Heading, Text, Image } from 'grommet'
 import WebauthnLogin from './WebauthnLogin'
-import config from '../config'
 import styled from 'styled-components'
 import { device } from '../theme'
 
@@ -24,12 +22,6 @@ const LoginBox = styled(Box)`
   padding: 20px;
 `
 
-const PlaygroundButton = styled(Button)`
-  margin: auto;
-  margin-bottom: 10px;
-  width: 60%;
-`
-
 const CartoonBox = styled(Box)`
   @media ${device.tablet} {
     margin-bottom: 2rem;
@@ -39,6 +31,13 @@ const CartoonBox = styled(Box)`
   justify-content: center;
   align-items: center;
   margin-bottom: 0rem;
+`
+
+const ImageBox = styled(Box)`
+  @media ${device.tablet} {
+    display: flex;
+  }
+  display: none;
 `
 
 interface IProps {
@@ -59,45 +58,44 @@ function Login({ children }: IProps) {
             <Box align="start" width="medium" pad="small">
               <Heading level={2}>Welcome to Findy Web Wallet</Heading>
               <Text size="medium">
-                You can use your wallet to make connections with services and persons to 
-                receive and share verifiable data.
+                You can use your wallet to make connections with services and
+                persons to receive and share verifiable data.
               </Text>
-              <br/>
+              <br />
               <Text size="medium">
-                Start your journey by registering your device with email address.
-                You don't need passwords - you can use your fingerprint or hardware key.
+                Start your journey by registering your device with email
+                address. You don't need passwords - you can use your fingerprint
+                or hardware key.
               </Text>
             </Box>
-            <Box height="medium" width="small">
+            <ImageBox height="medium" width="small">
               <Image src="/img/computer-m1.svg" fit="contain" />
-            </Box>
+            </ImageBox>
           </CartoonBox>
 
           <LoginBox elevation="medium">
-            <PlaygroundButton
-              size="small"
-              label="Playground login"
-              onClick={() =>
-                fetch(`${config.gqlUrl}/token`).then(async (data) => {
-                  localStorage.setItem('token', await data.text())
-                  window.location.reload()
-                })
-              }
+            <Image
+              style={{ width: '35%', margin: '20px auto' }}
+              src="/img/logo.svg"
             />
             {window.PublicKeyCredential ? (
               <WebauthnLogin />
             ) : (
               <div>
-                <CartoonBox direction="row-responsive" align="start" gap="small">
+                <CartoonBox
+                  direction="row-responsive"
+                  align="start"
+                  gap="small"
+                >
                   <Box align="start" width="medium" pad="small">
                     <Heading level={2}>Welcome to Findy Web Wallet</Heading>
                     <Text size="medium">
                       Web wallet login not supported in this browser!
                     </Text>
                   </Box>
-                  <Box height="medium" width="small">
+                  <ImageBox height="medium" width="small">
                     <Image src="/img/sad-computer-m2.svg" fit="contain" />
-                  </Box>
+                  </ImageBox>
                 </CartoonBox>
               </div>
             )}

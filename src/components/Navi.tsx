@@ -23,12 +23,13 @@ import Connections from './Connections'
 
 import { colors, device, GreyButton } from '../theme'
 
-
-export const AnchorLink: React.FC<AnchorLinkProps> = props => {
-  return <Anchor
+export const AnchorLink: React.FC<AnchorLinkProps> = (props) => {
+  return (
+    <Anchor
       as={({ colorProp, hasIcon, hasLabel, focus, ...p }) => <NavLink {...p} />}
       {...props}
     />
+  )
 }
 
 export type AnchorLinkProps = NavLinkProps &
@@ -66,7 +67,7 @@ const MenuButton = styled(Button)`
 `
 
 const MenuLink = styled(AnchorLink)`
-  &.${props => props.activeClassName} {
+  &.${(props) => props.activeClassName} {
     color: ${colors.active};
   }
   display: inline-block;
@@ -78,7 +79,7 @@ const MenuLink = styled(AnchorLink)`
     color: ${colors.active};
   }
   @media ${device.tablet} {
-    &.${props => props.activeClassName} {
+    &.${(props) => props.activeClassName} {
       color: ${colors.selected};
     }
     color: ${colors.brand};
@@ -173,20 +174,24 @@ function Navi({ children }: IProps) {
 
   const options = (direction: BoxProps['direction'] = 'row') => (
     <OptionsBox direction={direction}>
-      <MenuLink to="/connections"
+      <MenuLink
+        to="/connections"
         activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
           setConnectionsOpen(true)
-        }}>
+        }}
+      >
         Connections
       </MenuLink>
-      <MenuLink to="/credentials"
+      <MenuLink
+        to="/credentials"
         activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
           setConnectionsOpen(false)
-        }}>
+        }}
+      >
         Credentials
       </MenuLink>
       <MenuLink

@@ -38,9 +38,9 @@ function Home() {
   const showWaiting = isLoading || error
   const showIntroduction = !loading && (error || !data)
 
-  console.log("loading: " + loading);
-  console.log("error: " + error);
-  console.log("data: " + data);
+  console.log('loading: ' + loading)
+  console.log('error: ' + error)
+  console.log('data: ' + data)
 
   return (
     <>
@@ -55,15 +55,18 @@ function Home() {
             <Box align="start" width="medium" pad="small">
               <Heading level={2}>Make new connection</Heading>
               <Text size="medium">
-                You can see your connections here, but haven't made any connections yet.
+                You can see your connections here, but haven't made any
+                connections yet.
               </Text>
-              <br/>
+              <br />
               <Text size="medium">
-                Use <b>add connection</b> for connecting existing invitation from services or persons.
+                Use <b>add connection</b> for connecting existing invitation
+                from services or persons.
               </Text>
-              <br/>
+              <br />
               <Text size="medium">
-                Create <b>new invitation</b> for inviting service or person to connect to you.
+                Create <b>new invitation</b> for inviting service or person to
+                connect to you.
               </Text>
             </Box>
             <Box height="medium" width="small">
@@ -72,9 +75,7 @@ function Home() {
           </CartoonBox>
         </div>
       )}
-      {!showWaiting && (
-        <div>No connections</div>
-      )}
+      {!showWaiting && <div>No connections</div>}
     </>
   )
 }

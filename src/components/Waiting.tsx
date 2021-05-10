@@ -12,7 +12,7 @@ function Waiting({ loading, error }: IProps) {
     return <Text></Text>
   }
   const text = loading ? '' : ''
-  console.log("Errors: " + error?.message)
+  console.log('Errors: ' + error?.message)
   return (
     <>
       <Header pad="small" background="" justify="start"></Header>
