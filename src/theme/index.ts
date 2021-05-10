@@ -1,4 +1,4 @@
-import { Button, Paragraph } from 'grommet'
+import { Button, Paragraph, Box } from 'grommet'
 import styled from 'styled-components'
 
 export const colors = {
@@ -85,6 +85,25 @@ export const chat = {
   inputMargin: '10px 0',
 }
 
+export const ChatParagraph = styled(Paragraph)`
+  padding: 3px 17px 3px 0px;
+  margin: 0;
+  font-size: ${chat.fontSize};
+  color: ${colors.smallText};
+  overflow: hidden;
+`
+
+export const BoldHeading = styled(ChatParagraph)`
+  font-weight: bold;
+`
+
+export const ChatContent = styled(Box)`
+  padding: ${chat.contentPadding};
+  margin: 0;
+  display: inline-block;
+  width: 100%;
+`
+
 export const findyTheme = {
   button: {
     default: {},
@@ -110,12 +129,11 @@ export const findyTheme = {
         weight: 400,
       },
     },
-    
   },
   heading: {
-      weight: 500,
+    weight: 500,
   },
   anchor: {
     fontWeight: 500,
-  }
+  },
 }

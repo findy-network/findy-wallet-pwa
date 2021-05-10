@@ -216,7 +216,10 @@ function WebauthnLogin() {
             ></Btn>
             <Text size="small" margin="12px 0 0 0">
               Existing user?{' '}
-              <ModeAnchor disabled={waiting} onClick={() => toggleRegister(false)}>
+              <ModeAnchor
+                disabled={waiting}
+                onClick={() => toggleRegister(false)}
+              >
                 Login
               </ModeAnchor>
             </Text>
@@ -230,7 +233,10 @@ function WebauthnLogin() {
             ></Btn>
             <Text size="small" margin="12px 0 0 0">
               New user?{' '}
-              <ModeAnchor disabled={waiting} onClick={() => toggleRegister(true)}>
+              <ModeAnchor
+                disabled={waiting}
+                onClick={() => toggleRegister(true)}
+              >
                 Register
               </ModeAnchor>
             </Text>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Box, Button, Heading, Text, Image,  Collapsible } from 'grommet'
+import { useState } from 'react'
+import { Box, Button, Heading, Text, Image, Collapsible } from 'grommet'
 
 import { useQuery, gql } from '@apollo/client'
 
@@ -92,7 +92,6 @@ const CredentialCardHeader = styled(Box)`
   margin-bottom: 1rem;
 `
 
-
 const CredentialCardFooter = styled(Box)`
   margin-top: 1rem;
   align-content: space-between;
@@ -128,14 +127,13 @@ const CredentialCardIcon = styled(Certificate)`
   }
 `
 
-
 interface CredentialProps {
   node: ICredentialNode
 }
 
-const CredentialBox = ({ node } : CredentialProps) => {
+const CredentialBox = ({ node }: CredentialProps) => {
   const [open, setOpen] = useState(false)
-  const CollapseIcon = open ? FormUp : FormDown;
+  const CollapseIcon = open ? FormUp : FormDown
 
   /*
     for(let i = 0; i < node.attributes.length; i += 1) {
@@ -145,8 +143,8 @@ const CredentialBox = ({ node } : CredentialProps) => {
   */
 
   return (
-     <CredentialCard>
-       <CredentialCardHeader>
+    <CredentialCard>
+      <CredentialCardHeader>
         <Box direction="row">
           <CredentialCardIcon color={colors.selected} />
           <Box direction="column">
@@ -165,17 +163,14 @@ const CredentialBox = ({ node } : CredentialProps) => {
             </Box>
           </Box>
         </Box>
-
       </CredentialCardHeader>
 
       <Box>
         <Box>
-
           {node.attributes.map((item: ICredentialValue) => {
             return (
               <div key={item.id}>
-                <CredentialRow 
-                  direction="row">
+                <CredentialRow direction="row">
                   <CredentialText color={colors.smallText}>
                     {item.name}
                   </CredentialText>
@@ -188,9 +183,8 @@ const CredentialBox = ({ node } : CredentialProps) => {
           })}
 
           <Collapsible key={node.id} open={open}>
-            <Box margin={{top: 'small'}} direction="column" color="dark-3">
-              <CredentialRow 
-                direction="row-responsive">
+            <Box margin={{ top: 'small' }} direction="column" color="dark-3">
+              <CredentialRow direction="row-responsive">
                 <CredentialText size="small" color={colors.smallText}>
                   Created
                 </CredentialText>
@@ -198,8 +192,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                   {node.createdMs}
                 </CredentialText>
               </CredentialRow>
-              <CredentialRow 
-                direction="row-responsive">
+              <CredentialRow direction="row-responsive">
                 <CredentialText size="small" color={colors.smallText}>
                   Issued
                 </CredentialText>
@@ -207,8 +200,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                   {node.issuedMs}
                 </CredentialText>
               </CredentialRow>
-              <CredentialRow 
-                direction="row-responsive">
+              <CredentialRow direction="row-responsive">
                 <CredentialText size="small" color={colors.smallText}>
                   Approved
                 </CredentialText>
@@ -216,9 +208,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                   {node.approvedMs}
                 </CredentialText>
               </CredentialRow>
-              <CredentialRow 
-                pad={{top: 'small'}}
-                direction="column">
+              <CredentialRow pad={{ top: 'small' }} direction="column">
                 <CredentialText size="small" color={colors.smallText}>
                   Schema ID
                 </CredentialText>
@@ -226,9 +216,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                   {node.schemaId}
                 </CredentialText>
               </CredentialRow>
-              <CredentialRow 
-                pad={{top: 'small'}}
-                direction="column">
+              <CredentialRow pad={{ top: 'small' }} direction="column">
                 <CredentialText size="small" color={colors.smallText}>
                   Credential definition ID
                 </CredentialText>
@@ -236,9 +224,7 @@ const CredentialBox = ({ node } : CredentialProps) => {
                   {node.credDefId}
                 </CredentialText>
               </CredentialRow>
-              <CredentialRow 
-                pad={{top: 'small'}}
-                direction="column">
+              <CredentialRow pad={{ top: 'small' }} direction="column">
                 <CredentialText size="small" color={colors.smallText}>
                   Credential ID
                 </CredentialText>
@@ -250,27 +236,25 @@ const CredentialBox = ({ node } : CredentialProps) => {
           </Collapsible>
 
           <CredentialCardFooter direction="row">
-            <Box>
-            </Box>
-            <Box align="end" >
+            <Box></Box>
+            <Box align="end">
               <Button
                 key={node.id}
                 hoverIndicator="light-4"
                 plain={true}
                 icon={<CollapseIcon color={colors.selected} />}
-                onClick={() => setOpen(!open)} 
+                onClick={() => setOpen(!open)}
               />
             </Box>
           </CredentialCardFooter>
         </Box>
       </Box>
     </CredentialCard>
-  );
+  )
 }
 
-
 interface IProps {
-  connectionId?: string,
+  connectionId?: string
 }
 
 function Credentials({ connectionId }: IProps) {
@@ -299,11 +283,11 @@ function Credentials({ connectionId }: IProps) {
             <Box align="start" width="medium" pad="small">
               <Heading level={2}>Your wallet is empty</Heading>
               <Text size="medium">
-                You can see your credentials here. 
-                When you receive credentials, they are saved here. 
-                These credentials can be used in the connections chat.
+                You can see your credentials here. When you receive credentials,
+                they are saved here. These credentials can be used in the
+                connections chat.
               </Text>
-              <br/>
+              <br />
               <Text size="medium">
                 Get credentials by creating <b>connections</b> with services
               </Text>
@@ -317,9 +301,11 @@ function Credentials({ connectionId }: IProps) {
       {!showWaiting && (
         <Box>
           <CredentialWrapper>
-            {credentials.edges.map(({ node }: ICredentialEdge, index: number) => (
-              <CredentialBox key={node.id} node={node} />
-            ))}
+            {credentials.edges.map(
+              ({ node }: ICredentialEdge, index: number) => (
+                <CredentialBox key={node.id} node={node} />
+              )
+            )}
           </CredentialWrapper>
           {credentials.pageInfo.hasNextPage && (
             <Button

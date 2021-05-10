@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box, Paragraph } from 'grommet'
+import { Box } from 'grommet'
 import styled from 'styled-components'
-import { chat, colors, Line } from '../theme'
+import { colors, Line, BoldHeading, ChatParagraph, ChatContent } from '../theme'
 import Utils from './Utils'
 
 import { ICredentialNode, ICredentialValue, IJobNode, JobStatus } from './Types'
@@ -10,28 +10,10 @@ import { Checkmark } from 'grommet-icons'
 
 type IProps = { credential: ICredentialNode; job: IJobNode }
 
-const P = styled(Paragraph)`
-  padding: 3px 17px 3px 0px;
-  margin: 0;
-  font-size: ${chat.fontSize};
-  color: ${colors.smallText};
-  overflow: hidden;
-`
-
-const Heading = styled(P)`
-  font-weight: bold;
-`
-
-const Content = styled(Box)`
-  padding: ${chat.contentPadding};
-  margin: 0;
-  display: inline-block;
-  width: 100%;
-`
-
 const Span = styled.span`
   color: ${colors.brand};
 `
+
 const ValueSpan = styled(Span)`
   color: ${colors.selected};
   padding: 0 0 0 0.5rem;
@@ -41,14 +23,16 @@ const ValueSpan = styled(Span)`
 function Credential({ credential, job }: IProps) {
   return (
     <AcceptableJob job={job} canAccept={true}>
-      <Content>
-        <Heading>
+      <ChatContent>
+        <BoldHeading>
           Credential Offer{' '}
           {job.status === JobStatus.COMPLETE && (
             <Checkmark color={colors.selected} size="16px" />
           )}
-        </Heading>
-        <P>{Utils.parseSchemaName(credential.schemaId)}</P>
+        </BoldHeading>
+        <ChatParagraph>
+          {Utils.parseSchemaName(credential.schemaId)}
+        </ChatParagraph>
         <Line></Line>
         <Box pad="0 0 3px 0">
           {credential.attributes.map((item: ICredentialValue) => {
@@ -65,13 +49,13 @@ function Credential({ credential, job }: IProps) {
         <Line></Line>
         {job.status === JobStatus.COMPLETE && (
           <Box>
-            <P>
+            <ChatParagraph>
               Received this credential{' '}
               {Utils.toDateDotString(credential.issuedMs!)}
-            </P>
+            </ChatParagraph>
           </Box>
         )}
-      </Content>
+      </ChatContent>
     </AcceptableJob>
   )
 }
