@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Anchor, Button, Box, TextInput, Text, Header, Heading } from 'grommet'
+import { Anchor, Button, Box, TextInput, Text, Heading } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
 import { RotateRight } from 'grommet-icons'
