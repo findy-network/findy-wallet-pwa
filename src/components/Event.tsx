@@ -29,23 +29,15 @@ function Event({ node }: IProps) {
     case 'Received credential': {
       return null
     }
-    /*case 'Received credential': {
-      return (
-      <JobBox>
-        <P>{node.description}</P>
-        <P>{node.job?.node.status}</P>
-      </JobBox>)
-    }*/
     case 'Approved credential': {
       return null
     }
-    /*case 'Approved credential': {
-      return (
-      <JobBox>
-        <P>{node.description}</P>
-        <P>{node.job?.node.status}</P>
-      </JobBox>)
-    }*/
+    case 'Approved proof': {
+      return null
+    }
+    case 'Proved credential': {
+      return null
+    }
     default: {
       return node.description ? (
         <JobBox time={node.createdMs}>
