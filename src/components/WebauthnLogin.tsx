@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Anchor, Button, Box, TextInput, Text } from 'grommet'
+import { Anchor, Button, Box, TextInput, Text, Header, Heading } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
 import { RotateRight } from 'grommet-icons'
 import { Line } from '../theme'
+import { colors } from '../theme'
 
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
@@ -57,8 +58,16 @@ const Login = styled(Box)`
 `
 
 const Btn = styled(Button)`
-  border: 1px solid;
-  margin-bottom: 5px;
+  padding: 15px;
+  width: 60%;
+  text-align: center;
+  background: ${colors.selected};
+  color: ${colors.darkBtnText};
+  box-shadow: 0px 8px 15px rgba(0, 110, 230, 0.2);
+`
+
+const ModeAnchor = styled(Anchor)`
+  color: ${colors.selected};
 `
 
 function WebauthnLogin() {
@@ -187,6 +196,9 @@ function WebauthnLogin() {
   }
   return (
     <Login width="medium" margin="medium">
+      <Heading level="3" margin="30px auto">
+        Welcome!
+      </Heading>
       <TextInput
         name="email"
         placeholder="email"
@@ -194,7 +206,7 @@ function WebauthnLogin() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <Box direction="column" margin="small" align="center">
+      <Box direction="column" margin="12px 0 0 0" align="center">
         {register ? (
           <>
             <Btn
@@ -202,11 +214,11 @@ function WebauthnLogin() {
               label="Register"
               onClick={doRegister}
             ></Btn>
-            <Text size="small">
+            <Text size="small" margin="12px 0 0 0">
               Existing user?{' '}
-              <Anchor disabled={waiting} onClick={() => toggleRegister(false)}>
+              <ModeAnchor disabled={waiting} onClick={() => toggleRegister(false)}>
                 Login
-              </Anchor>
+              </ModeAnchor>
             </Text>
           </>
         ) : (
@@ -216,11 +228,11 @@ function WebauthnLogin() {
               label="Login"
               onClick={doLogin}
             ></Btn>
-            <Text size="small">
+            <Text size="small" margin="12px 0 0 0">
               New user?{' '}
-              <Anchor disabled={waiting} onClick={() => toggleRegister(true)}>
+              <ModeAnchor disabled={waiting} onClick={() => toggleRegister(true)}>
                 Register
-              </Anchor>
+              </ModeAnchor>
             </Text>
           </>
         )}
