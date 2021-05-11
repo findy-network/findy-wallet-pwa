@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useContext } from 'react'
+import React, { ReactNode, useState, useContext, createContext } from 'react'
 import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
 import EventNotifications from './EventNotifications'
@@ -162,14 +162,25 @@ const Username = styled(Box)`
   }
 `
 
+const ConnectionName = styled(Box)`
+  font-size: 14px;
+  display: block;
+  @media ${device.tablet} {
+    display: none;
+  }
+`
+
 interface IProps {
   children: ReactNode
 }
+
+export const ConnectionContext = createContext<any>({})
 
 function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
   const [connectionsOpen, setConnectionsOpen] = useState(true)
+  const [connection, setConnection] = useState('')
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav gap="small" align="start" direction={direction}>
       <Add></Add>
@@ -181,7 +192,10 @@ function Navi({ children }: IProps) {
         />
       </Invite>
       <ConnectionBox>
-        <Connections hideMenu={setMenuOpen}></Connections>
+        <Connections
+          hideMenu={setMenuOpen}
+          conOpen={setConnectionsOpen}
+        ></Connections>
       </ConnectionBox>
     </Nav>
   )
@@ -203,6 +217,7 @@ function Navi({ children }: IProps) {
         activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
+          setConnection('')
           setConnectionsOpen(false)
         }}
       >
@@ -237,6 +252,7 @@ function Navi({ children }: IProps) {
             <Image fit="cover" src="/img/logo.svg" />
           </BrandBox>
         </Link>
+        <ConnectionName>{connectionsOpen && connection}</ConnectionName>
         <MenuBox>
           <MenuButton
             icon={<MenuIcon />}
@@ -258,7 +274,9 @@ function Navi({ children }: IProps) {
         <Sidebar background="brand">
           {connectionsOpen && connectionNav('column')}
         </Sidebar>
-        <Content pad="medium">{children}</Content>
+        <ConnectionContext.Provider value={{ setConnection }}>
+          <Content pad="medium">{children}</Content>
+        </ConnectionContext.Provider>
       </Box>
     </>
   )

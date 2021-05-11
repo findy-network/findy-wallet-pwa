@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Box, Button, Stack, TextInput, Keyboard } from 'grommet'
 import styled from 'styled-components'
@@ -19,6 +19,7 @@ import { useMutation } from '@apollo/client'
 import ScrollableFeed from 'react-scrollable-feed'
 import { SEND_MESSAGE_MUTATION, MARK_EVENTREAD_MUTATION } from './Queries'
 import { LinkUp } from 'grommet-icons'
+import { ConnectionContext } from './Navi'
 
 export const CONNECTION_QUERY = gql`
   query GetConnection($id: ID!, $cursor: String) {
@@ -102,13 +103,16 @@ const MoreButton = styled(Button)`
 type TParams = { id: string }
 
 function Connection({ match }: RouteComponentProps<TParams>) {
+  const { setConnection } = useContext(ConnectionContext)
   const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
+    errorPolicy: 'all',
     variables: {
       id: match.params.id,
     },
     onCompleted: (data) => {
       const edges = data.connection.events.edges
       if (edges[edges.length - 1]) {
+        setConnection(data.connection.theirLabel)
         markEvent({
           variables: {
             input: {
@@ -150,7 +154,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   })
   return (
     <>
-      {loading || error ? (
+      {loading || error || !data ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Chat>
