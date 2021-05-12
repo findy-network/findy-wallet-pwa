@@ -109,20 +109,30 @@ function Connection({ match }: RouteComponentProps<TParams>) {
     variables: {
       id: match.params.id,
     },
-    onCompleted: (data) => {
-      const edges = data.connection.events.edges
-      if (edges[edges.length - 1]) {
-        setConnection(data.connection.theirLabel)
-        markEvent({
-          variables: {
-            input: {
-              id: edges[edges.length - 1].node.id,
-            },
-          },
-        })
+    onCompleted: () => {
+      complete()
+    },
+    onError: () => {
+      if (data) {
+        complete()
       }
     },
   })
+
+  const complete = () => {
+    const edges = data.connection.events.edges
+    if (edges[edges.length - 1]) {
+      setConnection(data.connection.theirLabel)
+      markEvent({
+        variables: {
+          input: {
+            id: edges[edges.length - 1].node.id,
+          },
+        },
+      })
+    }
+  }
+
   const node = data?.connection
   const jobIds: Array<string> = []
 
@@ -154,7 +164,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   })
   return (
     <>
-      {loading || error || !data ? (
+      {loading || (error && !data) ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Chat>
