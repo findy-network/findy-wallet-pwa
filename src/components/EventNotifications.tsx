@@ -74,6 +74,17 @@ const updateCacheWithNewItem = (
   parentName: string, // TODO: refactor nested items handling
   itemName: string
 ) => {
+  const updateState = (prevState: any) => {
+    const newState = stateWithNewItem(prevState, itemName, newItem, last)
+    if (newState.updated) {
+      if (!parentName) {
+        client.writeQuery({ ...query, data: newState.state })
+      } else {
+        const wState = { [parentName]: newState.state }
+        client.writeQuery({ ...query, data: wState })
+      }
+    }
+  }
   try {
     // this will throw if there are no items in cache
     const state: any = parentName
@@ -82,18 +93,11 @@ const updateCacheWithNewItem = (
     const items = state[itemName]
     // Update only if the latest item is already fetched
     if (!items.pageInfo.hasNextPage) {
-      const newState = stateWithNewItem(state, itemName, newItem, last)
-      if (newState.updated) {
-        if (!parentName) {
-          client.writeQuery({ ...query, data: newState.state })
-        } else {
-          const wState = { [parentName]: newState.state }
-          client.writeQuery({ ...query, data: wState })
-        }
-      }
+      updateState(state)
     }
   } catch (e) {
     //console.log(e)
+    updateState({})
   }
 }
 
