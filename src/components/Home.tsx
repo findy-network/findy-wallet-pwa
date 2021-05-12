@@ -75,7 +75,6 @@ function Home() {
           </CartoonBox>
         </div>
       )}
-      {!showWaiting && <div>No connections</div>}
     </>
   )
 }
