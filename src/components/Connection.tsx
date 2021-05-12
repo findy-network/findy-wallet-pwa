@@ -103,7 +103,7 @@ const MoreButton = styled(Button)`
 type TParams = { id: string }
 
 function Connection({ match }: RouteComponentProps<TParams>) {
-  const { setConnection } = useContext(ConnectionContext)
+  const { setConnection, setConnectionsOpen } = useContext(ConnectionContext)
   const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
     errorPolicy: 'all',
     variables: {
@@ -123,6 +123,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
     const edges = data.connection.events.edges
     if (edges[edges.length - 1]) {
       setConnection(data.connection.theirLabel)
+      setConnectionsOpen(true)
       markEvent({
         variables: {
           input: {

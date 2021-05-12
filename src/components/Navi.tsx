@@ -179,10 +179,10 @@ export const ConnectionContext = createContext<any>({})
 function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [connectionsOpen, setConnectionsOpen] = useState(true)
+  const [connectionsOpen, setConnectionsOpen] = useState(false)
   const [connection, setConnection] = useState('')
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
-    <Nav gap="small" align="start" direction={direction}>
+    <Nav animation="fadeIn" gap="small" align="start" direction={direction}>
       <Add></Add>
       <Invite to="/me">
         <GreyButton
@@ -274,7 +274,9 @@ function Navi({ children }: IProps) {
         <Sidebar background="brand">
           {connectionsOpen && connectionNav('column')}
         </Sidebar>
-        <ConnectionContext.Provider value={{ setConnection }}>
+        <ConnectionContext.Provider
+          value={{ setConnection, setConnectionsOpen }}
+        >
           <Content pad="medium">{children}</Content>
         </ConnectionContext.Provider>
       </Box>
