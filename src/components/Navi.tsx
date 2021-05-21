@@ -191,12 +191,14 @@ function Navi({ children }: IProps) {
           onClick={() => setMenuOpen(false)}
         />
       </Invite>
-      <ConnectionBox>
-        <Connections
-          hideMenu={setMenuOpen}
-          conOpen={setConnectionsOpen}
-        ></Connections>
-      </ConnectionBox>
+      {connectionsOpen && (
+        <ConnectionBox>
+          <Connections
+            hideMenu={setMenuOpen}
+            conOpen={setConnectionsOpen}
+          ></Connections>
+        </ConnectionBox>
+      )}
     </Nav>
   )
 
@@ -271,9 +273,7 @@ function Navi({ children }: IProps) {
       </Collapsible>
       <Box direction="row" fill>
         <EventNotifications />
-        <Sidebar background="brand">
-          {connectionsOpen && connectionNav('column')}
-        </Sidebar>
+        <Sidebar background="brand">{connectionNav('column')}</Sidebar>
         <ConnectionContext.Provider
           value={{ setConnection, setConnectionsOpen }}
         >

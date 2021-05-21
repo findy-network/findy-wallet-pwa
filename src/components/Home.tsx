@@ -32,15 +32,16 @@ function Home() {
     }
   }
   const { loading, error, data } = useQuery(CONNECTIONS_QUERY, {
+    fetchPolicy: 'cache-and-network',
     onCompleted,
   })
   const isLoading = loading || (!error && !data)
   const showWaiting = isLoading || error
   const showIntroduction = !loading && (error || !data)
 
-  console.log('loading: ' + loading)
-  console.log('error: ' + error)
-  console.log('data: ' + data)
+  //console.log('loading: ' + loading)
+  //console.log('error: ' + error)
+  //console.log('data: ' + data)
 
   return (
     <>
