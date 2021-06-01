@@ -1,61 +1,76 @@
 import React from 'react'
-import { Box, Paragraph } from 'grommet'
+import { Box } from 'grommet'
 import styled from 'styled-components'
-import { chat, colors } from '../theme'
-
-import { IProofAttribute, IProofValue, IProofNode, IJobNode } from './Types'
+import { colors, BoldHeading, ChatParagraph, Line, ChatContent } from '../theme'
+import { Checkmark } from 'grommet-icons'
+import {
+  IProofAttribute,
+  IProofValue,
+  IProofNode,
+  IJobNode,
+  JobStatus,
+} from './Types'
 import AcceptableJob from './AcceptableJob'
+import Utils from './Utils'
 
 type IProps = { proof: IProofNode; job: IJobNode }
 
-const P = styled(Paragraph)`
-  padding: 9px 17px 11px 0px;
-  margin: 0;
-  font-size: ${chat.fontSize};
-  color: ${colors.smallText};
-  overflow: hidden;
+const Span = styled.span`
+  color: ${colors.brand};
 `
 
-const Content = styled(Box)`
-  padding: 9px 17px 11px 17px;
-  margin: 0;
-  display: inline-block;
+const HelpSpan = styled(Span)`
+  color: ${colors.selected};
+  margin-top: 30px;
 `
 
-const Strong = styled.strong`
-  color: ${colors.chatText};
-`
-
-const Span = styled.strong`
-  color: ${colors.smallText};
+const RedHelpSpan = styled(HelpSpan)`
+  color: ${colors.notOK};
 `
 
 function Proof({ proof, job }: IProps) {
   return (
     <AcceptableJob job={job} canAccept={proof.provable.provable}>
-      <Content>
-        <P>
-          Proof: <Strong>{proof.id}</Strong>
-        </P>
-        {proof.provable.provable && <span>This proof is provable!</span>}
+      <ChatContent>
+        <BoldHeading>
+          Proof Request{' '}
+          {job.status === JobStatus.COMPLETE && (
+            <Checkmark color={colors.selected} size="16px" />
+          )}
+        </BoldHeading>
+
+        <Line></Line>
+        <ChatParagraph>Prove following information:</ChatParagraph>
         {proof.attributes.map((item: IProofAttribute) => {
           const value = proof.values.find(
             (val: IProofValue) => val.attributeId === item.id
           )
           return (
-            <div key={item.id}>
-              <div>
-                <span>{item.name} </span>
-                <Span>{item.credDefId}</Span>
-              </div>
-              <div>
-                <span>Value:</span>
-                <strong>{value?.value}</strong>
-              </div>
-            </div>
+            <Box key={item.id}>
+              <Span>- {item.name} </Span>
+              {job.status === JobStatus.COMPLETE && (
+                <ChatParagraph>
+                  proofed value: <HelpSpan>{value?.value}</HelpSpan>
+                </ChatParagraph>
+              )}
+            </Box>
           )
         })}
-      </Content>
+        {proof.provable.provable && job.status === JobStatus.PENDING && (
+          <HelpSpan>This proof is provable!</HelpSpan>
+        )}
+        {!proof.provable.provable && job.status === JobStatus.PENDING && (
+          <RedHelpSpan>This proof is not provable!</RedHelpSpan>
+        )}
+        <Line></Line>
+        {job.status === JobStatus.COMPLETE && (
+          <Box>
+            <ChatParagraph>
+              Proved attributes {Utils.toDateDotString(proof.approvedMs!)}
+            </ChatParagraph>
+          </Box>
+        )}
+      </ChatContent>
     </AcceptableJob>
   )
 }

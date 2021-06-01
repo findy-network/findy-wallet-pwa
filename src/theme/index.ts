@@ -4,6 +4,7 @@ import styled from 'styled-components'
 export const colors = {
   brand: '#2C2C31', // charcoal gray
   selected: '#006EE6', // kaamos blue
+  notOK: 'red',
   inactive: 'rgba(255, 255, 255, 0.5)',
   active: '#FFFFFF',
   text: '#2C2C31',
