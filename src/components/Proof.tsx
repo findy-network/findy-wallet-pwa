@@ -30,7 +30,7 @@ const RedHelpSpan = styled(HelpSpan)`
 
 function Proof({ proof, job }: IProps) {
   return (
-    <AcceptableJob job={job} canAccept={proof.provable.provable}>
+    <AcceptableJob job={job}>
       <ChatContent>
         <BoldHeading>
           Proof Request{' '}
@@ -50,16 +50,17 @@ function Proof({ proof, job }: IProps) {
               <Span>- {item.name} </Span>
               {job.status === JobStatus.COMPLETE && (
                 <ChatParagraph>
-                  proofed value: <HelpSpan>{value?.value}</HelpSpan>
+                  proved value: <HelpSpan>{value?.value}</HelpSpan>
                 </ChatParagraph>
               )}
             </Box>
           )
         })}
-        {proof.provable.provable && job.status === JobStatus.PENDING && (
+
+        {job.status === JobStatus.PENDING && (
           <HelpSpan>This proof is provable!</HelpSpan>
         )}
-        {!proof.provable.provable && job.status === JobStatus.PENDING && (
+        {job.status === JobStatus.BLOCKED && (
           <RedHelpSpan>
             This proof is not provable!<br></br> Get credentials with needed
             attributes.

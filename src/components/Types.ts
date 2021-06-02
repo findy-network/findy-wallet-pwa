@@ -51,6 +51,7 @@ export enum ProtocolType {
 
 export enum JobStatus {
   WAITING = 'WAITING',
+  BLOCKED = 'BLOCKED',
   PENDING = 'PENDING',
   COMPLETE = 'COMPLETE',
 }
@@ -123,10 +124,6 @@ export interface IProofValue {
   value: string
 }
 
-export interface IProvable {
-  provable: boolean
-}
-
 export interface IProofNode extends INode {
   role: ProofRole
   attributes: IProofAttribute[]
@@ -135,7 +132,6 @@ export interface IProofNode extends INode {
   approvedMs?: string
   verifiedMs?: string
   connection?: IConnectionNode
-  provable: IProvable
   values: IProofValue[]
 }
 

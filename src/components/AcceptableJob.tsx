@@ -24,11 +24,10 @@ const P = styled(Paragraph)`
 
 type IProps = {
   job: IJobNode
-  canAccept: boolean
   children: ReactNode
 }
 
-function AcceptableJob({ job, children, canAccept }: IProps) {
+function AcceptableJob({ job, children }: IProps) {
   const [resumeJob] = useMutation(RESUME_JOB_MUTATION)
 
   function doResume(accept: boolean) {
@@ -37,21 +36,23 @@ function AcceptableJob({ job, children, canAccept }: IProps) {
     disableDecline(true)
   }
 
-  const [accept, disableAccept] = useState(!canAccept)
-  const [decline, disableDecline] = useState(false)
+  const showButtons =
+    job.status === JobStatus.PENDING || job.status === JobStatus.BLOCKED
+  const [acceptDisabled, disableAccept] = useState(false)
+  const [declineDisabled, disableDecline] = useState(false)
 
   return (
     <div>
       {children}
-      {job.status === JobStatus.PENDING && (
+      {showButtons && (
         <Box direction="row" pad="0 1rem 1rem">
           <Btn
-            disabled={decline}
+            disabled={declineDisabled}
             onClick={() => doResume(false)}
             label="Decline"
           ></Btn>
           <Btn
-            disabled={accept}
+            disabled={job.status !== JobStatus.PENDING || acceptDisabled}
             onClick={() => doResume(true)}
             label="Accept"
           ></Btn>
