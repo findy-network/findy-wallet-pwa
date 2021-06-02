@@ -60,7 +60,10 @@ function Proof({ proof, job }: IProps) {
           <HelpSpan>This proof is provable!</HelpSpan>
         )}
         {!proof.provable.provable && job.status === JobStatus.PENDING && (
-          <RedHelpSpan>This proof is not provable!</RedHelpSpan>
+          <RedHelpSpan>
+            This proof is not provable!<br></br> Get credentials with needed
+            attributes.
+          </RedHelpSpan>
         )}
         <Line></Line>
         {job.status === JobStatus.COMPLETE && (
