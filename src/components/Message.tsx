@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { device, chat, colors } from '../theme'
 
 import { IMessageNode } from './Types'
+import Linkify from 'react-linkify'
 
 const Content = styled(Box)`
   width: 100%;
@@ -21,12 +22,20 @@ const P = styled(Paragraph)`
   white-space: pre-wrap;
 `
 
+const componentDecorator = (href: any, text: any, key: any) => (
+  <a href={href} key={key} target="_blank" rel="noopener noreferrer">
+    {text}
+  </a>
+)
+
 type IProps = { message: IMessageNode }
 
 function Message({ message }: IProps) {
   return (
     <Content>
-      <P>{message.message}</P>
+      <Linkify componentDecorator={componentDecorator}>
+        <P>{message.message}</P>
+      </Linkify>
     </Content>
   )
 }
