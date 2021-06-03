@@ -82,7 +82,6 @@ function Connections({
               onClick={() => {
                 hideMenu!(false)
                 conOpen!(true)
-                window.location.href = `/connections/${node.id}` //remove this when vault is fixed
               }}
               key={node.id}
               to={`/connections/${node.id}`}
