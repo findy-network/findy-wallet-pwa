@@ -80,9 +80,6 @@ const proofNodeFragment = gql`
       attributeId
       value
     }
-    provable {
-      provable
-    }
   }
 `
 

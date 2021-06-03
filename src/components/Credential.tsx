@@ -22,7 +22,7 @@ const ValueSpan = styled(Span)`
 // todo add declined credential
 function Credential({ credential, job }: IProps) {
   return (
-    <AcceptableJob job={job} canAccept={true}>
+    <AcceptableJob job={job}>
       <ChatContent>
         <BoldHeading>
           Credential Offer{' '}
