@@ -11,7 +11,6 @@ import {
   event as eventFragments,
 } from './Fragments'
 import { IEventEdge, ProtocolType } from './Types'
-import Event from './Event'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
 import { useMutation } from '@apollo/client'
@@ -189,11 +188,10 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                   animation={{ type: 'fadeIn', duration: 1500 }}
                   key={node.id}
                 >
-                  {node.job && node.job?.node.protocol !== ProtocolType.NONE ? (
-                    <Job job={node.job.node} />
-                  ) : (
-                    <Event node={node} />
-                  )}
+                  {node.job &&
+                    node.job?.node.protocol !== ProtocolType.NONE && (
+                      <Job job={node.job.node} />
+                    )}
                 </Box>
               ))}
             </ScrollableFeed>
