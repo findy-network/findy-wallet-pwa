@@ -212,7 +212,7 @@ function Navi({ children }: IProps) {
           setConnectionsOpen(true)
         }}
       >
-        Connections
+        Chat
       </MenuLink>
       <MenuLink
         to="/credentials"
@@ -223,7 +223,7 @@ function Navi({ children }: IProps) {
           setConnectionsOpen(false)
         }}
       >
-        Credentials
+        Wallet
       </MenuLink>
       <MenuLink
         to="/logout"
