@@ -146,7 +146,6 @@ function AddDialog({ onClose, initialCode }: IProps) {
               </Line>
               <QrReader
                 onRead={(res: string) => {
-                  // console.log(res)
                   setCode(res)
                 }}
               />

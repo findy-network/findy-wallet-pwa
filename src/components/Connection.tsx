@@ -147,12 +147,10 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   const [markEvent] = useMutation(MARK_EVENTREAD_MUTATION, {
     onCompleted: (resp: any) => console.log(resp),
     onError: (e) => {
-      console.log('ERROR ' + e)
+      console.log('ERROR: ' + e)
     },
   })
 
-  // TODO: figure out how we should render
-  // jobs that receive multiple events
   const events = node?.events.edges.map((item: IEventEdge) => {
     if (item.node.job) {
       if (jobIds.includes(item.node.job.node.id)) {
