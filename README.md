@@ -6,7 +6,7 @@ Web based cloud wallet for Findy agents. Uses WebAuthn / Fido2 for authenticatio
 
 Wallet related to the general architecture
 
-![Architecture](./docs/arch-drawio.png)
+![Architecture](./docs/vault-drawio.png)
 
 
 ## Running in development mode
