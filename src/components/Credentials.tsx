@@ -158,7 +158,7 @@ const CredentialBox = ({ node }: CredentialProps) => {
                 {Utils.parseIssuer(node.credDefId)}
               </CredentialText>
               <CredentialText color={colors.smallText}>
-                &nbsp;{Utils.toDateString(node.createdMs)}
+                &nbsp;{Utils.toDateDotString(node.createdMs)}
               </CredentialText>
             </Box>
           </Box>
@@ -189,7 +189,7 @@ const CredentialBox = ({ node }: CredentialProps) => {
                   Created
                 </CredentialText>
                 <CredentialText wordBreak="break-all" size="small">
-                  {node.createdMs}
+                  {Utils.toTimeString(node.createdMs!)}
                 </CredentialText>
               </CredentialRow>
               <CredentialRow direction="row-responsive">
@@ -197,7 +197,7 @@ const CredentialBox = ({ node }: CredentialProps) => {
                   Issued
                 </CredentialText>
                 <CredentialText wordBreak="break-all" size="small">
-                  {node.issuedMs}
+                  {Utils.toTimeString(node.issuedMs!)}
                 </CredentialText>
               </CredentialRow>
               <CredentialRow direction="row-responsive">
@@ -205,7 +205,7 @@ const CredentialBox = ({ node }: CredentialProps) => {
                   Approved
                 </CredentialText>
                 <CredentialText wordBreak="break-all" size="small">
-                  {node.approvedMs}
+                  {Utils.toTimeString(node.approvedMs!)}
                 </CredentialText>
               </CredentialRow>
               <CredentialRow pad={{ top: 'small' }} direction="column">

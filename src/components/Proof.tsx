@@ -70,7 +70,7 @@ function Proof({ proof, job }: IProps) {
         {job.status === JobStatus.COMPLETE && (
           <Box>
             <ChatParagraph>
-              Proved attributes {Utils.toDateDotString(proof.approvedMs!)}
+              Proved attributes {Utils.toDateDotString(proof.verifiedMs!)}
             </ChatParagraph>
           </Box>
         )}
