@@ -135,13 +135,6 @@ const CredentialBox = ({ node }: CredentialProps) => {
   const [open, setOpen] = useState(false)
   const CollapseIcon = open ? FormUp : FormDown
 
-  /*
-    for(let i = 0; i < node.attributes.length; i += 1) {
-      console.log(node.attributes[i].name + " " + node.attributes[i].value);
-    }
-    console.log(node);
-  */
-
   return (
     <CredentialCard>
       <CredentialCardHeader>
