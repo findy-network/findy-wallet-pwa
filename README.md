@@ -57,7 +57,7 @@ When you successfully made a connection with other agent, you can send and recei
 
 After you have a connection with other agent, they can send you verified credentials. You can accept or decline these offers.
 
-### Wallet credentials
+#### Wallet credentials
 
 You can browse your received credentials by going in the "Wallet" section of the app.
 
