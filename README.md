@@ -2,6 +2,13 @@
 
 Web based cloud wallet for Findy agents. Uses WebAuthn / Fido2 for authentication.
 
+## General architecture
+
+Wallet related to the general architecture
+
+![Architecture](./docs/vault-drawio.png)
+
+
 ## Running in development mode
 
 1. Install and run Findy Vault: https://github.com/findy-network/findy-agent-vault/
