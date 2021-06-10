@@ -251,7 +251,7 @@ function Navi({ children }: IProps) {
               setConnectionsOpen(true)
             }}
           >
-            <Image fit="cover" src="/img/logo.svg" />
+            <Image fit="contain" src="/img/logo.svg" />
           </BrandBox>
         </Link>
         <ConnectionName>{connectionsOpen && connection}</ConnectionName>

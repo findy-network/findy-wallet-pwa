@@ -96,7 +96,6 @@ const updateCacheWithNewItem = (
       updateState(state)
     }
   } catch (e) {
-    //console.log(e)
     updateState({})
   }
 }

@@ -19,7 +19,6 @@ const ValueSpan = styled(Span)`
   padding: 0 0 0 0.5rem;
 `
 
-// todo add declined credential
 function Credential({ credential, job }: IProps) {
   return (
     <AcceptableJob job={job}>

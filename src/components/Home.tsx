@@ -39,10 +39,6 @@ function Home() {
   const showWaiting = isLoading || error
   const showIntroduction = !loading && (error || !data)
 
-  //console.log('loading: ' + loading)
-  //console.log('error: ' + error)
-  //console.log('data: ' + data)
-
   return (
     <>
       {showWaiting && (

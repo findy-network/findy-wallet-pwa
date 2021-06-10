@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Anchor, Button, Box, TextInput, Text, Heading } from 'grommet'
+import { Anchor, Button, Box, TextInput, Text } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
 import { RotateRight } from 'grommet-icons'
@@ -196,9 +196,6 @@ function WebauthnLogin() {
   }
   return (
     <Login width="medium" margin="medium">
-      <Heading level="3" margin="30px auto">
-        Welcome!
-      </Heading>
       <TextInput
         name="email"
         placeholder="email"
