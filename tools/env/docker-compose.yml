@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  core:
+    image: ghcr.io/findy-network/findy-agent:latest
+    volumes:
+      - ./config/steward.exported:/steward.exported
+      - ./config/cert:/grpc
+      - .data/agent:/root
+    environment:
+      FCLI_POOL_GENESIS_TXN_FILE: ""
+      FCLI_POOL_NAME: "FINDY_FILE_LEDGER"
+      FCLI_AGENCY_POOL_NAME: "FINDY_FILE_LEDGER"
+      FCLI_AGENCY_GRPC_TLS: "true"
+      FCLI_AGENCY_GRPC_CERT_PATH: "/grpc"
+    ports:
+      - "8080:8080"
+      - "50052:50051"
+  auth:
+    image: ghcr.io/findy-network/findy-agent-auth:latest
+    volumes:
+      - ./config/cert:/grpc
+      - .data/auth:/data
+    depends_on:
+      - core
+    environment:
+      FAA_ENABLE_CORS: "true"
+      FAA_ORIGIN: "http://localhost:3000"
+      FAA_AGENCY_ADDR: "core"
+    ports:
+      - "8088:8888"
+  vault:
+    image: ghcr.io/findy-network/findy-agent-vault:latest
+    volumes:
+      - ./config/cert:/grpc
+    depends_on:
+      - vault-db
+      - core
+    environment:
+      FAV_DB_PASSWORD: "password"
+      FAV_AGENCY_HOST: "core"
+    ports:
+      - "8085:8085"
+    entrypoint: >
+      /bin/sh -c "
+        while ! nc -z vault-db 5432;
+        do
+          echo 'wait for db';
+          sleep 3;
+        done;
+        /start.sh;
+      "
+  vault-db:
+    image: postgres:13.1-alpine
+    volumes:
+      - .data/vault:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "vault"
+      POSTGRES_PASSWORD: "password"
