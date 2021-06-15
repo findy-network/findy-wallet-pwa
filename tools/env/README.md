@@ -4,7 +4,7 @@
 
 In case you do not have cloud installation of Findy Agency available, you can setup needed services locally and develop your application against a local Findy Agency. This document describes how to set up Findy Agency service containers on your local computer.
 
-The setup uses agency internal file ledger, intended only for testing during development. This setup does not (yet) suit for testing inter-agency communication.
+The setup uses agency internal file ledger, intended only for testing during development. This setup does not suit for testing inter-agency communication even though it is possible to set one up using a common indy-plenum ledger.
 
 ## Prerequisities
 
@@ -25,6 +25,8 @@ The setup uses agency internal file ledger, intended only for testing during dev
 
    The script will create a folder called `.data` where all the data of the services are stored during execution. If there is no need for the test data anymore, `make clean` will remove all the generated data and allocated resources.
 
-2. Start wallet development environment. On the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address http://localhost:3000
+1. Start wallet development environment. On the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address http://localhost:3000
 
-3. Implement an issuer or verifier of your own using our go/js frameworks (TODO: link to samples) or test the features running the test chat bot. TODO: instructions for creating schema/cred-def/invitation + starting the bot. 
+1.  Test the features running the test chat bot. TODO: instructions for creating schema/cred-def/invitation + starting the bot. 
+
+1. Implement an issuer or verifier of your own using our go/js frameworks (TODO: link to samples)
