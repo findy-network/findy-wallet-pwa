@@ -2,7 +2,7 @@
 
 if [ -z "$FCLI_KEY" ]; then
 	export FCLI_KEY=`cli new-key`
-	echo "$FCLI_KEY" >> .key_backup
+	echo "$FCLI_KEY" >> .key-backup
 fi
 export FCLI_TLS_PATH="./config/cert"
 export FCLI_USER="findy-root"
