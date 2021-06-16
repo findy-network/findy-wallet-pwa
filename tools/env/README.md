@@ -86,6 +86,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    That's for the helper scrips used in this directory.
 
    **Admin Operations**
+
    After environment setup you can see what your configuration is by executing
    the following helper script:
    ```shell
@@ -119,9 +120,15 @@ even though it is possible to set one up using a common indy-plenum ledger.
    ```
 
    **Alice invites Bob to connect**
+
    ```shell
    export FCLI_CONN_ID=`alice/invitation | bob/connect`
    ```
+   Or on macOS could be convenient to have it in clipboard as well:
+   ```shell
+   alice/invitation | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
+   ```
+
    Now you have the connection ID (pairwise ID) in the environment variable and
    you could test that with the commands:
    ```shell
@@ -156,7 +163,8 @@ even though it is possible to set one up using a common indy-plenum ledger.
    The Bob's terminal should output Alice's wellcoming messages. To stop Bob's
    listen command just press C-c.
 
-   **what else we really need for now?**
+   **TODO: What else we really need for now?**
+
    Should we have issuing example, chat bots, all of them or should we wait for
    the feedback first and bring them if there is demand.
 
