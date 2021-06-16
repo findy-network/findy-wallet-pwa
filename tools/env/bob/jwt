@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cli=${FCLI:-findy-agent-cli}
+
+echo -n `$cli authn login -u bob`
+
