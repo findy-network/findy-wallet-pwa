@@ -126,7 +126,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    ```
    Or on macOS could be convenient to have it in clipboard as well:
    ```shell
-   alice/invitation | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
+   alice/invitation | bob/connect | pbcopy && export FCLI_CONN_ID=`pbpaste`
    ```
 
    Now you have the connection ID (pairwise ID) in the environment variable and
@@ -144,12 +144,13 @@ even though it is possible to set one up using a common indy-plenum ledger.
    source ./use-key.sh
    source ./setup-cli-env.sh
    source bob/login
-   export FClI_CONN_ID="<perviously defined conn id here>"
+   export FCLI_CONN_ID="<perviously defined conn id here>"
    cli agent listen
    ```
    You should now receive a notification of the trustping protocol.
 
    **Alice sends text message to Bob**
+
    First in the Bob's terminal stop the previous listening with C-c and enter
    the following:
    ```shell
