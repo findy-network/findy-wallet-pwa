@@ -64,16 +64,101 @@ even though it is possible to set one up using a common indy-plenum ledger.
    ```
    That will setup all the needed environment variables for CLI configuration
    for the currently running environment. Most importantly it creates a new
-   master key for your CLI FIDO2 authenticator. If you want to keep your development
-   environment between restarts you should persist that key now by copying it to
-   your environment variables. The key is in env `FCLI_KEY` after running the
-   setup script.
+   master key for your CLI FIDO2 authenticator. If you want to keep your
+   development environment between restarts you should persist that key by
+   copying it to your environment variables. The key is in env `FCLI_KEY` after
+   running the setup script. The setup generates the `use-key.sh` script for
+   your convenient as well. Add `source use-key.sh` to your boot files for
+   example.
 
    Next time you run the `./setup-cli-env.sh` it won't create a new key *if it
-   founds the existing one*.
-   
-1. Test the features running the test chat bot. TODO: instructions for creating
-   schema/cred-def/invitation + starting the bot. 
+   founds the existing one* i.e. you have sourced the `use-key.sh` script.
+
+   *Tip* Enter following commands:
+   ```shell
+   alias cli=findy-agent-cli 
+   . <(findy-agent-cli completion bash | sed 's/findy-agent-cli/cli/g')
+   ```
+   Or if you have renamed the executable enter the following as well:
+   ```shell
+   export FCLI=<your-name-for-binary>
+   ```
+   That's for the helper scrips used in this directory.
+
+   **Admin Operations**
+   After environment setup you can see what your configuration is by executing
+   the following helper script:
+   ```shell
+   admin/cli-env
+   ```
+   It will output all of the `findy-agent-cli` env configurations currently set.
+   To check one specific variable enter: `admin/cli-env KEY` for example.
+
+   To register your CLI authenticator for direct communication to Findy Agency
+   enter the following commands:
+   ```shell
+   source admin/register
+   source admin/login
+   ```
+   Later the login is all what is needed. After successful login you can enter
+   commands like:
+   ```shell 
+   cli agency count         # get status of the clould agents
+   cli agency loggin -L=5   # set login level of the core agency 
+   ```
+
+   **On-board Alice and Bob**
+   ```shell
+   source alice/register
+   source bob/register
+   ```
+   You can play each of them by entering for example following:
+   ```shell
+   source alice/login
+   cli agent ping
+   ```
+
+   **Alice invites Bob to connect**
+   ```shell
+   export FCLI_CONN_ID=`alice/invitation | bob/connect`
+   ```
+   Now you have the connection ID (pairwise ID) in the environment variable and
+   you could test that with the commands:
+   ```shell
+   source alice/login
+   cli connection trustping
+   ```
+   Which means that Alice's end of the connection calls Aries's trustping
+   protocol and Bob's cloud agent responses it.
+
+   Before entering previous commands you could open a second terminal window and
+   execute following:
+   ```shell
+   source ./use-key.sh
+   source ./setup-cli-env.sh
+   source bob/login
+   export FClI_CONN_ID="<perviously defined conn id here>"
+   cli agent listen
+   ```
+   You should now receive a notification of the trustping protocol.
+
+   **Alice sends text message to Bob**
+   First in the Bob's terminal stop the previous listening with C-c and enter
+   the following:
+   ```shell
+   cli bot read
+   ```
+   Go to the Alice's terminal and enter the commands:
+   ```shell
+   source alice/login
+   echo "Hello Bob! Alice here." | cli bot chat
+   ```
+   The Bob's terminal should output Alice's wellcoming messages. To stop Bob's
+   listen command just press C-c.
+
+   **what else we really need for now?**
+   Should we have issuing example, chat bots, all of them or should we wait for
+   the feedback first and bring them if there is demand.
 
 1. Implement an issuer or verifier of your own using our go/js frameworks (TODO:
    link to samples)
