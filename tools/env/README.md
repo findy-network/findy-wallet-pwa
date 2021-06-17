@@ -15,7 +15,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Node.js](https://nodejs.org/en/download/)
-- [findy-agent-installation](https://github.com/findy-network/findy-agent-cli#installation)
+- [findy-agent-cli](https://github.com/findy-network/findy-agent-cli#installation)
 
 ## Steps
 
@@ -45,7 +45,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    **Register Alice's Web-Wallet**
 
    Follow the guides on [Findy Wallet](http://localhost:3000) and register the
-   first wallet holder by name Alice which make easire to follow these samples.
+   first wallet holder by name Alice which make easier to follow these samples.
 
 1. Build playground environment with CLI tool. It's usually
    good idea to have some test data at the backend before UI development or
@@ -92,88 +92,68 @@ even though it is possible to set one up using a common indy-plenum ledger.
    That's for the helper scrips used in this directory and referenced here as
    well.
 
-   **Admin Operations**
+   **On-board Alice (web wallet) and Bob (terminal)**
 
-   After environment setup you can see what your configuration is by executing
-   the following helper script:
+   Alice's wallet should be registered thru Web UI and Bob's by entering this to
+   currently setup terminal:
+   
    ```shell
-   admin/cli-env
-   ```
-   It will output all of the `findy-agent-cli` env configurations currently set.
-   To check one specific variable enter: `admin/cli-env KEY` for example.
-
-   To register your CLI authenticator for direct communication to Findy Agency
-   enter the following commands:
-   ```shell
-   source admin/register
-   source admin/login
-   ```
-   Later the login is all what is needed. After successful login you can enter
-   commands like:
-   ```shell 
-   $FCLI agency count         # get status of the clould agents
-   $FCLI agency loggin -L=5   # set login level of the core agency 
-   ```
-
-   **On-board Alice and Bob**
-   ```shell
-   source alice/register
    source bob/register
    ```
    You can play each of them by entering for example following:
    ```shell
-   source alice/login
+   source bob/login
    $FCLI agent ping
    ```
 
    **Alice invites Bob to connect**
 
+   **Note: For Linux only** define following aliases and install `xclip` if not
+   already installed:
    ```shell
-   export FCLI_CONN_ID=`alice/invitation | bob/connect`
+   alias pbcopy="xclip -selection c"
+   alias pbpaste="xclip -selection clipboard -o"
    ```
-   Or on macOS could be convenient to have it in clipboard as well:
+   These are to keep samples more readable and to follow common idioms.
+   
+   Go to your web browser and Login as Alice if not already and copy the
+   invitation JSON to clipboard.
+
+   <**TODO**: instructions and even screen shot?>
+
+   Come back to the this same terminal (it's important that your CLI settings
+   are the same) and enter the following command: 
    ```shell
-   alice/invitation | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
+   export FCLI_CONN_ID=`pbpaste | bob/connect`
+   ```
+
+   Or you could enter it as here to have new connection ID in clipboard for
+   later use:
+   
+   ```shell
+   pbpaste | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
    ```
 
    Now you have the connection ID (pairwise ID) in the environment variable and
    you could test that with the commands:
    ```shell
-   source alice/login
+   source bob/login
    $FCLI connection trustping
    ```
-   Which means that Alice's end of the connection calls Aries's trustping
-   protocol and Bob's cloud agent responses it.
-
-   Before entering previous commands you could open a second terminal window and
-   execute following:
-   ```shell
-   source ./use-key.sh
-   source ./setup-cli-env.sh
-   source bob/login
-   export FClI_CONN_ID="<perviously defined conn id here>"
-   $FCLI agent listen
-   ```
-   You should now receive a notification of the trustping protocol.
+   Which means that Bob's end of the connection calls Bob's trustping
+   protocol and Alice's cloud agent responses it.
 
    **Alice sends text message to Bob**
-   First in the Bob's terminal stop the previous listening with C-c and enter
-   the following:
+   First in the Bob's terminal enter the following:
    ```shell
    $FCLI bot read
    ```
-   Go to the Alice's terminal and enter the commands:
-   ```shell
-   source alice/login
-   echo "Hello Bob! Alice here." | $FCLI bot chat
-   ```
-   The Bob's terminal should output Alice's wellcoming messages. To stop Bob's
+   Go to the Alice's web wallet and send text message to newly created
+   connection to Bob:
+
+   **TODO** Web-Alice sends message to Terminal-Bob.
+
+   The Bob's terminal should output Alice's welcoming messages. To stop Bob's
    listen command just press C-c.
 
    **TODO: What else we really need for now?**
-
-   Should we have issuing example, chat bots, all of them or should we wait for
-   the feedback first and bring them if there is demand.
-
-1. Implement an issuer or verifier of your own using our go/js frameworks (TODO:
-   link to samples)
