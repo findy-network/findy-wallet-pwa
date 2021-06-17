@@ -14,9 +14,8 @@ even though it is possible to set one up using a common indy-plenum ledger.
 ## Prerequisities
 
 - [Docker](https://www.docker.com/products/docker-desktop)
-- [Node.js](https://nodejs.org/en/download/) for UI only
-- [findy-agent-cli (installer)](https://raw.githubusercontent.com/findy-network/findy-agent-cli/HEAD/install.sh)
-  for CLI operations only
+- [Node.js](https://nodejs.org/en/download/)
+- [findy-agent-installation](https://github.com/findy-network/findy-agent-cli#installation)
 
 ## Steps
 
@@ -39,11 +38,16 @@ even though it is possible to set one up using a common indy-plenum ledger.
    anymore, `make clean` will remove all the generated data and allocated
    resources.
 
-1. [Option UI] Start wallet development environment. On the root of this
+1. Start wallet development environment. On the root of this
    repository, run `npm install` and `npm start`. Wallet application is launched
    and you can access the service with browser in address http://localhost:3000
+   
+   **Register Alice's Web-Wallet**
 
-1. [Option Backend] Build playground environment with CLI tool. It's usually
+   Follow the guides on [Findy Wallet](http://localhost:3000) and register the
+   first wallet holder by name Alice which make easire to follow these samples.
+
+1. Build playground environment with CLI tool. It's usually
    good idea to have some test data at the backend before UI development or
    application logic itself. Now, when your whole stack is running thanks to
    step one you can easily play with it from the command line.
@@ -79,11 +83,14 @@ even though it is possible to set one up using a common indy-plenum ledger.
    alias cli=findy-agent-cli 
    . <(findy-agent-cli completion bash | sed 's/findy-agent-cli/cli/g')
    ```
-   Or if you have renamed the executable enter the following as well:
+
+   You should enter the following after you have installed the working
+   `findy-agent-cli`:
    ```shell
    export FCLI=<your-name-for-binary>
    ```
-   That's for the helper scrips used in this directory.
+   That's for the helper scrips used in this directory and referenced here as
+   well.
 
    **Admin Operations**
 
@@ -104,8 +111,8 @@ even though it is possible to set one up using a common indy-plenum ledger.
    Later the login is all what is needed. After successful login you can enter
    commands like:
    ```shell 
-   cli agency count         # get status of the clould agents
-   cli agency loggin -L=5   # set login level of the core agency 
+   $FCLI agency count         # get status of the clould agents
+   $FCLI agency loggin -L=5   # set login level of the core agency 
    ```
 
    **On-board Alice and Bob**
@@ -116,7 +123,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    You can play each of them by entering for example following:
    ```shell
    source alice/login
-   cli agent ping
+   $FCLI agent ping
    ```
 
    **Alice invites Bob to connect**
@@ -133,7 +140,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    you could test that with the commands:
    ```shell
    source alice/login
-   cli connection trustping
+   $FCLI connection trustping
    ```
    Which means that Alice's end of the connection calls Aries's trustping
    protocol and Bob's cloud agent responses it.
@@ -145,7 +152,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
    source ./setup-cli-env.sh
    source bob/login
    export FClI_CONN_ID="<perviously defined conn id here>"
-   cli agent listen
+   $FCLI agent listen
    ```
    You should now receive a notification of the trustping protocol.
 
@@ -153,12 +160,12 @@ even though it is possible to set one up using a common indy-plenum ledger.
    First in the Bob's terminal stop the previous listening with C-c and enter
    the following:
    ```shell
-   cli bot read
+   $FCLI bot read
    ```
    Go to the Alice's terminal and enter the commands:
    ```shell
    source alice/login
-   echo "Hello Bob! Alice here." | cli bot chat
+   echo "Hello Bob! Alice here." | $FCLI bot chat
    ```
    The Bob's terminal should output Alice's wellcoming messages. To stop Bob's
    listen command just press C-c.
