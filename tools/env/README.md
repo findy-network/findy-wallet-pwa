@@ -156,4 +156,3 @@ even though it is possible to set one up using a common indy-plenum ledger.
    The Bob's terminal should output Alice's welcoming messages. To stop Bob's
    listen command just press C-c.
 
-   **TODO: What else we really need for now?**
