@@ -6,12 +6,16 @@ Web based cloud wallet for Findy agents. Uses WebAuthn / Fido2 for authenticatio
 
 Wallet related to the general architecture
 
-![Architecture](./docs/vault-drawio.png)
+![Architecture](./docs/arch-wallet.png)
 
+Wallet application interacts with two Findy agency services:
+
+- [Authentication service](https://github.com/findy-network/findy-agent-auth/) for agency registration and authentication.
+- [Vault service](https://github.com/findy-network/findy-agent-vault/) provides the app backend that serves data over GraphQL interface.
 
 ## Running in development mode
 
-1. Install and run Findy Vault: https://github.com/findy-network/findy-agent-vault/
+1. [Setup local development environment](./tools/env/README.md#steps)
 2. Install Findy Wallet PWA
    ```
    npm install
