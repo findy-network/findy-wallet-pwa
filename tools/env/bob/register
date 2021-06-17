@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cli=${FCLI:-findy-agent-cli}
+
+export FCLI_USER=bob
+$cli authn register
+

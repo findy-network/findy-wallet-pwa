@@ -33,3 +33,5 @@ yarn-error.log*
 tests_output
 .temp
 .data
+.key-backup
+tools/env/use-key.sh

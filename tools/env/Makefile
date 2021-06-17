@@ -1,3 +1,5 @@
+DC := docker-compose
+
 init-store:
 	mkdir -p .data
 	mkdir -p .data/agent
@@ -5,16 +7,16 @@ init-store:
 	mkdir -p .data/vault
 
 pull-images:
-	docker compose pull
+	${DC} pull
 
 pull-up: init-store pull-images up
 
 clean: down
-	docker compose rm
+	${DC} rm
 	rm -rf .data
 
 up: init-store
-	docker compose up
+	${DC} up
 
 down:
-	docker compose down
+	${DC} down

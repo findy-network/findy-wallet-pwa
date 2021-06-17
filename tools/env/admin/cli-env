@@ -1,0 +1,4 @@
+#!/bin/bash
+
+printenv | grep FCLI_$1
+
