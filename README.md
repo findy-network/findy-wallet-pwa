@@ -42,8 +42,9 @@ Check more info about WebAuthn here: https://webauthn.io/
 ![Wallet login](./docs/wallet-login.gif)
 
 Note:
-* The agent name you use for registration must be unique among agency users, otherwise the registration fails.
-* You can also emulate authenticators e.g. in [Google Chrome](https://developer.chrome.com/docs/devtools/webauthn/)
+
+- The agent name you use for registration must be unique among agency users, otherwise the registration fails.
+- You can also emulate authenticators e.g. in [Google Chrome](https://developer.chrome.com/docs/devtools/webauthn/)
 
 ### Chat
 
@@ -75,11 +76,3 @@ You can browse your received credentials by going in the "Wallet" section of the
 
 In chat view you can also receive proof requests. You must have proper credential in your wallet in order to accept the proof. You can also decline the request.
 The app will tell you if you have the suitable credentials to accept the proof request or not.
-
-## Release new version
-
-1. Checkout latest from dev branch.
-1. Run
-   ```
-   ./tools/release.sh
-   ```
