@@ -1,6 +1,0 @@
-#!/bin/bash
-
-cli=${FCLI:-findy-agent-cli}
-
-$cli agent invitation --jwt `$cli authn login -u alice`
-
