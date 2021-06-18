@@ -22,6 +22,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
 1. Launch backend services with
 
    ```sh
+   cd tools/env
    make pull-up
    ```
 
@@ -33,6 +34,9 @@ even though it is possible to set one up using a common indy-plenum ledger.
    the started services are printed to the console. `<CTRL>+C` stops the
    containers.
 
+   When the init sequence is complete, you should see something similar to this output:
+   ![Architecture](./docs/env-01.png)
+
    The script will create a folder called `.data` where all the data of the
    services are stored during execution. If there is no need for the test data
    anymore, `make clean` will remove all the generated data and allocated
@@ -41,7 +45,7 @@ even though it is possible to set one up using a common indy-plenum ledger.
 1. Start wallet development environment. On the root of this
    repository, run `npm install` and `npm start`. Wallet application is launched
    and you can access the service with browser in address http://localhost:3000
-   
+
    **Register Alice's Web-Wallet**
 
    Follow the guides on [Findy Wallet](http://localhost:3000) and register the
@@ -53,9 +57,11 @@ even though it is possible to set one up using a common indy-plenum ledger.
    step one you can easily play with it from the command line.
 
    To install `findy-agent-cli` execute the following:
+
    ```shell
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/findy-network/findy-agent-cli/HEAD/install.sh)"
    ```
+
    It will install the one binary which is only that's needed in
    `./bin/findy-agent-cli` where you can move it to your path, create alias for
    it, setup auto-completion, etc. More information about it can be found from
@@ -63,9 +69,11 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
    To make use of `findy-agent-cli` there is a helper script to setup the CLI
    environment. Enter the following command:
+
    ```shell
-   source ./setup-cli-env.sh 
+   source ./setup-cli-env.sh
    ```
+
    That will setup all the needed environment variables for CLI configuration
    for the currently running environment. Most importantly it creates a new
    master key for your CLI FIDO2 authenticator. If you want to keep your
@@ -75,20 +83,23 @@ even though it is possible to set one up using a common indy-plenum ledger.
    your convenient as well. Add `source use-key.sh` to your boot files for
    example.
 
-   Next time you run the `./setup-cli-env.sh` it won't create a new key *if it
-   founds the existing one* i.e. you have sourced the `use-key.sh` script.
+   Next time you run the `./setup-cli-env.sh` it won't create a new key _if it
+   founds the existing one_ i.e. you have sourced the `use-key.sh` script.
 
-   *Tip* Enter following commands:
+   _Tip_ Enter following commands:
+
    ```shell
-   alias cli=findy-agent-cli 
+   alias cli=findy-agent-cli
    . <(findy-agent-cli completion bash | sed 's/findy-agent-cli/cli/g')
    ```
 
    You should enter the following after you have installed the working
    `findy-agent-cli`:
+
    ```shell
    export FCLI=<your-name-for-binary>
    ```
+
    That's for the helper scrips used in this directory and referenced here as
    well.
 
@@ -96,11 +107,13 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
    Alice's wallet should be registered thru Web UI and Bob's by entering this to
    currently setup terminal:
-   
+
    ```shell
    source bob/register
    ```
+
    You can play each of them by entering for example following:
+
    ```shell
    source bob/login
    $FCLI agent ping
@@ -110,44 +123,51 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
    **Note: For Linux only** define following aliases and install `xclip` if not
    already installed:
+
    ```shell
    alias pbcopy="xclip -selection c"
    alias pbpaste="xclip -selection clipboard -o"
    ```
+
    These are to keep samples more readable and to follow common idioms.
-   
+
    Go to your web browser and Login as Alice if not already and copy the
    invitation JSON to clipboard.
 
    <**TODO**: instructions and even screen shot?>
 
    Come back to the this same terminal (it's important that your CLI settings
-   are the same) and enter the following command: 
+   are the same) and enter the following command:
+
    ```shell
    export FCLI_CONN_ID=`pbpaste | bob/connect`
    ```
 
    Or you could enter it as here to have new connection ID in clipboard for
    later use:
-   
+
    ```shell
    pbpaste | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
    ```
 
    Now you have the connection ID (pairwise ID) in the environment variable and
    you could test that with the commands:
+
    ```shell
    source bob/login
    $FCLI connection trustping
    ```
+
    Which means that Bob's end of the connection calls Bob's trustping
    protocol and Alice's cloud agent responses it.
 
    **Alice sends text message to Bob**
    First in the Bob's terminal enter the following:
+
    ```shell
    $FCLI bot read
    ```
+
    Go to the Alice's web wallet and send text message to newly created
    connection to Bob:
 
@@ -155,4 +175,3 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
    The Bob's terminal should output Alice's welcoming messages. To stop Bob's
    listen command just press C-c.
-
