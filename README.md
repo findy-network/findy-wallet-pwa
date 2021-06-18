@@ -37,7 +37,13 @@ Bare in mind that the features and how they work can change in the future.
 
 Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login.
 You must to have biometric authentication or hardware token available in order to make succesful registration/login.
-More info here https://webauthn.io/
+Check more info about WebAuthn here: https://webauthn.io/
+
+![Wallet login](./docs/wallet-login.gif)
+
+Note:
+* The agent name you use for registration must be unique among agency users, otherwise the registration fails.
+* You can also emulate authenticators e.g. in [Google Chrome](https://developer.chrome.com/docs/devtools/webauthn/)
 
 ### Chat
 
