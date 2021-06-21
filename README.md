@@ -1,6 +1,11 @@
 # findy-wallet-pwa
 
-Web based cloud wallet for Findy agents. Uses WebAuthn / Fido2 for authentication.
+Web wallet frontend for Findy agency. Uses WebAuthn / Fido2 for authentication to agency backend.
+
+This project is a PoC/MVP of a web wallet intended for Findy agency users (individuals). The UI is unfinished in many ways and probably this project will not be seen in production as such. However, it shows how to implement
+
+1. Authentication to Findy agency from browser environment
+1. Data fetching and manipulation use cases that utilise Findy agency vault service (GraphQL-interface)
 
 ## General architecture
 
