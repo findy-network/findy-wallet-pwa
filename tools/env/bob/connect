@@ -2,5 +2,5 @@
 
 cli=${FCLI:-findy-agent-cli}
 
-$cli agent connect --jwt `$cli authn login -u bob` -
+$cli agent connect --label "Bob the Builder" --jwt `$cli authn login -u bob` -
 

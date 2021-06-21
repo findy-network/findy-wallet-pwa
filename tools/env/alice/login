@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cli=${FCLI:-findy-agent-cli}
-
-export FCLI_USER=alice
-export FCLI_JWT=`$cli authn login`
-

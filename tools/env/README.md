@@ -11,6 +11,9 @@ The setup uses agency internal file ledger, intended only for testing during
 development. This setup does not suit for testing inter-agency communication
 even though it is possible to set one up using a common indy-plenum ledger.
 
+The steps below describe how to setup full Findy agency installation. It also
+shows how web wallet users can connect with other agents that are operated through findy-agent-cli tool.
+
 ## Prerequisities
 
 - [Docker](https://www.docker.com/products/docker-desktop)
@@ -19,9 +22,12 @@ even though it is possible to set one up using a common indy-plenum ledger.
 
 ## Steps
 
-1. Launch backend services with
+1. **Launch backend services**
+
+   Open terminal and run:
 
    ```sh
+   cd tools/env
    make pull-up
    ```
 
@@ -30,129 +36,131 @@ even though it is possible to set one up using a common indy-plenum ledger.
    latest images.
 
    It will take a short while for all the services to start up. Logs from all of
-   the started services are printed to the console. `<CTRL>+C` stops the
+   the started services are printed to the console. `C-c` stops the
    containers.
+
+   When the init sequence is complete, you should see something similar to this output:
+   ![Architecture](./docs/env-01.png)
 
    The script will create a folder called `.data` where all the data of the
    services are stored during execution. If there is no need for the test data
    anymore, `make clean` will remove all the generated data and allocated
    resources.
 
-1. Start wallet development environment. On the root of this
-   repository, run `npm install` and `npm start`. Wallet application is launched
-   and you can access the service with browser in address http://localhost:3000
-   
-   **Register Alice's Web-Wallet**
+1. **Start wallet development environment.**
+
+   Open terminal on the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address http://localhost:3000
+
+1. **Register Alice's Web-Wallet**
 
    Follow the guides on [Findy Wallet](http://localhost:3000) and register the
-   first wallet holder by name Alice which make easier to follow these samples.
+   first wallet holder by the name Alice.
 
-1. Build playground environment with CLI tool. It's usually
-   good idea to have some test data at the backend before UI development or
-   application logic itself. Now, when your whole stack is running thanks to
-   step one you can easily play with it from the command line.
+   ![Wallet login](../../docs/wallet-login.gif)
 
-   To install `findy-agent-cli` execute the following:
-   ```shell
-   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/findy-network/findy-agent-cli/HEAD/install.sh)"
-   ```
-   It will install the one binary which is only that's needed in
-   `./bin/findy-agent-cli` where you can move it to your path, create alias for
-   it, setup auto-completion, etc. More information about it can be found from
-   [here](https://github.com/findy-network/findy-agent-cli).
+   Now you have the agency services up and running and you have onboarded the first wallet user.
 
-   To make use of `findy-agent-cli` there is a helper script to setup the CLI
-   environment. Enter the following command:
-   ```shell
-   source ./setup-cli-env.sh 
-   ```
-   That will setup all the needed environment variables for CLI configuration
-   for the currently running environment. Most importantly it creates a new
-   master key for your CLI FIDO2 authenticator. If you want to keep your
-   development environment between restarts you should persist that key by
-   copying it to your environment variables. The key is in env `FCLI_KEY` after
-   running the setup script. The setup generates the `use-key.sh` script for
-   your convenient as well. Add `source use-key.sh` to your boot files for
-   example.
+1. **Build playground environment with CLI tool.**
 
-   Next time you run the `./setup-cli-env.sh` it won't create a new key *if it
-   founds the existing one* i.e. you have sourced the `use-key.sh` script.
+   Make sure you have [installed](https://github.com/findy-network/findy-agent-cli#installation) findy-agent-cli and it is available in your path. CLI can be used to register and operate other agents that can interact with your web wallet user.
 
-   *Tip* Enter following commands:
-   ```shell
-   alias cli=findy-agent-cli 
-   . <(findy-agent-cli completion bash | sed 's/findy-agent-cli/cli/g')
-   ```
+   Check [here](https://github.com/findy-network/findy-agent-cli/scripts/fullstack#steps) for more tips, features and details of this setup.
 
-   You should enter the following after you have installed the working
-   `findy-agent-cli`:
-   ```shell
+   Once you have installed `findy-agent-cli`, define env variable `FCLI`:
+
+   ```sh
    export FCLI=<your-name-for-binary>
    ```
-   That's for the helper scrips used in this directory and referenced here as
-   well.
 
-   **On-board Alice (web wallet) and Bob (terminal)**
+   Enter the following command to setup the CLI for the currently running local agency:
 
-   Alice's wallet should be registered thru Web UI and Bob's by entering this to
-   currently setup terminal:
-   
-   ```shell
+   ```sh
+   source ./setup-cli-env.sh
+   ```
+
+   Note:
+
+   - **For Linux only**: define following aliases and install `xclip` if not
+     already installed:
+     ```sh
+     alias pbcopy="xclip -selection c"
+     alias pbpaste="xclip -selection clipboard -o"
+     ```
+   - use the same terminal for Bob's operations from now on.
+
+1. **Onboard Bob (terminal)**
+
+   Alice is already registered thru Web UI. Register Bob (agent operated through CLI) by entering this to the same terminal as in previous step:
+
+   ```sh
    source bob/register
    ```
-   You can play each of them by entering for example following:
-   ```shell
+
+   Now you have onboarded two agents to agency, "Alice" with the web wallet and "Bob" through CLI tool.
+
+1. **Bob invites Alice to connect...**
+
+   ```sh
+   # Authenticate Bob
    source bob/login
-   $FCLI agent ping
+
+   # Create invitation for Bob and copy it to clipboard
+   $FCLI agent invitation --label Bob | pbcopy
    ```
 
-   **Alice invites Bob to connect**
+   Open Alice's web wallet and paste invitation to the add connection dialog.
 
-   **Note: For Linux only** define following aliases and install `xclip` if not
-   already installed:
-   ```shell
-   alias pbcopy="xclip -selection c"
-   alias pbpaste="xclip -selection clipboard -o"
+   ![Add connection](./docs/env-02.gif)
+
+   ```sh
+   # if you want to chat using this connection,
+   # define FCLI_CONN_ID to the new connection id from wallet URL
+   # http://localhost:3000/connections/<new_id>
+   export FCLI_CONN_ID=<new_id>
    ```
-   These are to keep samples more readable and to follow common idioms.
-   
-   Go to your web browser and Login as Alice if not already and copy the
-   invitation JSON to clipboard.
 
-   <**TODO**: instructions and even screen shot?>
+1. **...or Alice invites Bob to connect**
 
-   Come back to the this same terminal (it's important that your CLI settings
-   are the same) and enter the following command: 
-   ```shell
+   Create invitation for Alice in the web UI. Copy it to the clipboard.
+
+   Enter following command to the terminal:
+
+   ```sh
    export FCLI_CONN_ID=`pbpaste | bob/connect`
    ```
 
-   Or you could enter it as here to have new connection ID in clipboard for
-   later use:
-   
-   ```shell
-   pbpaste | bob/connect | pbcopy && export FCLI_CONN_ID=pbpaste
+   ![Add connection](./docs/env-03.gif)
+
+1. **Bob sends Alice message**
+
+   Now you have the connection ID (pairwise ID) in the environment variable. That enables you to start messaging to Alice:
+
+   ```sh
+   $FCLI bot chat
    ```
 
-   Now you have the connection ID (pairwise ID) in the environment variable and
-   you could test that with the commands:
-   ```shell
-   source bob/login
-   $FCLI connection trustping
-   ```
-   Which means that Bob's end of the connection calls Bob's trustping
-   protocol and Alice's cloud agent responses it.
+   Exit chat with C-c
 
-   **Alice sends text message to Bob**
-   First in the Bob's terminal enter the following:
-   ```shell
+   ![Send messages](./docs/env-04.gif)
+
+1. **Alice sends text message to Bob**
+
+   Enter following in Bob's terminal to start listening to messages:
+
+   ```sh
    $FCLI bot read
    ```
-   Go to the Alice's web wallet and send text message to newly created
-   connection to Bob:
 
-   **TODO** Web-Alice sends message to Terminal-Bob.
+   Go to the Alice's web wallet and send text message to "Bob the Builder."
 
-   The Bob's terminal should output Alice's welcoming messages. To stop Bob's
+   Bob's terminal should output Alice's welcoming messages. To stop Bob's
    listen command just press C-c.
 
+   ![Recieve messages](./docs/env-05.gif)
+
+1. **All done!**
+
+   Congratulations, you just completed the initial Findy agency crash course! You can now continue experiments
+
+   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality. See more documentation and samples here: https://github.com/findy-network/findy-agent-cli
+   - Or building applications that utilise Findy Agency through its GRPC API. You can use our helper libraries for [golang](https://github.com/findy-network/findy-common-go) or [Typescript](https://github.com/findy-network/findy-common-ts) or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api) with the language of your choice.
