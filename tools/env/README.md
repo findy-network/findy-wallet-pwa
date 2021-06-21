@@ -112,6 +112,13 @@ shows how web wallet users can connect with other agents that are operated throu
 
    ![Add connection](./docs/env-02.gif)
 
+   ```sh
+   # if you want to chat using this connection,
+   # define FCLI_CONN_ID to the new connection id from wallet URL
+   # http://localhost:3000/connections/<new_id>
+   export FCLI_CONN_ID=<new_id>
+   ```
+
 1. **...or Alice invites Bob to connect**
 
    Create invitation for Alice in the web UI. Copy it to the clipboard.
