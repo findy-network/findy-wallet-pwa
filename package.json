@@ -25,7 +25,7 @@
     "licenses:report": "node ./tools/check-licenses.js report ./build/licenses.txt",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
-    "test:e2e": "nightwatch ./e2e",
+    "test:e2e": "./e2e/onboard.sh && nightwatch ./e2e",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
