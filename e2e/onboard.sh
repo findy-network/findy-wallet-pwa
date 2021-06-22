@@ -14,4 +14,4 @@ jwt=$(findy-agent-cli authn login \
     --origin http://localhost:3000 \
     --key 15308490f1e4026284594dd08d31291bc8ef2aeac730d0daf6ff87bb92d4336c)
 
-echo {\"jwt\": \"$jwt\", \"user\": \"test-$timestamp\"} > e2e.user.json
+echo {\"jwt\": \"$jwt\", \"user\": \"test-$timestamp\"} > ./e2e/e2e.user.json
