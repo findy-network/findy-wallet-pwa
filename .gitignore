@@ -31,7 +31,7 @@ yarn-error.log*
 .vscode
 *.log
 tests_output
-e2e.user.json
+e2e.*.json
 .temp
 .data
 .key-backup
