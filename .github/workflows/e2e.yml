@@ -1,7 +1,7 @@
 name: e2e
 on: push
 jobs:
-  build:
+  e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -11,7 +11,8 @@ jobs:
       - name: setup env
         run: |
           cd tools/env
-          make up
+          make init-store
+          docker-compose up -d
       - name: install cli
         run: |
           curl https://raw.githubusercontent.com/findy-network/findy-agent-cli/HEAD/install.sh > install.sh
