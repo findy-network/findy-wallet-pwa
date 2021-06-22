@@ -16,7 +16,7 @@ shows how web wallet users can connect with other agents that are operated throu
 
 **Note:**
 
-- This documentation does not intend to teach readers theoretical background or other aspects of SSI technology. For that we recommend material crafed by other excellent authors:
+- This documentation does not intend to teach readers theoretical background or other aspects of SSI technology. For that, we recommend excellent material crafed by other authors:
   - [Self-Sovereign Identity (book)](https://www.manning.com/books/self-sovereign-identity) by Alex Preukschat and Drummond Reed
   - [Developing Blockchain-Based Identity Applications (course)](https://www.edx.org/professional-certificate/linuxfoundationx-developing-blockchain-based-identity-applications) by Stephen Curran and Carol Howard
 - The following steps describe only initial steps for getting things going with Findy agency. Please see more examples in our sample controller implementations [findy-agent-cli (golang)](https://github.com/findy-network/findy-agent-cli) and [issuer-tool (JS)](https://github.com/findy-network/findy-issuer-tool)
