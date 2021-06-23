@@ -20,6 +20,7 @@ shows how web wallet users can connect with other agents that are operated throu
   - [Self-Sovereign Identity (book)](https://www.manning.com/books/self-sovereign-identity) by Alex Preukschat and Drummond Reed
   - [Developing Blockchain-Based Identity Applications (course)](https://www.edx.org/professional-certificate/linuxfoundationx-developing-blockchain-based-identity-applications) by Stephen Curran and Carol Howard
 - The following steps describe only initial steps for getting things going with Findy agency. Please see more examples in our sample controller implementations [findy-agent-cli (golang)](https://github.com/findy-network/findy-agent-cli) and [issuer-tool (JS)](https://github.com/findy-network/findy-issuer-tool)
+- The full test case is executed solely on your local computer and no data is sent to external services (including the authentication keys created during the registration).
 
 ## Prerequisities
 
@@ -28,6 +29,12 @@ shows how web wallet users can connect with other agents that are operated throu
 - [findy-agent-cli](https://github.com/findy-network/findy-agent-cli#installation)
 
 ## Steps
+
+1. Clone this repository:
+
+   ```sh
+   git clone https://github.com/findy-network/findy-wallet-pwa.git
+   ```
 
 1. **Launch backend services**
 
@@ -60,8 +67,7 @@ shows how web wallet users can connect with other agents that are operated throu
 
 1. **Register Alice's Web-Wallet**
 
-   Follow the guides on [Findy Wallet](http://localhost:3000) and register the
-   first wallet holder by the name Alice.
+   Register the first wallet holder by the name Alice. In this registration phase you setup [the passwordless authentication](https://github.com/findy-network/findy-wallet-pwa#registerlogin) for this user. You can also use [emulated authenticators](https://developer.chrome.com/docs/devtools/webauthn/) if preferred.
 
    ![Wallet login](../../docs/wallet-login.gif)
 
@@ -69,14 +75,21 @@ shows how web wallet users can connect with other agents that are operated throu
 
 1. **Build playground environment with CLI tool.**
 
-   Make sure you have [installed](https://github.com/findy-network/findy-agent-cli#installation) findy-agent-cli and it is available in your path. CLI can be used to register and operate other agents that can interact with your web wallet user.
+   Open new terminal window and move to this folder:
 
-   Check [here](https://github.com/findy-network/findy-agent-cli/scripts/fullstack#steps) for more tips, features and details of this setup.
+   ```sh
+   cd tools/env
+   ```
 
-   Once you have installed `findy-agent-cli`, define env variable `FCLI`:
+   [Install](https://github.com/findy-network/findy-agent-cli#installation) findy-agent-cli if you haven't done it already. CLI can be used to register and operate other agents that can interact with your web wallet user.
+
+   Make sure `findy-agent-cli` is in your path or define env variable `FCLI` that points to your CLI binary:
 
    ```sh
    export FCLI=<your-name-for-binary>
+
+   # example
+   export FCLI=$PWD/bin/findy-agent-cli
    ```
 
    Enter the following command to setup the CLI for the currently running local agency:
@@ -87,13 +100,14 @@ shows how web wallet users can connect with other agents that are operated throu
 
    Note:
 
+   - use the same terminal when running CLI from now on
    - **For Linux only**: define following aliases and install `xclip` if not
      already installed:
      ```sh
      alias pbcopy="xclip -selection c"
      alias pbpaste="xclip -selection clipboard -o"
      ```
-   - use the same terminal for Bob's operations from now on.
+   - [more tips, features and details](https://github.com/findy-network/findy-agent-cli/tree/master/scripts/fullstack#steps) for this setup
 
 1. **Onboard Bob (terminal)**
 
@@ -119,9 +133,11 @@ shows how web wallet users can connect with other agents that are operated throu
 
    ![Add connection](./docs/env-02.gif)
 
+   Optionally, define `FCLI_CONN_ID` variable:
    ```sh
    # if you want to chat using this connection,
-   # define FCLI_CONN_ID to the new connection id from wallet URL
+   # you can skip next step and define FCLI_CONN_ID:
+   # copy connection id from wallet URL
    # http://localhost:3000/connections/<new_id>
    export FCLI_CONN_ID=<new_id>
    ```
