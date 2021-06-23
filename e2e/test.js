@@ -1,10 +1,10 @@
 const user = require('./e2e.user.json')
 const userCmd = `window.localStorage.token = "${user.jwt}"`
+const home = 'http://localhost:3000/'
 const addConBtn = '//button[contains(.,"Add connection")]'
 
 module.exports = {
   'Check app loads': (browser) => {
-    const home = 'http://localhost:3000/'
     const newInvBtn = '//button[contains(.,"New invitation")]'
     browser
       .url(home)
@@ -16,7 +16,6 @@ module.exports = {
       .end()
   },
   'Check connection is done': (browser) => {
-    const home = 'http://localhost:3000/'
     const invitationInput = 'input[placeholder="Enter invitation code"]'
     const confirmBtn = '//button[contains(.,"Confirm")]'
     const organisationLabel = '//p[contains(.,"organisation")]'
@@ -38,7 +37,6 @@ module.exports = {
       .end()
   },
   'Check navigation works': (browser) => {
-    const home = 'http://localhost:3000/'
     const walletLink = '//a[contains(.,"Wallet")]'
     const credentialsHeader = '//h2[contains(.,"Your wallet is empty")]'
     browser
