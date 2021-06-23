@@ -40,9 +40,8 @@ Bare in mind that the features and how they work can change in the future.
 
 ### Register/Login
 
-Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login.
-You must to have biometric authentication or hardware token available in order to make succesful registration/login.
-Check more info about WebAuthn here: https://webauthn.io/
+Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login. You must to have biometric authentication or hardware token available in order to make succesful registration/login. Check more info about WebAuthn here: https://webauthn.io/
+
 
 ![Wallet login](./docs/wallet-login.gif)
 
