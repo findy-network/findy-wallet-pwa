@@ -75,7 +75,7 @@ shows how web wallet users can connect with other agents that are operated throu
 
    Now you have the agency services up and running and you have onboarded the first wallet user.
 
-   Note: you can register only one user per username. If you wish to register another user, choose different username.
+   Note: you can register only one user per username. If you wish to register another user, choose a different username.
 
 1. **Build playground environment with CLI tool.**
 
