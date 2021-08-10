@@ -30,6 +30,8 @@ shows how web wallet users can connect with other agents that are operated throu
 
 ## Steps
 
+1. Install [prerequisities](#prerequisities) including [findy-agent-cli](https://github.com/findy-network/findy-agent-cli#installation). Make sure [Docker daemon](https://docs.docker.com/config/daemon/) is running.
+
 1. Clone this repository:
 
    ```sh
@@ -72,6 +74,8 @@ shows how web wallet users can connect with other agents that are operated throu
    ![Wallet login](../../docs/wallet-login.gif)
 
    Now you have the agency services up and running and you have onboarded the first wallet user.
+
+   Note: you can register only one user per username. If you wish to register another user, choose different username.
 
 1. **Build playground environment with CLI tool.**
 
