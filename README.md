@@ -1,5 +1,7 @@
 # findy-wallet-pwa
 
+[![test](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml/badge.svg?branch=dev)](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml)
+
 Web wallet frontend for Findy agency. Uses WebAuthn / Fido2 for authentication to agency backend.
 
 This project is a PoC/MVP of a web wallet intended for Findy agency users (individuals). The UI is unfinished in many ways and probably this project will not be seen in production as such. However, it shows how to implement
@@ -41,7 +43,6 @@ Bare in mind that the features and how they work can change in the future.
 ### Register/Login
 
 Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login. You must to have biometric authentication or hardware token available in order to make succesful registration/login. Check more info about WebAuthn here: https://webauthn.io/
-
 
 ![Wallet login](./docs/wallet-login.gif)
 
