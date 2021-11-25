@@ -57,8 +57,8 @@ module.exports = {
       .url(home)
       .useCss()
       .waitForElementVisible(messageInput)
-      .url(`${home}/connections/invalid-connection-id`)
-      .useXpath()
+      .url(`${home}connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
+      .useCss()
       .waitForElementVisible(messageInput)
       .end()
   },
