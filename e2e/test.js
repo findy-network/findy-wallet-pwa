@@ -49,12 +49,17 @@ module.exports = {
       .end()
   },
   'Check invalid connection id redirects to home': (browser) => {
+    const messageInput = 'input[placeholder="Type your answer here..."]'
+
     browser
       .url(home)
       .execute(userCmd)
-      .url(`${home}/invalid-connection-id`)
+      .url(home)
+      .useCss()
+      .waitForElementVisible(messageInput)
+      .url(`${home}/connections/invalid-connection-id`)
       .useXpath()
-      .waitForElementVisible(addConBtn)
+      .waitForElementVisible(messageInput)
       .end()
   },
 }
