@@ -40,12 +40,13 @@ services:
       FAV_AGENCY_HOST: 'core'
     ports:
       - '8085:8085'
+    restart: unless-stopped
     entrypoint: >
       /bin/sh -c "
         while ! nc -z vault-db 5432;
         do
           echo 'wait for db';
-          sleep 5;
+          sleep 1;
         done;
         /start.sh;
       "
