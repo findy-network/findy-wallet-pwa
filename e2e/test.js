@@ -48,4 +48,13 @@ module.exports = {
       .waitForElementVisible(credentialsHeader)
       .end()
   },
+  'Check invalid connection id redirects to home': (browser) => {
+    browser
+      .url(home)
+      .execute(userCmd)
+      .url(`${home}/invalid-connection-id`)
+      .useXpath()
+      .waitForElementVisible(addConBtn)
+      .end()
+  },
 }
