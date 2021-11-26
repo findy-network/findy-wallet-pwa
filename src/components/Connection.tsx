@@ -14,6 +14,7 @@ import { IEventEdge, ProtocolType } from './Types'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
 import { useMutation } from '@apollo/client'
+import { useHistory } from 'react-router'
 
 import ScrollableFeed from 'react-scrollable-feed'
 import { SEND_MESSAGE_MUTATION, MARK_EVENTREAD_MUTATION } from './Queries'
@@ -103,35 +104,29 @@ type TParams = { id: string }
 
 function Connection({ match }: RouteComponentProps<TParams>) {
   const { setConnection, setConnectionsOpen } = useContext(ConnectionContext)
+  const history = useHistory()
   const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
-    errorPolicy: 'all',
     variables: {
       id: match.params.id,
     },
     onCompleted: () => {
-      complete()
-    },
-    onError: () => {
-      if (data) {
-        complete()
+      const edges = data.connection.events.edges
+      if (edges[edges.length - 1]) {
+        setConnection(data.connection.theirLabel)
+        setConnectionsOpen(true)
+        markEvent({
+          variables: {
+            input: {
+              id: edges[edges.length - 1].node.id,
+            },
+          },
+        })
       }
     },
+    onError: () => {
+      history.push(`/`)
+    },
   })
-
-  const complete = () => {
-    const edges = data.connection.events.edges
-    if (edges[edges.length - 1]) {
-      setConnection(data.connection.theirLabel)
-      setConnectionsOpen(true)
-      markEvent({
-        variables: {
-          input: {
-            id: edges[edges.length - 1].node.id,
-          },
-        },
-      })
-    }
-  }
 
   const node = data?.connection
   const jobIds: Array<string> = []
