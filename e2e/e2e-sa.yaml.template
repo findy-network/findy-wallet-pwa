@@ -1,0 +1,161 @@
+initial:
+  sends:
+    - data: Hello!
+      no_status: true
+      protocol: basic_message
+  target: IDLE
+name: e2e sa machine
+states:
+  IDLE:
+    transitions:
+      - trigger:
+          protocol: basic_message
+        sends:
+          - data: |2-
+
+              Hello! I'm an e2e tester.
+
+              I'll issue you a credential which holds email.
+              I'll ask each data from you one at the time and when done
+              I'll offer a verified credential for you to approve.
+
+              Let's start!
+              Please enter your email address?
+            no_status: true
+            protocol: basic_message
+        target: WAITING_EMAIL_ADDRESS
+  WAITING_EMAIL_ADDRESS:
+    transitions:
+      - trigger:
+          data: EMAIL
+          protocol: basic_message
+          rule: INPUT_SAVE
+        sends:
+          - data: |-
+              You have entered following data
+              Email: {{.EMAIL}}
+
+              If the data is correct please say "confirm" and I'll send you a credential offer.
+            no_status: true
+            protocol: basic_message
+            rule: FORMAT_MEM
+        target: WAITING_DECISION
+  WAITING_DECISION:
+    transitions:
+      - trigger:
+          data: confirm
+          protocol: basic_message
+          rule: INPUT_EQUAL
+        sends:
+          - data: |-
+              Thank you! Issuing an email credential for address:
+              {{.EMAIL}}
+            no_status: true
+            protocol: basic_message
+            rule: FORMAT_MEM
+          - data: '[{"name":"email","value":"{{.EMAIL}}"}]'
+            event_data:
+              issuing:
+                AttrsJSON: '[{"name":"email","value":"{{.EMAIL}}"}]'
+                CredDefID: <CRED_DEF_ID>
+            protocol: issue_cred
+            rule: FORMAT_MEM
+        target: WAITING_ISSUING_STATUS
+      - trigger:
+          protocol: basic_message
+        sends:
+          - data: 'Your options are: reset|back|confirm'
+            no_status: true
+            protocol: basic_message
+        target: WAITING_DECISION
+  WAITING_ISSUING_STATUS:
+    transitions:
+      - trigger:
+          protocol: issue_cred
+          rule: OUR_STATUS
+        sends:
+          - data: |-
+              Thank you {{.EMAIL}}!
+              Are you ready to prove your credential?
+            no_status: true
+            protocol: basic_message
+            rule: FORMAT_MEM
+        target: VERIFY
+  VERIFY:
+    transitions:
+      - sends:
+          - data: |-
+              I'm now sending you a proof request.
+              Please accept it and we can continue.
+            no_status: true
+            protocol: basic_message
+        target: IDLE
+        trigger:
+          protocol: connection
+      - sends:
+          - data: '[{"name":"email","credDefId":"<CRED_DEF_ID>"}]'
+            protocol: present_proof
+        target: WAITING_EMAIL_PROOF_QA
+        trigger:
+          protocol: basic_message
+  WAITING_EMAIL_PROOF_QA:
+    transitions:
+      - sends:
+          - data: Going to beginning...
+            no_status: true
+            protocol: basic_message
+        target: IDLE
+        trigger:
+          data: reset
+          protocol: basic_message
+          rule: INPUT_EQUAL
+      - sends:
+          - data: NACK
+            protocol: answer
+        target: IDLE
+        trigger:
+          data: '[{"name":"email","credDefId":"<CRED_DEF_ID>"}]'
+          protocol: present_proof
+          rule: NOT_ACCEPT_VALUES
+          type_id: ANSWER_NEEDED_PROOF_VERIFY
+      - sends:
+          - data: ACK
+            protocol: answer
+        target: WAITING2_EMAIL_PROOF
+        trigger:
+          data: '[{"name":"email","credDefId":"<CRED_DEF_ID>"}]'
+          protocol: present_proof
+          rule: ACCEPT_AND_INPUT_VALUES
+          type_id: ANSWER_NEEDED_PROOF_VERIFY
+  WAITING_NEXT_CMD:
+    transitions:
+      - sends:
+          - data: Going to beginning.
+            no_status: true
+            protocol: basic_message
+        target: IDLE
+        trigger:
+          data: reset
+          protocol: basic_message
+          rule: INPUT_EQUAL
+      - sends:
+          - data: '{{.email}} says: {{.LINE}}'
+            no_status: true
+            protocol: basic_message
+            rule: FORMAT_MEM
+        target: WAITING_NEXT_CMD
+        trigger:
+          data: LINE
+          protocol: basic_message
+          rule: INPUT_SAVE
+  WAITING2_EMAIL_PROOF:
+    transitions:
+      - sends:
+          - data: |-
+              Hello {{.email}}! I'm stupid bot who knows you have verified email address!!! I can trust you.
+            no_status: true
+            protocol: basic_message
+            rule: FORMAT_MEM
+        target: WAITING_NEXT_CMD
+        trigger:
+          protocol: present_proof
