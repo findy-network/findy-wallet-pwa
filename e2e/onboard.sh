@@ -4,6 +4,7 @@ timestamp=$(date +%s)
 
 user=user-$timestamp
 org=org-$timestamp
+# TODO: create uniques key per test run
 default_key="15308490f1e4026284594dd08d31291bc8ef2aeac730d0daf6ff87bb92d4336c"
 bot_file="./e2e/e2e-sa.yaml"
 
