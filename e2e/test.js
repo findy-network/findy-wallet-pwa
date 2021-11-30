@@ -49,7 +49,6 @@ module.exports = {
       .waitForElementVisible(credentialsHeader)
       .end()
   },
-  /* TODO: not working with production build?
   'Check invalid connection id redirects to home': (browser) => {
     browser
       .url(home)
@@ -61,7 +60,7 @@ module.exports = {
       .useCss()
       .waitForElementVisible(messageInput)
       .end()
-  },*/
+  },
   'Check issue and verify works': (browser) => {
     const helloLabel = '//p[contains(.,"Hello!")]'
     const submitBtn = 'button[type=submit]'
