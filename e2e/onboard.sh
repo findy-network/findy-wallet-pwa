@@ -4,8 +4,6 @@ timestamp=$(date +%s)
 
 user=user-$timestamp
 org=org-$timestamp
-# TODO: create uniques key per test run
-default_key="15308490f1e4026284594dd08d31291bc8ef2aeac730d0daf6ff87bb92d4336c"
 bot_file="./e2e/e2e-sa.yaml"
 
 auth_url=$AGENCY_URL
@@ -24,6 +22,8 @@ tls_path=$AGENCY_TLS_PATH
 if [ -z "$tls_path" ]; then
   tls_path="./tools/env/config/cert"
 fi
+
+default_key=$(findy-agent-cli new-key)
 
 echo "Running e2e test for $auth_url (origin: $auth_origin, api: $grpc_server)"
 
@@ -59,6 +59,7 @@ org_jwt=$(findy-agent-cli authn login \
     --origin $auth_origin \
     --key $default_key)
 
+# create invitation
 echo "Create invitation for organisation"
 invitation=$(findy-agent-cli agent invitation \
     --tls-path $tls_path --server $grpc_server \
@@ -70,21 +71,25 @@ echo $invitation > ./e2e/e2e.invitation.json
 connection_id=$(node -pe "require('./e2e/e2e.invitation.json')['@id']")
 echo "Invitation created with connection id $connection_id"
 
+# create schema
 echo "Create schema"
 sch_id=$(findy-agent-cli agent create-schema \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --name="email" --version=1.0 email)
 
+# create cred def
 echo "Create cred def with schema id $sch_id"
 cred_def_id=$(findy-agent-cli agent create-cred-def \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --id $sch_id --tag $org)
 
+# store cred def id to bot template
 cat "$bot_file".template > "$bot_file"
 sub_cmd='{sub("<CRED_DEF_ID>","'$cred_def_id'")}1'
 awk "$sub_cmd" "$bot_file" > "$bot_file".tmp && \
 		mv "$bot_file".tmp "$bot_file"
 
+# start bot in background
 echo "Starting bot with connection $connection_id"
 findy-agent-cli bot start \
     --tls-path $tls_path --server $grpc_server \

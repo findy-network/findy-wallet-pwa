@@ -5,9 +5,9 @@ import Proof from './Proof'
 import Credential from './Credential'
 import JobBox from './Chat/JobBox'
 
-type IProps = { job: IJobNode }
+type IProps = { job: IJobNode; index: number }
 
-function Job({ job }: IProps) {
+function Job({ job, index }: IProps) {
   switch (job.protocol) {
     case ProtocolType.BASIC_MESSAGE: {
       return job.output.message ? (
@@ -15,7 +15,7 @@ function Job({ job }: IProps) {
           time={job.createdMs}
           sentByMe={job.output.message?.node.sentByMe}
         >
-          <Message message={job.output.message?.node} />
+          <Message message={job.output.message?.node} index={index} />
         </JobBox>
       ) : (
         <div />

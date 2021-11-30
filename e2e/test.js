@@ -87,13 +87,13 @@ module.exports = {
       .waitForElementVisible(helloLabel)
 
       // Send email value to bot
-      .pause(1000) // TODO: identify received message per id or such and continue when ready
       .useCss()
+      .waitForElementVisible('#message-3')
       .click(messageInput)
       .setValue(messageInput, 'test')
       .click(submitBtn)
 
-      .pause(1000)
+      .waitForElementVisible('#message-5')
       .click(messageInput)
       .setValue(messageInput, 'confirm')
       .click(submitBtn)
@@ -104,8 +104,8 @@ module.exports = {
       .click(acceptBtn)
 
       // Confirm proof request sending
-      .pause(1000)
       .useCss()
+      .waitForElementVisible('#message-11')
       .click(messageInput)
       .setValue(messageInput, 'yes')
       .click(submitBtn)

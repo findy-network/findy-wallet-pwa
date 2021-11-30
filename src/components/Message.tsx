@@ -28,11 +28,11 @@ const componentDecorator = (href: any, text: any, key: any) => (
   </a>
 )
 
-type IProps = { message: IMessageNode }
+type IProps = { message: IMessageNode; index: number }
 
-function Message({ message }: IProps) {
+function Message({ message, index }: IProps) {
   return (
-    <Content>
+    <Content id={`message-${index}`}>
       <Linkify componentDecorator={componentDecorator}>
         <P>{message.message}</P>
       </Linkify>
