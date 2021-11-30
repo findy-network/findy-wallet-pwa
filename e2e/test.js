@@ -1,6 +1,6 @@
 const user = require('./e2e.user.json')
 const userCmd = `window.localStorage.token = "${user.jwt}"`
-const home = 'http://localhost:3000/'
+const home = process.env.AGENCY_URL || 'http://localhost:3000'
 const addConBtn = '//button[contains(.,"Add connection")]'
 const organisationLabel = '//p[contains(.,"organisation")]'
 const messageInput = 'input[placeholder="Type your answer here..."]'
@@ -56,7 +56,7 @@ module.exports = {
       .url(home)
       .useCss()
       .waitForElementVisible(messageInput)
-      .url(`${home}connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
+      .url(`${home}/connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
       .useCss()
       .waitForElementVisible(messageInput)
       .end()
@@ -87,11 +87,12 @@ module.exports = {
 
       // Send email value to bot
       .useCss()
+      .waitForElementVisible('#message-3')
       .click(messageInput)
       .setValue(messageInput, 'test')
       .click(submitBtn)
 
-      // Confirm credential sending
+      .waitForElementVisible('#message-5')
       .click(messageInput)
       .setValue(messageInput, 'confirm')
       .click(submitBtn)
@@ -103,6 +104,7 @@ module.exports = {
 
       // Confirm proof request sending
       .useCss()
+      .waitForElementVisible('#message-11')
       .click(messageInput)
       .setValue(messageInput, 'yes')
       .click(submitBtn)

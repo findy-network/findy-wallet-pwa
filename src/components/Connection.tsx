@@ -176,14 +176,14 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                   }
                 ></MoreButton>
               )}
-              {events.map(({ node }: IEventEdge) => (
+              {events.map(({ node }: IEventEdge, index: number) => (
                 <Box
                   animation={{ type: 'fadeIn', duration: 1500 }}
                   key={node.id}
                 >
                   {node.job &&
                     node.job?.node.protocol !== ProtocolType.NONE && (
-                      <Job job={node.job.node} />
+                      <Job job={node.job.node} index={index} />
                     )}
                 </Box>
               ))}
