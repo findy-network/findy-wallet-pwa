@@ -38,3 +38,4 @@ e2e.*.json
 tools/env/use-key.sh
 
 e2e/e2e-sa.yaml
+e2e/cert
