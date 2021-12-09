@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 timestamp=$(date +%s)
 
 user=user-$timestamp
