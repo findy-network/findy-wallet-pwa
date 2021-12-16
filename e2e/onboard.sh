@@ -95,14 +95,14 @@ echo "Schema read successfully: $schema"
 
 # create cred def
 echo "Create cred def with schema id $sch_id"
-cred_def_id=$(findy-agent-cli agent get-cred-def \
+cred_def_id=$(findy-agent-cli agent create-cred-def \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --id $sch_id --tag $org)
 echo "::add-mask::$cred_def_id"
 
 # read cred def - make sure it's found in ledger
 echo "Read cred def"
-cred_def=$(findy-agent-cli agent read-cred-def \
+cred_def=$(findy-agent-cli agent get-cred-def \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --id $cred_def_id --timeout $read_timeout)
 
