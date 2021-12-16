@@ -2,6 +2,7 @@
 
 set -e
 
+read_timeout="60s"
 timestamp=$(date +%s)
 
 user=user-$timestamp
@@ -79,11 +80,27 @@ sch_id=$(findy-agent-cli agent create-schema \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --name="email" --version=1.0 email)
 
+# read schema - make sure it's found in ledger
+echo "Read schema"
+schema=$(findy-agent-cli agent read-schema \
+    --tls-path $tls_path --server $grpc_server \
+    --jwt $org_jwt --schema-id $sch_id --timeout $read_timeout)
+
+echo "Schema read successfully: $schema"
+
 # create cred def
 echo "Create cred def with schema id $sch_id"
 cred_def_id=$(findy-agent-cli agent create-cred-def \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --id $sch_id --tag $org)
+
+# read cred def - make sure it's found in ledger
+echo "Read cred def"
+cred_def=$(findy-agent-cli agent read-cred-def \
+    --tls-path $tls_path --server $grpc_server \
+    --jwt $org_jwt --id $cred_def_id --timeout $read_timeout)
+
+echo "Cred def read successfully: $cred_def"
 
 # store cred def id to bot template
 cat "$bot_file".template > "$bot_file"
