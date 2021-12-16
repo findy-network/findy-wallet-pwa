@@ -2,11 +2,15 @@
 
 set -e
 
+read_timeout="60s"
 timestamp=$(date +%s)
 
 user=user-$timestamp
 org=org-$timestamp
 bot_file="./e2e/e2e-sa.yaml"
+
+echo "::add-mask::$user"
+echo "::add-mask::$org"
 
 auth_url=$AGENCY_URL
 if [ -z "$auth_url" ]; then
@@ -71,6 +75,7 @@ invitation=$(findy-agent-cli agent invitation \
 echo {\"jwt\": \"$jwt\", \"user\": \"$user\"} > ./e2e/e2e.user.json
 echo $invitation > ./e2e/e2e.invitation.json
 connection_id=$(node -pe "require('./e2e/e2e.invitation.json')['@id']")
+echo "::add-mask::$connection_id"
 echo "Invitation created with connection id $connection_id"
 
 # create schema
@@ -78,12 +83,30 @@ echo "Create schema"
 sch_id=$(findy-agent-cli agent create-schema \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --name="email" --version=1.0 email)
+echo "::add-mask::$sch_id"
+
+# read schema - make sure it's found in ledger
+echo "Read schema"
+schema=$(findy-agent-cli agent get-schema \
+    --tls-path $tls_path --server $grpc_server \
+    --jwt $org_jwt --schema-id $sch_id --timeout $read_timeout)
+
+echo "Schema read successfully: $schema"
 
 # create cred def
 echo "Create cred def with schema id $sch_id"
 cred_def_id=$(findy-agent-cli agent create-cred-def \
     --tls-path $tls_path --server $grpc_server \
     --jwt $org_jwt --id $sch_id --tag $org)
+echo "::add-mask::$cred_def_id"
+
+# read cred def - make sure it's found in ledger
+echo "Read cred def"
+cred_def=$(findy-agent-cli agent get-cred-def \
+    --tls-path $tls_path --server $grpc_server \
+    --jwt $org_jwt --id $cred_def_id --timeout $read_timeout)
+
+echo "Cred def read successfully: $cred_def"
 
 # store cred def id to bot template
 cat "$bot_file".template > "$bot_file"
