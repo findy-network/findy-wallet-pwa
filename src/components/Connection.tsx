@@ -105,11 +105,19 @@ type TParams = { id: string }
 function Connection({ match }: RouteComponentProps<TParams>) {
   const { setConnection, setConnectionsOpen } = useContext(ConnectionContext)
   const history = useHistory()
+  const [markEvent] = useMutation(MARK_EVENTREAD_MUTATION, {
+    onCompleted: (resp: any) => {
+      //console.log(resp)
+    },
+    onError: (e) => {
+      console.log('ERROR: ' + e)
+    },
+  })
   const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
     variables: {
       id: match.params.id,
     },
-    onCompleted: () => {
+    onCompleted: (data) => {
       const edges = data.connection.events.edges
       if (edges[edges.length - 1]) {
         setConnection(data.connection.theirLabel)
@@ -134,13 +142,6 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   const [message, setMessage] = useState('')
   const [sendMessage] = useMutation(SEND_MESSAGE_MUTATION, {
     onCompleted: () => setMessage(''),
-    onError: (e) => {
-      console.log('ERROR: ' + e)
-    },
-  })
-
-  const [markEvent] = useMutation(MARK_EVENTREAD_MUTATION, {
-    onCompleted: (resp: any) => console.log(resp),
     onError: (e) => {
       console.log('ERROR: ' + e)
     },
