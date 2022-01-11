@@ -76,6 +76,7 @@ const Input = styled(TextInput)`
 
 const EnterIcon = styled(LinkUp)`
   stroke: ${colors.background};
+  margin: auto;
 `
 
 const Send = styled(Button)`
