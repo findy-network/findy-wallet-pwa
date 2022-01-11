@@ -39,3 +39,9 @@ jobs:
         run: CI=true npm start &
       - name: test
         run: npm run test:e2e
+      - name: archive logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: e2e-logs
+          path: tests_output
