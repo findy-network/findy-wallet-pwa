@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from 'react'
-import { Layer as Lay, LayerPositionType } from 'grommet'
+import { Layer as Lay, LayerPositionType, ThemeContext } from 'grommet'
 import styled from 'styled-components'
 import { device, colors } from '../theme'
 
@@ -40,16 +40,24 @@ function Dialog({
     }
   })
   return (
-    <Layer
-      position={position || 'top'}
-      modal={modal}
-      margin="none"
-      responsive={false}
-      onClickOutside={onClose}
-      {...rest}
+    <ThemeContext.Extend
+      value={{
+        layer: {
+          zIndex: '200',
+        },
+      }}
     >
-      {children}
-    </Layer>
+      <Layer
+        position={position || 'top'}
+        modal={modal}
+        margin="none"
+        responsive={false}
+        onClickOutside={onClose}
+        {...rest}
+      >
+        {children}
+      </Layer>
+    </ThemeContext.Extend>
   )
 }
 
