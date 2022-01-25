@@ -39,18 +39,13 @@ jobs:
         run: CI=true npm start &
       - name: test
         run: npm run test:e2e
-      #      - name: store agency logs
-      #        if: ${{ always() }}
-      #        run: |
-      #          cd tools/env
-      #          docker-compose logs > ../../tests_output/docker-compose-$(date +%s).log 2>&1 &
       - name: Collect docker logs
-        if: ${{ always() }}
+        if: ${{ failure() }}
         uses: jwalton/gh-docker-logs@v2.0.2
         with:
           dest: './tests_output/docker-logs'
       - name: archive logs
-        if: ${{ always() }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: e2e-logs
