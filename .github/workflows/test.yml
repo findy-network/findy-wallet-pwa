@@ -39,6 +39,11 @@ jobs:
         run: CI=true npm start &
       - name: test
         run: npm run test:e2e
+      - name: store agency logs
+        if: ${{ always() }}
+        run: |
+          cd tools/env
+          docker-compose logs > tests_output/docker-compose-$(date +%s).log 2>&1 &
       - name: archive logs
         if: ${{ always() }}
         uses: actions/upload-artifact@v2

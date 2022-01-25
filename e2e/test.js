@@ -35,7 +35,7 @@ module.exports = {
       .useXpath()
       .waitForElementVisible(confirmBtn)
       .click(confirmBtn)
-      .waitForElementVisible(organisationLabel, 10000)
+      .waitForElementVisible(organisationLabel)
       .end()
   },
   'Check navigation works': (browser) => {
