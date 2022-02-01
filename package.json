@@ -73,7 +73,7 @@
     "js-green-licenses": "^3.0.1",
     "lint-staged": "^12.3.2",
     "nightwatch": "^1.7.12",
-    "npm-outdated-to-latest": "^1.0.3",
+    "npm-outdated-to-latest": "^1.0.6",
     "prettier": "^2.5.0",
     "react-scripts": "^5.0.0",
     "typescript": "^4.5.2"
