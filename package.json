@@ -3,7 +3,7 @@
   "version": "0.5.33",
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "^3.5.6",
+    "@apollo/client": "^3.5.8",
     "graphql": "^16.0.1",
     "grommet": "^2.20.1",
     "grommet-icons": "^4.7.0",
