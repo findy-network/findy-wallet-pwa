@@ -7,6 +7,19 @@ const messageInput = 'input[placeholder="Type your answer here..."]'
 const walletLink = '//a[contains(.,"Wallet")]'
 
 module.exports = {
+  afterEach: (browser) => {
+    browser
+      .getLog((logEntriesArray) => {
+        console.log('Log length: ' + logEntriesArray.length)
+        logEntriesArray.forEach(function (log) {
+          console.log(
+            '[' + log.level.name + '] ' + log.timestamp + ' : ' + log.message
+          )
+        })
+      })
+      .end()
+  },
+
   'Check app loads': (browser) => {
     const newInvBtn = '//button[contains(.,"New invitation")]'
     browser
@@ -16,7 +29,6 @@ module.exports = {
       .useXpath()
       .waitForElementVisible(addConBtn)
       .waitForElementVisible(newInvBtn)
-      .end()
   },
   'Check connection is done': (browser) => {
     const invitationInput = 'input[placeholder="Enter invitation code"]'
@@ -36,7 +48,6 @@ module.exports = {
       .waitForElementVisible(confirmBtn)
       .click(confirmBtn)
       .waitForElementVisible(organisationLabel)
-      .end()
   },
   'Check navigation works': (browser) => {
     const credentialsHeader = '//h2[contains(.,"Your wallet is empty")]'
@@ -47,7 +58,6 @@ module.exports = {
       .useXpath()
       .click(walletLink)
       .waitForElementVisible(credentialsHeader)
-      .end()
   },
   'Check invalid connection id redirects to home': (browser) => {
     browser
@@ -59,7 +69,6 @@ module.exports = {
       .url(`${home}/connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
       .useCss()
       .waitForElementVisible(messageInput)
-      .end()
   },
   'Check issue and verify works': (browser) => {
     const helloLabel = '//p[contains(.,"Hello!")]'
@@ -123,7 +132,5 @@ module.exports = {
       .click(walletLink)
       .useCss()
       .waitForElementVisible(credIcon)
-
-      .end()
   },
 }
