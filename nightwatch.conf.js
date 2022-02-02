@@ -44,6 +44,7 @@ module.exports = {
 
       desiredCapabilities: {
         browserName: 'chrome',
+        'goog:loggingPrefs': { browser: 'ALL' },
         'goog:chromeOptions': {
           args: [
             '--no-sandbox',

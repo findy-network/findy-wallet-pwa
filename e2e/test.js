@@ -9,7 +9,7 @@ const walletLink = '//a[contains(.,"Wallet")]'
 module.exports = {
   afterEach: (browser) => {
     browser
-      .getLog((logEntriesArray) => {
+      .getLog('browser', (logEntriesArray) => {
         console.log('Log length: ' + logEntriesArray.length)
         logEntriesArray.forEach(function (log) {
           console.log(
