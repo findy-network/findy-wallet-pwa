@@ -188,6 +188,7 @@ function EventNotifications() {
       subscribeToMore({
         document: EVENTS_SUBSCRIPTION,
         updateQuery: (prev: any, { subscriptionData: { data } }: any) => {
+          console.debug('EVENT', data?.eventAdded?.node?.description)
           // This function updates cache when new events are received from the server.
           // The user does not need to refresh e.g. connection view but views
           // are automatically updated with established connection data.
