@@ -32,12 +32,15 @@ function Home() {
     }
   }
   const { loading, error, data } = useQuery(CONNECTIONS_QUERY, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only', // Used for first execution
+    nextFetchPolicy: 'cache-first', // Used for subsequent executions
     onCompleted,
   })
   const isLoading = loading || (!error && !data)
   const showWaiting = isLoading || error
-  const showIntroduction = !loading && (error || !data)
+  const showIntroduction =
+    !loading &&
+    (error || !data?.connections?.edges || data.connections.edges.length === 0)
 
   return (
     <>
