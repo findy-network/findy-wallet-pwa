@@ -1,0 +1,8 @@
+dev:
+  - any: ['!package.json', '!package-lock.json']
+
+test:
+  - e2e
+
+demo:
+  - tools/env/**/*
