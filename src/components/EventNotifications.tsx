@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { DataProxy } from '@apollo/client'
+import { useHistory } from 'react-router'
 
 import {
   IEdge,
@@ -175,12 +176,13 @@ const updateProtocolItem = (connectionID: string, jobEdge: IJobEdge) => {
   }
 }
 
-function EventNotifications() {
+function EventNotifications({ closeMenu }: { closeMenu: () => void }) {
   /* const addedEventIds = useReactiveVar(addedEventIdsVar)*/
   const { /*data,*/ subscribeToMore } = useQuery(EVENTS_QUERY, {
     fetchPolicy: 'cache-only',
   })
   const [subscribed, setSubscribed] = useState(false)
+  const history = useHistory()
 
   useEffect(() => {
     if (!subscribed) {
@@ -229,6 +231,16 @@ function EventNotifications() {
             }
             addedEventIdsVar([...addedEventIdsVar(), node.id])
           }
+          const { node }: IEventEdge = data.eventAdded
+          const job = node?.job?.node
+          if (
+            job?.protocol === ProtocolType.CONNECTION &&
+            job.output.connection
+          ) {
+            closeMenu()
+            history.push(`/connections/${job.output.connection.node.id}`)
+          }
+
           return newState.state // new state for all events
         },
       })

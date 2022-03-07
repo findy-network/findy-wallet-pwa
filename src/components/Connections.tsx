@@ -14,7 +14,7 @@ import { colors } from '../theme'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
-    connections(first: 10, after: $cursor) {
+    connections(first: 100, after: $cursor) {
       edges {
         ...PairwiseEdgeFragment
       }

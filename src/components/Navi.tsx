@@ -97,6 +97,7 @@ const Sidebar = styled(GrommetSidebar)`
   padding: 0px;
   display: none;
   @media ${device.tablet} {
+    overflow: scroll;
     display: block;
     flex: 0 0 auto;
     width: 16.6666666667%;
@@ -108,11 +109,11 @@ const DropBox = styled(Box)`
   z-index: 100;
   display: inline-block;
   width: 100%;
-  height: 100%;
   background: ${colors.brand};
   @media ${device.tablet} {
     position: fixed;
     display: none;
+    height: 100%;
   }
 `
 
@@ -272,8 +273,8 @@ function Navi({ children }: IProps) {
           {connectionNav('column')}
         </DropBox>
       </Collapsible>
-      <Box direction="row" fill>
-        <EventNotifications />
+      <Box direction="row" fill overflow="hidden">
+        <EventNotifications closeMenu={() => setMenuOpen(false)} />
         <Sidebar background="brand">{connectionNav('column')}</Sidebar>
         <ConnectionContext.Provider
           value={{ setConnection, setConnectionsOpen }}
