@@ -246,7 +246,7 @@ function EventNotifications({ closeMenu }: { closeMenu: () => void }) {
         },
       })
     }
-  }, [subscribeToMore, subscribed])
+  }, [subscribeToMore, subscribed, closeMenu, history])
   return <>{/* TODO: show notification of new event? */}</>
 }
 
