@@ -233,6 +233,7 @@ function EventNotifications({ closeMenu }: { closeMenu: () => void }) {
           }
           const { node }: IEventEdge = data.eventAdded
           const job = node?.job?.node
+          // Navigate to new connection view automatically when it is established
           if (
             job?.protocol === ProtocolType.CONNECTION &&
             job.output.connection
