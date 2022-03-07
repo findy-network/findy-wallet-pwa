@@ -104,13 +104,14 @@ const Sidebar = styled(GrommetSidebar)`
 `
 
 const DropBox = styled(Box)`
-  position: fixed;
+  position: absolute;
   z-index: 100;
   display: inline-block;
   width: 100%;
   height: 100%;
   background: ${colors.brand};
   @media ${device.tablet} {
+    position: fixed;
     display: none;
   }
 `
