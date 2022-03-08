@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="52px" height="52px" viewBox="0 0 52 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>person</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="person" transform="translate(1.000000, 1.000000)">
+            <polygon id="Path" points="3 1 27 1 27 25 3 25"></polygon>
+            <circle id="Oval" stroke="#DBDBDB" fill="#FFFFFF" cx="25" cy="25" r="25"></circle>
+            <path d="M24.5,23.5 C27.953125,23.5 30.75,20.703125 30.75,17.25 C30.75,13.796875 27.953125,11 24.5,11 C21.046875,11 18.25,13.796875 18.25,17.25 C18.25,20.703125 21.046875,23.5 24.5,23.5 Z M24.5,26.625 C20.328125,26.625 12,28.71875 12,32.875 L12,36 L37,36 L37,32.875 C37,28.71875 28.671875,26.625 24.5,26.625 Z" id="Shape" fill="#2C2C31" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

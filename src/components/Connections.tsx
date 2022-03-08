@@ -9,12 +9,12 @@ import { NavLink } from 'react-router-dom'
 import Waiting from './Waiting'
 import { pageInfo } from './Fragments'
 import { pairwise as fragments } from './Fragments'
-import { User as PersonIco } from 'grommet-icons'
 import { colors } from '../theme'
+import { ReactComponent as PersonIcon } from '../theme/person-icon.svg'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
-    connections(first: 100, after: $cursor) {
+    connections(last: 100, after: $cursor) {
       edges {
         ...PairwiseEdgeFragment
       }
@@ -42,18 +42,26 @@ const Row = styled(NavLink).attrs({ activeClassName })`
     color: ${colors.active};
     svg {
       stroke: ${colors.selected};
+      circle {
+        ${() => `fill: ${colors.selected}`};
+        ${() => `stroke: ${colors.selected}`};
+      }
     }
   }
-`
-
-const Icon = styled(PersonIco)`
-  font-size: 1.5;
-  margin-right: 0.5rem;
 `
 
 const Paragraph = styled(P)`
   font-size: 0.95rem;
   font-weight: 500;
+`
+
+const Icon = styled(PersonIcon)`
+  circle {
+    ${() => `fill: ${colors.inactive}`};
+    ${() => `stroke: ${colors.inactive}`};
+  }
+  padding-right: 12px;
+  vertical-align: middle;
 `
 
 const RedDot = styled(Box)`
@@ -71,13 +79,52 @@ function Connections({
   conOpen?: Dispatch<SetStateAction<boolean>>
 }) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
+
+  // Add numbers to similar names. Revers order so that last connection is displayed first.
+  const items = [...(data?.connections?.edges || [])]
+    .reduce(
+      (result, item) => {
+        const foundName = result.names.find(
+          (nameItem: { name: string; index: number }) =>
+            nameItem.name === item.node.theirLabel
+        )
+
+        if (foundName) {
+          return {
+            names: result.names.map(
+              (nameItem: { name: string; index: number }) =>
+                nameItem.name === item.node.theirLabel
+                  ? { name: nameItem.name, index: nameItem.index + 1 }
+                  : nameItem
+            ),
+            items: [
+              ...result.items,
+              {
+                ...item,
+                node: {
+                  ...item.node,
+                  theirLabel:
+                    item.node.theirLabel + ' (' + foundName.index + ')',
+                },
+              },
+            ],
+          }
+        }
+        return {
+          names: [...result.names, { name: item.node.theirLabel, index: 1 }],
+          items: [...result.items, item],
+        }
+      },
+      { items: [], names: [] }
+    )
+    .items.reverse()
   return (
     <>
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
         <Box margin="none">
-          {data.connections.edges.map(({ node }: IConnectionEdge) => (
+          {items.map(({ node }: IConnectionEdge) => (
             <Row
               onClick={() => {
                 hideMenu!(false)
@@ -88,7 +135,7 @@ function Connections({
             >
               <Box direction="row" align="center" pad="1rem">
                 <Stack anchor="top-right">
-                  <Icon />
+                  <Icon width="30px" height="30px" />
                   {node.events?.nodes[0] && !node.events?.nodes[0].read && (
                     <RedDot />
                   )}
