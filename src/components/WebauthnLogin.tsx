@@ -197,6 +197,7 @@ function WebauthnLogin() {
   return (
     <Login width="medium" margin="medium">
       <TextInput
+        autoComplete="on"
         name="email"
         placeholder="email"
         maxLength={256}
