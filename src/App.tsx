@@ -9,7 +9,7 @@ import Credentials from './components/Credentials'
 import Login from './components/Login'
 import URLConnect from './components/URLConnect'
 import Me from './components/Me'
-import { findyTheme } from "./theme"
+import { findyTheme } from './theme'
 
 function App() {
   return (

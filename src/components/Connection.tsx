@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { Box, Button, Stack, TextInput, Keyboard } from 'grommet'
 import styled from 'styled-components'
 
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql, makeVar } from '@apollo/client'
 import Waiting from './Waiting'
 import {
   pairwise as fragments,
@@ -13,13 +13,13 @@ import {
 import { IEventEdge, ProtocolType } from './Types'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
-import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router'
 
 import ScrollableFeed from 'react-scrollable-feed'
 import { SEND_MESSAGE_MUTATION, MARK_EVENTREAD_MUTATION } from './Queries'
 import { LinkUp } from 'grommet-icons'
-import { ConnectionContext } from './Navi'
+
+export const activeConnectionName = makeVar('')
 
 export const CONNECTION_QUERY = gql`
   query GetConnection($id: ID!, $cursor: String) {
@@ -104,7 +104,6 @@ const MoreButton = styled(Button)`
 type TParams = { id: string }
 
 function Connection({ match }: RouteComponentProps<TParams>) {
-  const { setConnection, setConnectionsOpen } = useContext(ConnectionContext)
   const history = useHistory()
   const [markEvent] = useMutation(MARK_EVENTREAD_MUTATION, {
     onCompleted: (resp: any) => {
@@ -120,9 +119,8 @@ function Connection({ match }: RouteComponentProps<TParams>) {
     },
     onCompleted: (data) => {
       const edges = data.connection.events.edges
+      activeConnectionName(data.connection.theirLabel)
       if (edges[edges.length - 1]) {
-        setConnection(data.connection.theirLabel)
-        setConnectionsOpen(true)
         markEvent({
           variables: {
             input: {
