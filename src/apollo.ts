@@ -14,7 +14,7 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import config from './config'
 import testClient, { cache as testCache } from './mock/client'
-
+import { activeConnectionName } from './components/Connection'
 
 const useMockResolver = process.env.REACT_APP_MOCK_RESOLVER === 'true'
 
@@ -44,6 +44,11 @@ const createCache = () => {
             //keyArgs: ["id"],
             merge: true,
           },
+          activeConnectionName: {
+            read() {
+              return activeConnectionName()
+            },
+          },
           /*cachedConnection(_, { args, toReference }: FieldFunctionOptions) {
             return toReference({
               __typename: 'Pairwise',
@@ -54,7 +59,6 @@ const createCache = () => {
       },
     },
   })
-
 }
 
 const createClient = (cache: InMemoryCache) => {
@@ -100,16 +104,14 @@ const createClient = (cache: InMemoryCache) => {
     authLink.concat(httpLink)
   )
 
-
   return new ApolloClient({
     uri: `${config.gqlUrl}/query`,
     cache,
     link: ApolloLink.from([splitLink]),
   })
-
 }
 
-export const cache = useMockResolver ? testCache : createCache();
-const client = useMockResolver ? testClient : createClient(cache);
+export const cache = useMockResolver ? testCache : createCache()
+const client = useMockResolver ? testClient : createClient(cache)
 
 export default client

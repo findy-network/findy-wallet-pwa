@@ -73,10 +73,8 @@ const RedDot = styled(Box)`
 
 function Connections({
   hideMenu,
-  conOpen,
 }: {
   hideMenu?: Dispatch<SetStateAction<boolean>>
-  conOpen?: Dispatch<SetStateAction<boolean>>
 }) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
 
@@ -128,7 +126,6 @@ function Connections({
             <Row
               onClick={() => {
                 hideMenu!(false)
-                conOpen!(true)
               }}
               key={node.id}
               to={`/connections/${node.id}`}

@@ -1,9 +1,10 @@
-import React, { ReactNode, useState, useContext, createContext } from 'react'
+import React, { ReactNode, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
-import EventNotifications from './EventNotifications'
-
 import { Link, NavLink, NavLinkProps } from 'react-router-dom'
+import { useQuery, gql } from '@apollo/client'
+
+import EventNotifications from './EventNotifications'
 
 import {
   Box,
@@ -176,13 +177,15 @@ interface IProps {
   children: ReactNode
 }
 
-export const ConnectionContext = createContext<any>({})
+export const GET_ACTIVE_CONNECTION = gql`
+  query getActiveConnection {
+    activeConnectionName @client
+  }
+`
 
 function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [connectionsOpen, setConnectionsOpen] = useState(false)
-  const [connection, setConnection] = useState('')
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav animation="fadeIn" gap="small" align="start" direction={direction}>
       <Add></Add>
@@ -193,36 +196,19 @@ function Navi({ children }: IProps) {
           onClick={() => setMenuOpen(false)}
         />
       </Invite>
-      {connectionsOpen && (
-        <ConnectionBox>
-          <Connections
-            hideMenu={setMenuOpen}
-            conOpen={setConnectionsOpen}
-          ></Connections>
-        </ConnectionBox>
-      )}
+      <ConnectionBox>
+        <Connections hideMenu={setMenuOpen}></Connections>
+      </ConnectionBox>
     </Nav>
   )
 
   const options = (direction: BoxProps['direction'] = 'row') => (
     <OptionsBox direction={direction}>
       <MenuLink
-        to="/connections"
-        activeClassName="active"
-        onClick={() => {
-          setMenuOpen(false)
-          setConnectionsOpen(true)
-        }}
-      >
-        Chat
-      </MenuLink>
-      <MenuLink
         to="/credentials"
         activeClassName="active"
         onClick={() => {
           setMenuOpen(false)
-          setConnection('')
-          setConnectionsOpen(false)
         }}
       >
         Wallet
@@ -243,6 +229,8 @@ function Navi({ children }: IProps) {
     </OptionsBox>
   )
 
+  const { data: activeConnection } = useQuery(GET_ACTIVE_CONNECTION)
+
   return (
     <>
       <Header justify="start">
@@ -250,13 +238,14 @@ function Navi({ children }: IProps) {
           <BrandBox
             onClick={() => {
               setMenuOpen(false)
-              setConnectionsOpen(true)
             }}
           >
             <Image fit="contain" src="/img/logo.svg" />
           </BrandBox>
         </Link>
-        <ConnectionName>{connectionsOpen && connection}</ConnectionName>
+        <ConnectionName>
+          {activeConnection?.activeConnectionName}
+        </ConnectionName>
         <MenuBox>
           <MenuButton
             icon={<MenuIcon />}
@@ -276,11 +265,7 @@ function Navi({ children }: IProps) {
       <Box direction="row" fill overflow="hidden">
         <EventNotifications closeMenu={() => setMenuOpen(false)} />
         <Sidebar background="brand">{connectionNav('column')}</Sidebar>
-        <ConnectionContext.Provider
-          value={{ setConnection, setConnectionsOpen }}
-        >
-          <Content pad="medium">{children}</Content>
-        </ConnectionContext.Provider>
+        <Content pad="medium">{children}</Content>
       </Box>
     </>
   )
