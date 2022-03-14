@@ -22,7 +22,7 @@ import {
 import Add from './Add'
 import Connections from './Connections'
 
-import { colors, device, GreyButton } from '../theme'
+import { colors, device, GreyButton, Smoke } from '../theme'
 import { UserContext } from './Login'
 
 export const AnchorLink: React.FC<AnchorLinkProps> = (props) => {
@@ -105,9 +105,13 @@ const Sidebar = styled(GrommetSidebar)`
   }
 `
 
-const DropBox = styled(Box)`
+interface DropBoxProps {
+  showDialog: boolean
+}
+
+const DropBox = styled(Box)<DropBoxProps>`
   position: absolute;
-  z-index: 100;
+  z-index: ${(props) => (props.showDialog ? 0 : 100)};
   display: inline-block;
   width: 100%;
   background: ${colors.brand};
@@ -186,9 +190,13 @@ export const GET_ACTIVE_CONNECTION = gql`
 function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showDialog, setShowDialog] = useState(false)
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav animation="fadeIn" gap="small" align="start" direction={direction}>
-      <Add></Add>
+      <Add
+        onClick={() => setShowDialog(true)}
+        onClose={() => setShowDialog(false)}
+      ></Add>
       <Invite to="/me">
         <GreyButton
           label="New invitation"
@@ -254,8 +262,10 @@ function Navi({ children }: IProps) {
         </MenuBox>
         <WideOption>{options()}</WideOption>
       </Header>
+      {showDialog && <Smoke />}
       <Collapsible open={menuOpen}>
         <DropBox
+          showDialog={showDialog}
           animation={{ type: 'slideDown', duration: 800, size: 'xlarge' }}
         >
           {options('column')}
