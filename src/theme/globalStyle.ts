@@ -41,12 +41,8 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100%;
   }
 
-  body {
-    min-height: -webkit-fill-available;
-  }
-
-  html {
-    height: -webkit-fill-available;
+  #root {
+    height: 100%;
   }
 
   ::-webkit-scrollbar {

@@ -13,7 +13,7 @@ import { findyTheme } from './theme'
 
 function App() {
   return (
-    <Grommet theme={findyTheme} full={true}>
+    <Grommet theme={findyTheme} style={{ height: '100%' }}>
       <Box fill={true}>
         <Login>
           <Navi>
