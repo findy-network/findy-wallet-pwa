@@ -7,10 +7,16 @@ const AddButton = styled(GreyButton)`
   margin-top: 1rem;
 `
 
-function Add() {
+interface AddProps {
+  onClick: () => void
+  onClose: () => void
+}
+
+function Add({ onClick, onClose }: AddProps) {
   const [dialogOpen, setOpen] = useState(false)
   const close = () => {
     setOpen(false)
+    onClose()
   }
   return (
     <>
@@ -18,7 +24,10 @@ function Add() {
         label="Add connection"
         plain
         alignSelf="center"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          onClick()
+          setOpen(true)
+        }}
       />
       {dialogOpen && <AddDialog onClose={close} initialCode="" />}
     </>

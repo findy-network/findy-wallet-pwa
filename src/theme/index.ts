@@ -42,7 +42,7 @@ export const Smoke = styled.div`
   right: 0;
   background: ${colors.smoke};
   opacity: 0.6;
-  z-index: 1;
+  z-index: 2;
 `
 
 export const device = {

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Box, Button, Heading, Paragraph, TextInput } from 'grommet'
 import Dialog from './Dialog'
 import QrReader from './QrReader'
-import { colors, Smoke } from '../theme'
+import { colors } from '../theme'
 import { Close } from 'grommet-icons'
 
 import { useMutation, gql } from '@apollo/client'
@@ -103,68 +103,66 @@ function AddDialog({ onClose, initialCode }: IProps) {
     },
   })
   return (
-    <Smoke>
-      <Dialog
-        position="center"
-        duration={0}
-        modal={false}
-        plain={false}
-        onClose={close}
-        onEsc={close}
-      >
-        <Content margin="small">
-          <Row direction="row">
-            <Head level="3">Add connection</Head>
-            <CloseButton
-              plain
-              icon={<CloseIcon />}
-              onClick={() => close()}
-            ></CloseButton>
-          </Row>
-          {errorMessage ? (
-            <Box pad="small">
-              {errorMessage.split('\n').map((item) => (
-                <div key={item}>{item}</div>
-              ))}
-            </Box>
-          ) : (
-            <Box
-              direction="column"
-              align="center"
-              justify="between"
-              pad="none"
-              margin="none"
-            >
-              {' '}
-              <Input
-                placeholder="Enter invitation code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-              <Line>
-                <Span>OR</Span>
-              </Line>
-              <QrReader
-                onRead={(res: string) => {
-                  setCode(res)
-                }}
-              />
-              <ConfirmButton
-                label="Confirm"
-                onClick={() => {
-                  if (code) {
-                    connect({ variables: { input: { invitation: code } } })
-                    setCode('')
-                  } else {
-                    close()
-                  }
-                }}
-              ></ConfirmButton>
-            </Box>
-          )}
-        </Content>
-      </Dialog>
-    </Smoke>
+    <Dialog
+      position="center"
+      duration={0}
+      modal={false}
+      plain={false}
+      onClose={close}
+      onEsc={close}
+    >
+      <Content margin="small">
+        <Row direction="row">
+          <Head level="3">Add connection</Head>
+          <CloseButton
+            plain
+            icon={<CloseIcon />}
+            onClick={() => close()}
+          ></CloseButton>
+        </Row>
+        {errorMessage ? (
+          <Box pad="small">
+            {errorMessage.split('\n').map((item) => (
+              <div key={item}>{item}</div>
+            ))}
+          </Box>
+        ) : (
+          <Box
+            direction="column"
+            align="center"
+            justify="between"
+            pad="none"
+            margin="none"
+          >
+            {' '}
+            <Input
+              placeholder="Enter invitation code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            <Line>
+              <Span>OR</Span>
+            </Line>
+            <QrReader
+              onRead={(res: string) => {
+                setCode(res)
+              }}
+            />
+            <ConfirmButton
+              label="Confirm"
+              onClick={() => {
+                if (code) {
+                  connect({ variables: { input: { invitation: code } } })
+                  setCode('')
+                } else {
+                  close()
+                }
+              }}
+            ></ConfirmButton>
+          </Box>
+        )}
+      </Content>
+    </Dialog>
   )
 }
 
