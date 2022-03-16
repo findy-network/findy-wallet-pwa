@@ -15,7 +15,7 @@ function QrReader({ onRead }: IProps) {
         <Reader
           delay={300}
           onError={(err: any) => setError(err)}
-          onResult={(res: string) => res && onRead(res)}
+          onResult={(res: any) => res && onRead(res)}
           constraints={{ facingMode: 'environment' }}
         />
       )}
