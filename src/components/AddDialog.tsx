@@ -144,8 +144,8 @@ function AddDialog({ onClose, initialCode }: IProps) {
               <Span>OR</Span>
             </Line>
             <QrReader
-              onRead={(res: any) => {
-                setCode(res.text)
+              onRead={(res: string) => {
+                setCode(res)
               }}
             />
             <ConfirmButton
