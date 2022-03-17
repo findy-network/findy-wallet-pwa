@@ -114,6 +114,7 @@ const DropBox = styled(Box)<DropBoxProps>`
   z-index: ${(props) => (props.showDialog ? 0 : 100)};
   display: inline-block;
   width: 100%;
+  height: 100%;
   background: ${colors.brand};
   @media ${device.tablet} {
     position: fixed;
