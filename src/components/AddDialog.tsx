@@ -102,9 +102,11 @@ function AddDialog({ onClose, initialCode }: IProps) {
       )
     },
   })
-  const onConfirm = () => {
-    if (code) {
-      connect({ variables: { input: { invitation: code } } })
+
+  const onConfirm = (param?: string) => {
+    const newCode = param || code
+    if (newCode) {
+      connect({ variables: { input: { invitation: newCode } } })
       setCode('')
     } else {
       close()
@@ -154,10 +156,13 @@ function AddDialog({ onClose, initialCode }: IProps) {
             <QrReader
               onRead={(res: string) => {
                 setCode(res)
-                onConfirm()
+                onConfirm(res)
               }}
             />
-            <ConfirmButton label="Confirm" onClick={onConfirm}></ConfirmButton>
+            <ConfirmButton
+              label="Confirm"
+              onClick={() => onConfirm()}
+            ></ConfirmButton>
           </Box>
         )}
       </Content>
