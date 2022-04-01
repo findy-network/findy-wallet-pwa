@@ -59,7 +59,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.0.4",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.14",
     "@types/react": "^17.0.38",
@@ -71,7 +71,7 @@
     "chromedriver": "^98.0.1",
     "husky": "^7.0.4",
     "js-green-licenses": "^3.0.1",
-    "lint-staged": "^12.3.5",
+    "lint-staged": "^12.3.7",
     "nightwatch": "^2.0.8",
     "npm-outdated-to-latest": "^1.0.6",
     "prettier": "^2.5.0",
