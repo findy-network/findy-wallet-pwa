@@ -1,11 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Box, Button, Stack, Paragraph as P } from 'grommet'
 import styled from 'styled-components'
-
 import { useQuery, gql } from '@apollo/client'
+import { NavLink } from 'react-router-dom'
 
 import { IConnectionEdge } from './Types'
-import { NavLink } from 'react-router-dom'
 import Waiting from './Waiting'
 import { pageInfo } from './Fragments'
 import { pairwise as fragments } from './Fragments'
@@ -27,17 +26,16 @@ export const CONNECTIONS_QUERY = gql`
   ${pageInfo}
 `
 
-const activeClassName = 'nav-item-active'
-
-const Row = styled(NavLink).attrs({ activeClassName })`
-  text-decoration: none;
-  border-left: 3px solid transparent;
-  color: ${colors.inactive};
-  svg {
-    stroke: ${colors.inactive};
+const Container = styled(Box)`
+  .nav-item {
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    color: ${colors.inactive};
+    svg {
+      stroke: ${colors.inactive};
+    }
   }
-
-  &.${activeClassName} {
+  .nav-item-active {
     border-left: 3px solid ${colors.selected};
     color: ${colors.active};
     svg {
@@ -121,14 +119,17 @@ function Connections({
       {loading || error ? (
         <Waiting loading={loading} error={error} />
       ) : (
-        <Box margin="none">
+        <Container margin="none">
           {items.map(({ node }: IConnectionEdge) => (
-            <Row
+            <NavLink
               onClick={() => {
                 hideMenu!(false)
               }}
               key={node.id}
               to={`/connections/${node.id}`}
+              className={({ isActive }) =>
+                isActive ? 'nav-item nav-item-active' : 'nav-item'
+              }
             >
               <Box direction="row" align="center" pad="1rem">
                 <Stack anchor="top-right">
@@ -139,7 +140,7 @@ function Connections({
                 </Stack>
                 <Paragraph margin="none">{node.theirLabel}</Paragraph>
               </Box>
-            </Row>
+            </NavLink>
           ))}
           {data.connections.pageInfo.hasNextPage && (
             <Button
@@ -153,7 +154,7 @@ function Connections({
               }
             ></Button>
           )}
-        </Box>
+        </Container>
       )}
     </>
   )

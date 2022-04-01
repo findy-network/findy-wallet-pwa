@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
-
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { DataProxy } from '@apollo/client'
-import { useHistory } from 'react-router'
 
 import {
   IEdge,
@@ -182,7 +181,7 @@ function EventNotifications({ closeMenu }: { closeMenu: () => void }) {
     fetchPolicy: 'cache-only',
   })
   const [subscribed, setSubscribed] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!subscribed) {
@@ -239,14 +238,14 @@ function EventNotifications({ closeMenu }: { closeMenu: () => void }) {
             job.output.connection
           ) {
             closeMenu()
-            history.push(`/connections/${job.output.connection.node.id}`)
+            navigate(`/connections/${job.output.connection.node.id}`)
           }
 
           return newState.state // new state for all events
         },
       })
     }
-  }, [subscribeToMore, subscribed, closeMenu, history])
+  }, [subscribeToMore, subscribed, closeMenu, navigate])
   return <>{/* TODO: show notification of new event? */}</>
 }
 
