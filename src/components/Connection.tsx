@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Button, Stack, TextInput, Keyboard } from 'grommet'
 import styled from 'styled-components'
 
@@ -13,7 +13,6 @@ import {
 import { IEventEdge, ProtocolType } from './Types'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
-import { useHistory } from 'react-router'
 
 import ScrollableFeed from 'react-scrollable-feed'
 import { SEND_MESSAGE_MUTATION, MARK_EVENTREAD_MUTATION } from './Queries'
@@ -101,10 +100,9 @@ const MoreButton = styled(Button)`
   box-shadow: 40px 0px 30px 10px ${colors.shadow};
 `
 
-type TParams = { id: string }
-
-function Connection({ match }: RouteComponentProps<TParams>) {
-  const history = useHistory()
+function Connection() {
+  const params = useParams()
+  const navigate = useNavigate()
   const [markEvent] = useMutation(MARK_EVENTREAD_MUTATION, {
     onCompleted: (resp: any) => {
       //console.log(resp)
@@ -115,7 +113,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
   })
   const { loading, error, data, fetchMore } = useQuery(CONNECTION_QUERY, {
     variables: {
-      id: match.params.id,
+      id: params.id,
     },
     onCompleted: (data) => {
       const edges = data.connection.events.edges
@@ -131,7 +129,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
       }
     },
     onError: () => {
-      history.push(`/`)
+      navigate(`/`)
     },
   })
 
@@ -196,7 +194,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                       variables: {
                         input: {
                           message: message,
-                          connectionId: match.params.id,
+                          connectionId: params.id,
                         },
                       },
                     })
@@ -218,7 +216,7 @@ function Connection({ match }: RouteComponentProps<TParams>) {
                       variables: {
                         input: {
                           message: message,
-                          connectionId: match.params.id,
+                          connectionId: params.id,
                         },
                       },
                     })

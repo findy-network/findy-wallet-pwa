@@ -1,6 +1,5 @@
-import React from 'react'
 import { useQuery, gql } from '@apollo/client'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 import Waiting from './Waiting'
 import { Box, Heading, Text, Image } from 'grommet'
@@ -24,11 +23,11 @@ const CartoonBox = styled(Box)`
 `
 
 function Home() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const onCompleted = (data: any) => {
     if (data && data.connections.edges.length > 0) {
       const { id } = data.connections.edges[0].node
-      history.push(`/connections/${id}`)
+      navigate(`/connections/${id}`)
     }
   }
   const { loading, error, data } = useQuery(CONNECTIONS_QUERY, {
