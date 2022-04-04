@@ -127,6 +127,10 @@ const CredentialCardIcon = styled(Certificate)`
   }
 `
 
+const Container = styled(Box)`
+  overflow-y: auto;
+`
+
 interface CredentialProps {
   node: ICredentialNode
 }
@@ -264,7 +268,7 @@ function Credentials({ connectionId }: IProps) {
   const credentials = data?.credentials || data?.connection?.credentials
 
   return (
-    <Box>
+    <Container>
       {showWaiting && (
         <Box>
           <Waiting loading={loading} error={error} />
@@ -314,7 +318,7 @@ function Credentials({ connectionId }: IProps) {
           )}
         </Box>
       )}
-    </Box>
+    </Container>
   )
 }
 
