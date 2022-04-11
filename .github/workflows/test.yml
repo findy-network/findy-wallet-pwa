@@ -23,6 +23,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16.13.1'
+      - name: set chrome version
+        run: |
+          full_version=$(google-chrome --product-version)
+          echo "chrome_version=$(echo "${full_version%.*.*.*}")" >> $GITHUB_ENV
       - name: setup env
         run: |
           cd tools/env
@@ -34,7 +38,9 @@ jobs:
           chmod a+x install.sh
           sudo ./install.sh -b /bin
       - name: install deps
-        run: npm ci
+        run: |
+          npm ci
+          npm install chromedriver@"${{ env.chrome_version }}"
       - name: start app
         run: CI=true npm start &
       - name: test

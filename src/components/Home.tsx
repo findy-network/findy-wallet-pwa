@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections {
-    connections(first: 1) {
+    connections(last: 1) {
       edges {
         node {
           id
