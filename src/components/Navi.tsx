@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Menu as MenuIco } from 'grommet-icons'
 import { Link, NavLink } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
+import { useLocation } from 'react-router-dom'
 
 import EventNotifications from './EventNotifications'
 
@@ -190,6 +191,7 @@ function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showDialog, setShowDialog] = useState(false)
+  let location = useLocation()
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav animation="fadeIn" gap="small" align="start" direction={direction}>
       <Add
@@ -254,9 +256,11 @@ function Navi({ children }: IProps) {
             <Image fit="contain" src="/img/logo.svg" />
           </BrandBox>
         </Link>
-        <ConnectionName>
-          {activeConnection?.activeConnectionName}
-        </ConnectionName>
+        {location.pathname.startsWith('/connections') && (
+          <ConnectionName>
+            {activeConnection?.activeConnectionName}
+          </ConnectionName>
+        )}
         <MenuBox>
           <MenuButton
             icon={<MenuIcon />}
