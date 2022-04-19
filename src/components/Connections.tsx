@@ -142,13 +142,13 @@ function Connections({
               </Box>
             </NavLink>
           ))}
-          {data.connections.pageInfo.hasNextPage && (
+          {data.connections.pageInfo.hasPreviousPage && (
             <Button
               label="Load more"
               onClick={() =>
                 fetchMore({
                   variables: {
-                    cursor: data.connections.pageInfo.endCursor,
+                    cursor: data.connections.pageInfo.startCursor,
                   },
                 })
               }
