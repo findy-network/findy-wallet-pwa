@@ -13,7 +13,7 @@ import { ReactComponent as PersonIcon } from '../theme/person-icon.svg'
 
 export const CONNECTIONS_QUERY = gql`
   query GetConnections($cursor: String) {
-    connections(last: 100, after: $cursor) {
+    connections(last: 10, before: $cursor) {
       edges {
         ...PairwiseEdgeFragment
       }
@@ -76,44 +76,25 @@ function Connections({
 }) {
   const { loading, error, data, fetchMore } = useQuery(CONNECTIONS_QUERY)
 
-  // Add numbers to similar names. Revers order so that last connection is displayed first.
-  const items = [...(data?.connections?.edges || [])]
-    .reduce(
-      (result, item) => {
-        const foundName = result.names.find(
-          (nameItem: { name: string; index: number }) =>
-            nameItem.name === item.node.theirLabel
-        )
-
-        if (foundName) {
-          return {
-            names: result.names.map(
-              (nameItem: { name: string; index: number }) =>
-                nameItem.name === item.node.theirLabel
-                  ? { name: nameItem.name, index: nameItem.index + 1 }
-                  : nameItem
-            ),
-            items: [
-              ...result.items,
-              {
-                ...item,
-                node: {
-                  ...item.node,
-                  theirLabel:
-                    item.node.theirLabel + ' (' + foundName.index + ')',
-                },
-              },
-            ],
-          }
-        }
-        return {
-          names: [...result.names, { name: item.node.theirLabel, index: 1 }],
-          items: [...result.items, item],
-        }
+  // Reverse order so that last connection is displayed first.
+  // Add numbers to similar names. TODO: backend should do this.
+  const names: { [key: string]: number } = {}
+  const items = [...(data?.connections?.edges || [])].reverse().map((item) => {
+    const name = item.node.theirLabel
+    if (names[name]) {
+      names[name] += 1
+    } else {
+      names[name] = 1
+    }
+    return {
+      ...item,
+      node: {
+        ...item.node,
+        theirLabel: `${name} ${names[name] > 1 ? `(${names[name]})` : ''}`,
       },
-      { items: [], names: [] }
-    )
-    .items.reverse()
+    }
+  })
+
   return (
     <>
       {loading || error ? (
