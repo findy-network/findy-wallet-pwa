@@ -148,7 +148,7 @@ function Connections({
               onClick={() =>
                 fetchMore({
                   variables: {
-                    cursor: data.connections.pageInfo.endCursor,
+                    cursor: data.connections.pageInfo.startCursor,
                   },
                 })
               }
