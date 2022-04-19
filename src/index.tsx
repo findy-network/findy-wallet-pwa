@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
@@ -8,7 +8,9 @@ import client from './apollo'
 import GlobalStyle from './theme/globalStyle'
 import * as serviceWorker from './serviceWorker'
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container!)
+root.render(
   <React.StrictMode>
     <GlobalStyle />
     <BrowserRouter>
@@ -16,8 +18,7 @@ ReactDOM.render(
         <App />
       </ApolloProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )
 
 // Learn more about service workers: https://bit.ly/CRA-PWA
