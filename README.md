@@ -2,6 +2,22 @@
 
 [![test](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml/badge.svg?branch=dev)](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml)
 
+## Getting Started
+
+Findy Agency is a collection of services ([Core](https://github.com/findy-network/findy-agent),
+[Auth](https://github.com/findy-network/findy-agent-auth),
+[Vault](https://github.com/findy-network/findy-agent-vault) and
+[this service](https://github.com/findy-network/findy-wallet-pwa)) that provide
+full SSI agency along with a web wallet for individuals.
+To start experimenting with Findy Agency we recommend you to start with
+[the documentation](https://findy-network.github.io/) and
+[set up the agency to your localhost environment](https://github.com/findy-network/findy-wallet-pwa/tree/dev/tools/env#agency-setup-for-local-development).
+
+- [Documentation](https://findy-network.github.io/)
+- [Instructions for starting agency in Docker containers](https://github.com/findy-network/findy-wallet-pwa/tree/dev/tools/env#agency-setup-for-local-development)
+
+## Project
+
 Web wallet frontend for Findy agency. Uses WebAuthn / Fido2 for authentication to agency backend.
 
 This project is a PoC/MVP of a web wallet intended for Findy agency users (individuals). The UI is unfinished in many ways and probably this project will not be seen in production as such. However, it shows how to implement
@@ -24,15 +40,18 @@ Wallet application interacts with two Findy agency services:
 
 1. [Setup local development environment](./tools/env/README.md#steps)
 2. Install Findy Wallet PWA
+
    ```
    npm install
    ```
+
 3. Run application
+
    ```
    npm start
    ```
 
-- This will launch the service at: http://localhost:3000
+- This will launch the service at: <http://localhost:3000>
 - You can access the service with a web browser when the Vault is running in background
 
 ## Wallet features
@@ -42,7 +61,7 @@ Bare in mind that the features and how they work can change in the future.
 
 ### Register/Login
 
-Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login. You must to have biometric authentication or hardware token available in order to make succesful registration/login. Check more info about WebAuthn here: https://webauthn.io/
+Web wallet uses passwordless WebAuthn / Fido2 authentication for the registration and login. You must to have biometric authentication or hardware token available in order to make succesful registration/login. Check more info about WebAuthn here: <https://webauthn.io/>
 
 ![Wallet login](./docs/wallet-login.gif)
 
