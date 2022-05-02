@@ -7,7 +7,7 @@
     "graphql": "^16.3.0",
     "grommet": "^2.23.0",
     "grommet-icons": "^4.7.0",
-    "react": "^18.0.0",
+    "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-linkify": "^1.0.0-alpha",
     "react-qr-reader": "^3.0.0-beta-1",
