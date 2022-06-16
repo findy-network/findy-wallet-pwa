@@ -19,7 +19,7 @@ shows how web wallet users can connect with other agents that are operated throu
 - This documentation does not intend to teach readers theoretical background or other aspects of SSI technology. For that, we recommend excellent material crafed by other authors:
   - [Self-Sovereign Identity (book)](https://www.manning.com/books/self-sovereign-identity) by Alex Preukschat and Drummond Reed
   - [Developing Blockchain-Based Identity Applications (course)](https://www.edx.org/professional-certificate/linuxfoundationx-developing-blockchain-based-identity-applications) by Stephen Curran and Carol Howard
-- The following steps describe only initial steps for getting things going with Findy agency. Please see more examples in our sample controller implementations [findy-agent-cli (golang)](https://github.com/findy-network/findy-agent-cli) and [issuer-tool (JS)](https://github.com/findy-network/findy-issuer-tool)
+- The following steps describe only initial steps for getting things going with Findy agency. Please see more examples in our sample controller implementations [findy-agent-cli (go)](https://github.com/findy-network/findy-agent-cli) and [issuer-tool (JS)](https://github.com/findy-network/findy-issuer-tool)
 - The full test case is executed solely on your local computer and no data is sent to external services (including the authentication keys created during the registration).
 
 ## Prerequisities
@@ -65,7 +65,7 @@ shows how web wallet users can connect with other agents that are operated throu
 
 1. **Start wallet development environment.**
 
-   Open terminal on the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address http://localhost:3000
+   Open terminal on the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address <http://localhost:3000>
 
 1. **Register Alice's Web-Wallet**
 
@@ -107,10 +107,12 @@ shows how web wallet users can connect with other agents that are operated throu
    - use the same terminal when running CLI from now on
    - **For Linux only**: define following aliases and install `xclip` if not
      already installed:
+
      ```sh
      alias pbcopy="xclip -selection c"
      alias pbpaste="xclip -selection clipboard -o"
      ```
+
    - [more tips, features and details](https://github.com/findy-network/findy-agent-cli/tree/master/scripts/fullstack#steps) for this setup
 
 1. **Onboard Bob (terminal)**
@@ -138,6 +140,7 @@ shows how web wallet users can connect with other agents that are operated throu
    ![Add connection](./docs/env-02.gif)
 
    Optionally, define `FCLI_CONN_ID` variable:
+
    ```sh
    # if you want to chat using this connection,
    # you can skip next step and define FCLI_CONN_ID:
@@ -189,5 +192,5 @@ shows how web wallet users can connect with other agents that are operated throu
 
    Congratulations, you just completed the initial Findy agency crash course! You can now continue experiments
 
-   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality. See more documentation and samples here: https://github.com/findy-network/findy-agent-cli
-   - Or building applications that utilise Findy Agency through its GRPC API. You can use our helper libraries for [golang](https://github.com/findy-network/findy-common-go) or [Typescript](https://github.com/findy-network/findy-common-ts) or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api) with the language of your choice.
+   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality. See more documentation and samples here: <https://github.com/findy-network/findy-agent-cli>
+   - Or building applications that utilise Findy Agency through its GRPC API. You can use our helper libraries for [go](https://github.com/findy-network/findy-common-go), [Typescript](https://github.com/findy-network/findy-common-ts) or [Kotlin](https://github.com/findy-network/findy-common-kt) or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api) with the language of your choice.
