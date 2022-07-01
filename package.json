@@ -72,7 +72,7 @@
     "husky": "^8.0.1",
     "js-green-licenses": "^3.0.1",
     "lint-staged": "^13.0.1",
-    "nightwatch": "^2.1.7",
+    "nightwatch": "^2.2.2",
     "npm-outdated-to-latest": "^1.0.6",
     "prettier": "^2.7.0",
     "react-scripts": "^5.0.1",
