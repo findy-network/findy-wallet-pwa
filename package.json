@@ -3,7 +3,7 @@
   "version": "0.5.47",
   "license": "Apache-2.0",
   "dependencies": {
-    "@apollo/client": "^3.6.8",
+    "@apollo/client": "^3.6.9",
     "graphql": "^16.5.0",
     "grommet": "^2.24.0",
     "grommet-icons": "^4.7.0",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^14.2.0",
+    "@testing-library/user-event": "^14.3.0",
     "@types/jest": "^28.1.1",
     "@types/node": "^18.0.0",
     "@types/react": "^17.0.43",
