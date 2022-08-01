@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Button, Stack, TextInput, Keyboard } from 'grommet'
 import styled from 'styled-components'
@@ -14,7 +14,6 @@ import { IEventEdge, ProtocolType } from './Types'
 import Job from './Job'
 import { device, colors, chat } from '../theme'
 
-import ScrollableFeed from 'react-scrollable-feed'
 import { SEND_MESSAGE_MUTATION, MARK_EVENTREAD_MUTATION } from './Queries'
 import { LinkUp } from 'grommet-icons'
 
@@ -100,6 +99,12 @@ const MoreButton = styled(Button)`
   box-shadow: 40px 0px 30px 10px ${colors.shadow};
 `
 
+const Container = styled.div`
+  max-height: inherit;
+  height: inherit;
+  overflow-y: auto;
+}`
+
 function Connection() {
   const params = useParams()
   const navigate = useNavigate()
@@ -153,6 +158,12 @@ function Connection() {
     }
     return item
   })
+
+  const bottomRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [events])
+
   return (
     <>
       {loading || (error && !data) ? (
@@ -160,7 +171,7 @@ function Connection() {
       ) : (
         <Chat>
           <ChatContent>
-            <ScrollableFeed forceScroll={true}>
+            <Container>
               {data.connection.events.pageInfo.hasPreviousPage && (
                 <MoreButton
                   hoverIndicator={{ color: colors.focus, opacity: 'medium' }}
@@ -185,7 +196,8 @@ function Connection() {
                     )}
                 </Box>
               ))}
-            </ScrollableFeed>
+              <div ref={bottomRef}></div>
+            </Container>
             <InputStack>
               <Keyboard
                 onEnter={() => {
