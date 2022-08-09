@@ -1,10 +1,14 @@
 const user = require('./e2e.user.json')
+const orgName = user.organisation
 const userCmd = `window.localStorage.token = "${user.jwt}"`
 const home = process.env.AGENCY_URL || 'http://localhost:3000'
 const addConBtn = '//button[contains(.,"Add connection")]'
-const organisationLabel = '//p[contains(.,"organisation")]'
+const organisationLabel = `//p[contains(.,"${orgName}")]`
 const messageInput = 'input[placeholder="Type your answer here..."]'
 const walletLink = '//a[contains(.,"Wallet")]'
+const credentialsHeader = user.existing
+  ? '//span[contains(.,"email")]'
+  : '//h2[contains(.,"Your wallet is empty")]'
 
 module.exports = {
   afterEach: (browser) => {
@@ -50,7 +54,6 @@ module.exports = {
       .waitForElementVisible(organisationLabel)
   },
   'Check navigation works': (browser) => {
-    const credentialsHeader = '//h2[contains(.,"Your wallet is empty")]'
     browser
       .url(home)
       .execute(userCmd)

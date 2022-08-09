@@ -51,7 +51,7 @@ services:
         /start.sh;
       "
   vault-db:
-    image: postgres:13.1-alpine
+    image: postgres:13.6-alpine
     volumes:
       - .data/vault:/var/lib/postgresql/data
     environment:
