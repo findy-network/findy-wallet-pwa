@@ -24,7 +24,8 @@
     "licenses:report": "node ./tools/check-licenses.js report ./build/licenses.txt",
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
-    "test:e2e": "./e2e/onboard.sh && nightwatch ./e2e",
+    "test:e2e": "./e2e/onboard.sh && nightwatch ./e2e && npm run test:e2e:kill",
+    "test:e2e:kill": "kill -9 $(ps aux | pgrep -f 'findy-agent-cli bot start')",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
