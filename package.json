@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "test:lint": "eslint ./src",
     "test:e2e": "./e2e/onboard.sh && nightwatch ./e2e && npm run test:e2e:kill",
-    "test:e2e:kill": "kill -9 $(ps aux | pgrep -f 'findy-agent-cli bot start')",
+    "test:e2e:kill": "kill -9 $(ps aux | pgrep -f 'findy-agent-cli bot start') &> /dev/null",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
