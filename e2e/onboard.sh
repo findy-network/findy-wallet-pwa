@@ -15,6 +15,10 @@ set -e
 
 read_timeout="60s"
 timestamp=$(date +%s)
+register_wait_time=$AGENCY_REGISTER_WAIT_TIME
+if [ -z "$register_wait_time" ]; then
+  register_wait_time=1
+fi
 
 user=$E2E_USER
 existing="true"
@@ -85,6 +89,8 @@ if [ -z "$E2E_ORG" ]; then
       --url $auth_url \
       --origin $auth_origin \
       --key $default_key
+  # wait for onboard transaction to be written to ledger
+  sleep $register_wait_time
 fi
 
 # login org
