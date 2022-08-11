@@ -1,11 +1,11 @@
+const invitationContent = require('./e2e.invitation.json')
 const user = require('./e2e.user.json')
-const orgName = user.organisation
+const organisationLabel = `#conn-${invitationContent['@id']}`
 const userCmd = `window.localStorage.token = "${user.jwt}"`
 const home = process.env.AGENCY_URL || 'http://localhost:3000'
 const addConBtn = '//button[contains(.,"Add connection")]'
-const organisationLabel = `//p[contains(.,"${orgName}")]`
 const messageInput = 'input[placeholder="Type your answer here..."]'
-const walletLink = '//a[contains(.,"Wallet")]'
+const walletLink = '#wallet-link'
 const credentialsHeader = user.existing
   ? '//span[contains(.,"email")]'
   : '//h2[contains(.,"Your wallet is empty")]'
@@ -37,7 +37,7 @@ module.exports = {
   'Check connection is done': (browser) => {
     const invitationInput = 'input[placeholder="Enter invitation code"]'
     const confirmBtn = '//button[contains(.,"Confirm")]'
-    const invitation = JSON.stringify(require('./e2e.invitation.json'))
+    const invitation = JSON.stringify(invitationContent)
     browser
       .url(home)
       .execute(userCmd)
@@ -51,6 +51,7 @@ module.exports = {
       .useXpath()
       .waitForElementVisible(confirmBtn)
       .click(confirmBtn)
+      .useCss()
       .waitForElementVisible(organisationLabel)
   },
   'Check navigation works': (browser) => {
@@ -58,8 +59,10 @@ module.exports = {
       .url(home)
       .execute(userCmd)
       .url(home)
-      .useXpath()
+      .useCss()
+      .waitForElementVisible(walletLink)
       .click(walletLink)
+      .useXpath()
       .waitForElementVisible(credentialsHeader)
   },
   'Check invalid connection id redirects to home': (browser) => {
@@ -84,7 +87,7 @@ module.exports = {
       .url(home)
       .execute(userCmd)
       .url(home)
-      .useXpath()
+      .useCss()
       .waitForElementVisible(organisationLabel)
       .click(organisationLabel)
       .useCss()
@@ -131,9 +134,8 @@ module.exports = {
       .waitForElementVisible(verificationText)
 
       // Check that cred is in wallet
-      .useXpath()
-      .click(walletLink)
       .useCss()
+      .click(walletLink)
       .waitForElementVisible(credIcon)
   },
 }
