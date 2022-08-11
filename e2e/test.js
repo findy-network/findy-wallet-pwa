@@ -1,6 +1,6 @@
 const invitationContent = require('./e2e.invitation.json')
 const user = require('./e2e.user.json')
-const organisationLabel = `#${invitationContent['@id']}`
+const organisationLabel = `#conn-${invitationContent['@id']}`
 const userCmd = `window.localStorage.token = "${user.jwt}"`
 const home = process.env.AGENCY_URL || 'http://localhost:3000'
 const addConBtn = '//button[contains(.,"Add connection")]'

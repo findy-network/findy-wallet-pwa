@@ -119,7 +119,7 @@ function Connections({
                     <RedDot />
                   )}
                 </Stack>
-                <Paragraph id={node.id} margin="none">
+                <Paragraph id={`conn-${node.id}`} margin="none">
                   {node.theirLabel}
                 </Paragraph>
               </Box>
