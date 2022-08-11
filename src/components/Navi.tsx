@@ -222,7 +222,9 @@ function Navi({ children }: IProps) {
           isActive ? 'menu-item active' : 'menu-item'
         }
       >
-        <Anchor as="span">Wallet</Anchor>
+        <Anchor as="span" id="wallet-link">
+          Wallet
+        </Anchor>
       </NavLink>
       <NavLink
         to="/logout"
