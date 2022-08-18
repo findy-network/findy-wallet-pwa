@@ -75,6 +75,7 @@ function WebauthnLogin() {
   const [waiting, setWaiting] = useState(false)
   const [email, setEmail] = useState('')
   const [operationResult, setOperationResult] = useState('')
+  const userVerificationRequired = 'required'
   const doRegister = async () => {
     setOperationResult('')
     const setError = () => {
@@ -87,10 +88,16 @@ function WebauthnLogin() {
       return
     }
     const { publicKey } = await response.json()
+    const authenticatorSelection = publicKey.authenticatorSelection || {}
     const credential: ICredential = (await navigator.credentials.create({
       publicKey: {
         ...publicKey,
         challenge: bufferDecode(publicKey.challenge),
+        authenticatorSelection: {
+          ...authenticatorSelection,
+          userVerification:
+            authenticatorSelection.userVerification || userVerificationRequired,
+        },
         user: {
           ...publicKey.user,
           id: bufferDecode(publicKey.user.id),
@@ -152,6 +159,8 @@ function WebauthnLogin() {
       publicKey: {
         ...publicKey,
         challenge: bufferDecode(publicKey.challenge),
+        userVerification:
+          publicKey.userVerification || userVerificationRequired,
         allowCredentials: publicKey.allowCredentials.map(
           (item: ICredentialDescriptor) => ({
             ...item,
