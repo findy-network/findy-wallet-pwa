@@ -75,7 +75,7 @@ function WebauthnLogin() {
   const [waiting, setWaiting] = useState(false)
   const [email, setEmail] = useState('')
   const [operationResult, setOperationResult] = useState('')
-  const userVerificationRequired = 'required'
+  const userVerificationDiscouraged = 'discouraged'
   const doRegister = async () => {
     setOperationResult('')
     const setError = () => {
@@ -96,7 +96,8 @@ function WebauthnLogin() {
         authenticatorSelection: {
           ...authenticatorSelection,
           userVerification:
-            authenticatorSelection.userVerification || userVerificationRequired,
+            authenticatorSelection.userVerification ||
+            userVerificationDiscouraged,
         },
         user: {
           ...publicKey.user,
@@ -160,7 +161,7 @@ function WebauthnLogin() {
         ...publicKey,
         challenge: bufferDecode(publicKey.challenge),
         userVerification:
-          publicKey.userVerification || userVerificationRequired,
+          publicKey.userVerification || userVerificationDiscouraged,
         allowCredentials: publicKey.allowCredentials.map(
           (item: ICredentialDescriptor) => ({
             ...item,
