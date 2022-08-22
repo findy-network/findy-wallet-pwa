@@ -149,6 +149,7 @@ function WebauthnLogin() {
       setEmail('')
     }
 
+    setWaiting(true)
     const response = await doFetch(`${config.authUrl}/login/begin/${email}`)
     if (response.status !== 200) {
       setWaiting(false)
