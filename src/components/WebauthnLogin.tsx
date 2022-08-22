@@ -82,6 +82,8 @@ function WebauthnLogin() {
       setOperationResult(`Unable to register this device for email ${email}`)
       setEmail('')
     }
+
+    setWaiting(true)
     const response = await doFetch(`${config.authUrl}/register/begin/${email}`)
     if (response.status !== 200) {
       setError()
