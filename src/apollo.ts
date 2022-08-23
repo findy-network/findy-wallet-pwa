@@ -80,7 +80,7 @@ const createClient = (cache: InMemoryCache) => {
   const wsLink = new WebSocketLink({
     uri: `${config.wsUrl}/query?access_token=${token}`,
     options: {
-      reconnect: true,
+      reconnect: token !== null,
       connectionParams: () => {
         return authHeader
       },
