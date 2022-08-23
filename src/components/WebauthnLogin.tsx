@@ -203,6 +203,28 @@ function WebauthnLogin() {
     }
   }
 
+  const tryDoRegister = async () => {
+    try {
+      await doRegister()
+    } catch {
+      // Sometimes iOS safari fails with
+      // "Unhandled Promise Rejection: NotAllowedError: This request has been cancelled by the user."
+      setOperationResult("Register failed for unknown reason. Please retry.")
+      setWaiting(false)
+    }
+  }
+
+  const tryDoLogin = async () => {
+    try {
+      await doLogin()
+    } catch {
+      // Sometimes iOS safari fails with
+      // "Unhandled Promise Rejection: NotAllowedError: This request has been cancelled by the user."
+      setOperationResult("Login failed for unknown reason. Please retry.")
+      setWaiting(false)
+    }
+  }
+
   const toggleRegister = (registerValue: boolean) => {
     setRegister(registerValue)
     setOperationResult('')
@@ -223,7 +245,7 @@ function WebauthnLogin() {
             <Btn
               disabled={email.length === 0 || waiting}
               label="Register"
-              onClick={doRegister}
+              onClick={tryDoRegister}
             ></Btn>
             <Text size="small" margin="12px 0 0 0">
               Existing user?{' '}
@@ -240,7 +262,7 @@ function WebauthnLogin() {
             <Btn
               disabled={email.length === 0 || waiting}
               label="Login"
-              onClick={doLogin}
+              onClick={tryDoLogin}
             ></Btn>
             <Text size="small" margin="12px 0 0 0">
               New user?{' '}
