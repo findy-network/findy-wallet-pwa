@@ -79,6 +79,7 @@ function WebauthnLogin() {
   const doRegister = async () => {
     setOperationResult('')
     const setError = () => {
+      setWaiting(false)
       setOperationResult(`Unable to register this device for email ${email}`)
       setEmail('')
     }
@@ -134,7 +135,6 @@ function WebauthnLogin() {
       },
     })
     if (result.status !== 200) {
-      setWaiting(false)
       setError()
       return
     } else {
@@ -147,6 +147,7 @@ function WebauthnLogin() {
   const doLogin = async () => {
     setOperationResult('')
     const setError = () => {
+      setWaiting(false)
       setOperationResult(`Unable to login with this device for email ${email}`)
       setEmail('')
     }
@@ -154,7 +155,6 @@ function WebauthnLogin() {
     setWaiting(true)
     const response = await doFetch(`${config.authUrl}/login/begin/${email}`)
     if (response.status !== 200) {
-      setWaiting(false)
       setError()
       return
     }
@@ -192,7 +192,6 @@ function WebauthnLogin() {
       },
     })
     if (result.status !== 200) {
-      setWaiting(false)
       setError()
       return
     } else {
