@@ -47,6 +47,7 @@ const Invitation = styled(Box)`
   margin: 0 auto;
   flex-direction: column;
   max-width: 256px;
+  justify-content: center;
   @media ${device.tablet} {
     flex-direction: row;
     max-width: none;
