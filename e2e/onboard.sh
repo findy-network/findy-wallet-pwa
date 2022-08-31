@@ -84,12 +84,20 @@ jwt=$(findy-agent-cli authn login \
 # register org agent
 if [ -z "$E2E_ORG" ]; then
   echo "Register org $org"
-  findy-agent-cli authn register \
-      -u $org \
-      --url $auth_url \
-      --origin $auth_origin \
-      --key $default_key \
-      --seed $E2E_ORG_SEED
+  if [ -z "$E2E_ORG_SEED" ]; then
+    findy-agent-cli authn register \
+        -u $org \
+        --url $auth_url \
+        --origin $auth_origin \
+        --key $default_key
+  else
+    findy-agent-cli authn register \
+        -u $org \
+        --url $auth_url \
+        --origin $auth_origin \
+        --key $default_key \
+        --seed $E2E_ORG_SEED
+  fi
   # wait for onboard transaction to be written to ledger
   sleep $register_wait_time
 fi
