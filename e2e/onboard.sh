@@ -88,7 +88,8 @@ if [ -z "$E2E_ORG" ]; then
       -u $org \
       --url $auth_url \
       --origin $auth_origin \
-      --key $default_key
+      --key $default_key \
+      --seed $E2E_ORG_SEED
   # wait for onboard transaction to be written to ledger
   sleep $register_wait_time
 fi
