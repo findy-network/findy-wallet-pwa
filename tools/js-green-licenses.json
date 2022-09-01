@@ -78,5 +78,8 @@
     "xnet",
     "zlib"
   ],
-  "packageAllowlist": []
+  "packageAllowlist": [
+    "callsite",
+    "stackframe"
+  ]
 }
