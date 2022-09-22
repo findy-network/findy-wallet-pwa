@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Box, Heading } from 'grommet'
-
 import { useQuery, gql } from '@apollo/client'
+
 import Waiting from './Waiting'
 import Me from './Me'
 import AddDialog from './AddDialog'
+import { Smoke } from '../theme'
 
 export const ENDPOINT_QUERY = gql`
   query GetEndpoint($payload: String!) {
@@ -29,6 +30,7 @@ function URLConnect() {
         <Waiting loading={loading} error={error} />
       ) : (
         <Box>
+          <Smoke />
           <Heading level={2}>Adding connection {data.endpoint.label}</Heading>
           <AddDialog
             initialCode={data.endpoint.raw}

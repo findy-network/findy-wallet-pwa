@@ -39,12 +39,15 @@ const Generate = styled(Button)`
 
 const Copy = styled(Generate)`
   margin: 1rem auto 0;
+  margin-bottom: 1rem;
+  align-self: center;
 `
 
 const Invitation = styled(Box)`
   margin: 0 auto;
   flex-direction: column;
   max-width: 256px;
+  justify-content: center;
   @media ${device.tablet} {
     flex-direction: row;
     max-width: none;
@@ -52,10 +55,31 @@ const Invitation = styled(Box)`
   }
 `
 
+const Container = styled.div`
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+  overflow-y: auto;
+  hr {
+    margin: 1rem 0;
+  }
+`
+
+const CenterContainer = styled.div`
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+`
+
 function Me() {
-  const [copyBtn, setCopyBtn] = useState('Copy to clipboard')
+  const initialCopy = 'Copy to clipboard'
+  const [copyBtn, setCopyBtn] = useState(initialCopy)
+  const [copyUrlBtn, setCopyUrlBtn] = useState(initialCopy)
   const [doInvite, { data }] = useMutation(INVITATION_MUTATION, {
-    onCompleted: () => setCopyBtn('Copy to clipboard'),
+    onCompleted: () => {
+      setCopyBtn(initialCopy)
+      setCopyUrlBtn(initialCopy)
+    },
   })
   if (data == null) {
     doInvite()
@@ -70,8 +94,19 @@ function Me() {
     }
   }
 
+  const copyUrlToClipBoard = async (copiedText: string) => {
+    try {
+      await navigator.clipboard.writeText(copiedText)
+      setCopyUrlBtn('Copied')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const webWalletURL = data && data.invite ? `${window.location.origin}/connect/${btoa(data.invite.raw)}` : ""
+
   return (
-    <>
+    <Container>
       <Generate
         icon={<RotateRight />}
         label="Regenerate"
@@ -79,7 +114,8 @@ function Me() {
         onClick={() => doInvite()}
       ></Generate>
       {data && (
-        <>
+        <CenterContainer>
+          <hr />
           <Invitation
             margin="large"
             animation={{
@@ -104,9 +140,17 @@ function Me() {
             label={copyBtn}
             onClick={() => copyToClipBoard(data.invite.raw)}
           ></Copy>
-        </>
+          <hr />
+          <Invitation>
+            <a href={webWalletURL}>Web Wallet URL</a>
+          </Invitation>
+          <Copy
+              label={copyUrlBtn}
+              onClick={() => copyUrlToClipBoard(webWalletURL)}
+            ></Copy>
+        </CenterContainer>
       )}
-    </>
+    </Container>
   )
 }
 
