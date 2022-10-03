@@ -24,6 +24,8 @@ module.exports = {
       })
   },
 
+  after: (browser) => browser.end(),
+
   'Check app loads': (browser) => {
     const newInvBtn = '//button[contains(.,"New invitation")]'
     browser
