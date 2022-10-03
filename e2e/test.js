@@ -20,8 +20,8 @@ module.exports = {
             '[' + log.level.name + '] ' + log.timestamp + ' : ' + log.message
           )
         })
+        browser.end()
       })
-      .end()
   },
 
   'Check app loads': (browser) => {
