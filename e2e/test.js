@@ -12,8 +12,8 @@ const credentialsHeader = user.existing
 
 module.exports = {
   afterEach: (browser) => {
-    browser
-      .getLog('browser', (logEntriesArray) => {
+    browser.isLogAvailable(
+      browser.getLog('browser', (logEntriesArray) => {
         console.log('Log length: ' + logEntriesArray.length)
         logEntriesArray.forEach(function (log) {
           console.log(
@@ -21,7 +21,9 @@ module.exports = {
           )
         })
       })
-      .end()
+
+    )
+    browser.end()
   },
 
   'Check app loads': (browser) => {
