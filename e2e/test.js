@@ -12,19 +12,19 @@ const credentialsHeader = user.existing
 
 module.exports = {
   afterEach: (browser) => {
-    browser
-      .getLog('browser', (logEntriesArray) => {
+    browser.isLogAvailable(
+      browser.getLog('browser', (logEntriesArray) => {
         console.log('Log length: ' + logEntriesArray.length)
         logEntriesArray.forEach(function (log) {
           console.log(
             '[' + log.level.name + '] ' + log.timestamp + ' : ' + log.message
           )
         })
-        browser.end()
       })
-  },
 
-  after: (browser) => browser.end(),
+    )
+    browser.end()
+  },
 
   'Check app loads': (browser) => {
     const newInvBtn = '//button[contains(.,"New invitation")]'
