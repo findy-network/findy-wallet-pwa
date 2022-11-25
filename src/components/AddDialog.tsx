@@ -83,11 +83,12 @@ const Row = styled(Box)`
 `
 
 interface IProps {
+  label?: string
   initialCode: string
   onClose: () => void
 }
 
-function AddDialog({ onClose, initialCode }: IProps) {
+function AddDialog({ onClose, initialCode, label }: IProps) {
   const [code, setCode] = useState(initialCode)
   const [errorMessage, setErrorMessage] = useState('')
   const close = () => {
@@ -123,7 +124,7 @@ function AddDialog({ onClose, initialCode }: IProps) {
     >
       <Content margin="small">
         <Row direction="row">
-          <Head level="3">Add connection</Head>
+          <Head level="3">Add connection {label || ''}</Head>
           <CloseButton
             plain
             icon={<CloseIcon />}
@@ -150,15 +151,19 @@ function AddDialog({ onClose, initialCode }: IProps) {
               value={code}
               onChange={(e) => setCode(e.target.value)}
             />
-            <Line>
-              <Span>OR</Span>
-            </Line>
-            <QrReader
-              onRead={(res: string) => {
-                setCode(res)
-                onConfirm(res)
-              }}
-            />
+            {label ? <div /> : (
+              <>
+                <Line>
+                  <Span>OR</Span>
+                </Line>
+                <QrReader
+                  onRead={(res: string) => {
+                    setCode(res)
+                    onConfirm(res)
+                  }}
+                />
+              </>)
+            }
             <ConfirmButton
               label="Confirm"
               onClick={() => onConfirm()}

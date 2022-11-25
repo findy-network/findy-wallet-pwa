@@ -35,6 +35,7 @@ function URLConnect() {
           <AddDialog
             initialCode={data.endpoint.raw}
             onClose={() => navigate('/')}
+            label={data.endpoint.label}
           />
         </Box>
       )}
