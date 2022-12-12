@@ -1,11 +1,14 @@
-name: pr-label
+name: "pr-label"
 on:
-  - pull_request_target
+  pull_request_target:
 
 jobs:
   label:
+    permissions:
+        contents: read
+        pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@v4
         with:
-          repo-token: '${{ secrets.RELEASER_PAT }}'
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'

@@ -192,5 +192,15 @@ shows how web wallet users can connect with other agents that are operated throu
 
    Congratulations, you just completed the initial Findy agency crash course! You can now continue experiments
 
-   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality. See more documentation and samples here: <https://github.com/findy-network/findy-agent-cli>
-   - Or building applications that utilise Findy Agency through its GRPC API. You can use our helper libraries for [go](https://github.com/findy-network/findy-common-go), [Typescript](https://github.com/findy-network/findy-common-ts) or [Kotlin](https://github.com/findy-network/findy-common-kt) or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api) with the language of your choice.
+   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality.
+   See more documentation and samples [here](https://github.com/findy-network/findy-agency-demo)
+   and [here](https://github.com/findy-network/findy-agent-cli)
+   - Or building applications that utilise Findy Agency through its GRPC API.
+   You can use our helper libraries for [go](https://github.com/findy-network/findy-common-go),
+   [Typescript](https://github.com/findy-network/findy-common-ts) or
+   [Kotlin](https://github.com/findy-network/findy-common-kt)
+   or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api)
+   with the language of your choice.
+   - Web application examples:
+      - [Agency Demo](https://github.com/findy-network/agency-demo)
+      - [Issuer Tool](https://github.com/findy-network/findy-issuer-tool)
