@@ -1,4 +1,4 @@
-name: pr-comment
+name: "pr-comment"
 
 on:
   pull_request:
@@ -12,6 +12,7 @@ jobs:
         contents: read
         pull-requests: write
     steps:
+    - uses: actions/checkout@v3
     - name: Add comment to PR
       run: gh pr comment $PR --body "PR created by $USER"
       env:
