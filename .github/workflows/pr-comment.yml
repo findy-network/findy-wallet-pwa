@@ -1,0 +1,18 @@
+name: pr-comment
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  build:
+    if: ${{ github.event.label.name == 'dev' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Add comment to PR
+      run: gh pr comment $PR --body "PR created by $USER"
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          USER: ${{ github.event.pull_request.user.login }}
