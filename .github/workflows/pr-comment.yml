@@ -5,10 +5,12 @@ on:
     types: [labeled]
 
 jobs:
-  build:
+  comment:
     if: ${{ github.event.label.name == 'dev' }}
     runs-on: ubuntu-latest
-
+    permissions:
+        contents: read
+        pull-requests: write
     steps:
     - name: Add comment to PR
       run: gh pr comment $PR --body "PR created by $USER"
