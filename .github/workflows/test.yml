@@ -5,11 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16.13.1'
+          node-version: '18.12'
       - name: install deps
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: build
         run: CI=true npm run build
       - name: lint
@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16.13.1'
+          node-version: '18.12'
       - name: set chrome version
         run: |
           full_version=$(google-chrome --product-version)
@@ -39,8 +39,8 @@ jobs:
           sudo ./install.sh -b /bin
       - name: install deps
         run: |
-          npm ci
-          npm install chromedriver@"${{ env.chrome_version }}"
+          npm ci --legacy-peer-deps
+          npm install chromedriver@"${{ env.chrome_version }}" --legacy-peer-deps
       - name: start app
         run: CI=true npm start &
       - name: test
