@@ -40,7 +40,7 @@ jobs:
       - name: install deps
         run: |
           npm ci --legacy-peer-deps
-          npm install chromedriver@"${{ env.chrome_version }}"
+          npm install chromedriver@"${{ env.chrome_version }}" --legacy-peer-deps
       - name: start app
         run: CI=true npm start &
       - name: test
