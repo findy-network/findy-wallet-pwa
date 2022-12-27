@@ -1,5 +1,6 @@
 name: release
-on:  
+on:
+  workflow_dispatch:
   push:
     tags:
       - '*'
@@ -41,16 +42,16 @@ jobs:
           context: ./tools/env-docker
           file: ./tools/env-docker/Dockerfile
 
-  merge:
-    needs: push-image
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          ref: master
-      - name: merge
-        run:  |
-          git fetch --tags origin
-          git merge $GITHUB_REF
-          git push origin master
+  # merge:
+  #   needs: push-image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: master
+  #     - name: merge
+  #       run:  |
+  #         git fetch --tags origin
+  #         git merge $GITHUB_REF
+  #         git push origin master
