@@ -38,7 +38,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/findy-wallet-pwa/local:latest
           cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/findy-wallet-pwa/local:latest
           cache-to: type=inline
-          context: ./tools/env-docker
+          context: ./
           file: ./tools/env-docker/Dockerfile
 
   merge:
