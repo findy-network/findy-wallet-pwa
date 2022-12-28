@@ -1,8 +1,8 @@
 name: release
 on:
   push:
-    # tags:
-    #   - '*'
+    tags:
+      - '*'
 jobs:
   push-image:
     runs-on: ubuntu-latest
@@ -41,16 +41,16 @@ jobs:
           context: ./
           file: ./tools/env-docker/Dockerfile
 
-  # merge:
-  #   needs: push-image
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         ref: master
-  #     - name: merge
-  #       run:  |
-  #         git fetch --tags origin
-  #         git merge $GITHUB_REF
-  #         git push origin master
+  merge:
+    needs: push-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: master
+      - name: merge
+        run:  |
+          git fetch --tags origin
+          git merge $GITHUB_REF
+          git push origin master
