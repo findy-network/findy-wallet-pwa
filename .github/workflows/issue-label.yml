@@ -1,4 +1,4 @@
-name: "issue-label"
+name: 'issue-label'
 on:
   issues:
     types:
