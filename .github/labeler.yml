@@ -1,8 +1,9 @@
 dev:
-  - any: ['!package.json', '!package-lock.json']
-
-test:
-  - e2e
-
-demo:
-  - tools/env/**/*
+  - any: [
+        '!package.json',
+        '!*/package.json',
+        '!package-lock.json',
+        '!*/package-lock.json',
+        '!yarn.lock',
+        '!*/yarn.lock'
+      ]
