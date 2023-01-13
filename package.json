@@ -69,7 +69,7 @@
     "@types/styled-components": "^5.1.26",
     "async": "^3.2.4",
     "chromedriver": "^109.0.0",
-    "husky": "^8.0.2",
+    "husky": "^8.0.3",
     "js-green-licenses": "^3.0.1",
     "lint-staged": "^13.1.0",
     "nightwatch": "^2.6.10",
