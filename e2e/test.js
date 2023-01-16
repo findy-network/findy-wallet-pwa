@@ -12,17 +12,21 @@ const credentialsHeader = user.existing
 
 module.exports = {
   afterEach: (browser) => {
-    browser.isLogAvailable(
-      browser.getLog('browser', (logEntriesArray) => {
-        console.log('Log length: ' + logEntriesArray.length)
-        logEntriesArray.forEach(function (log) {
-          console.log(
-            '[' + log.level.name + '] ' + log.timestamp + ' : ' + log.message
-          )
-        })
-      })
 
-    )
+    // TODO: fails occasionally with error:
+    // Error while running .getLogContents() protocol action: This driver instance does
+    //not have a valid session ID (did you call WebDriver.quit()?) and may no longer be used.
+
+    // browser.isLogAvailable(
+    //   browser.getLog('browser', (logEntriesArray) => {
+    //     console.log('Log length: ' + logEntriesArray.length)
+    //     logEntriesArray.forEach(function (log) {
+    //       console.log(
+    //         '[' + log.level.name + '] ' + log.timestamp + ' : ' + log.message
+    //       )
+    //     })
+    //   })
+    // )
     browser.end()
   },
 
