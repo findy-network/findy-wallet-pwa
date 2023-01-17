@@ -70,7 +70,7 @@
     "async": "^3.2.4",
     "chromedriver": "^108.0.0",
     "husky": "^8.0.2",
-    "js-green-licenses": "^3.0.1",
+    "js-green-licenses": "^4.0.0",
     "lint-staged": "^13.1.0",
     "nightwatch": "^2.3.9",
     "npm-outdated-to-latest": "^1.0.6",
