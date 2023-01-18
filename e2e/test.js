@@ -10,6 +10,15 @@ const credentialsHeader = user.existing
   ? '//span[contains(.,"email")]'
   : '//h2[contains(.,"Your wallet is empty")]'
 
+const login = browser =>
+  browser
+    .url(home)
+    .execute(userCmd)
+    .url(home)
+    .useXpath()
+    .waitForElementVisible(addConBtn)
+    .useCss()
+
 module.exports = {
   afterEach: (browser) => {
 
@@ -32,24 +41,16 @@ module.exports = {
 
   'Check app loads': (browser) => {
     const newInvBtn = '//button[contains(.,"New invitation")]'
-    browser
-      .url(home)
-      .execute(userCmd)
-      .url(home)
+    login(browser)
       .useXpath()
-      .waitForElementVisible(addConBtn)
       .waitForElementVisible(newInvBtn)
   },
   'Check connection is done': (browser) => {
     const invitationInput = 'input[placeholder="Enter invitation code"]'
     const confirmBtn = '//button[contains(.,"Confirm")]'
     const invitation = JSON.stringify(invitationContent)
-    browser
-      .url(home)
-      .execute(userCmd)
-      .url(home)
+    login(browser)
       .useXpath()
-      .waitForElementVisible(addConBtn)
       .click(addConBtn)
       .useCss()
       .waitForElementVisible(invitationInput)
@@ -61,10 +62,7 @@ module.exports = {
       .waitForElementVisible(organisationLabel)
   },
   'Check navigation works': (browser) => {
-    browser
-      .url(home)
-      .execute(userCmd)
-      .url(home)
+    login(browser)
       .useCss()
       .waitForElementVisible(walletLink)
       .click(walletLink)
@@ -72,11 +70,7 @@ module.exports = {
       .waitForElementVisible(credentialsHeader)
   },
   'Check invalid connection id redirects to home': (browser) => {
-    browser
-      .url(home)
-      .execute(userCmd)
-      .url(home)
-      .useCss()
+    login(browser)
       .waitForElementVisible(messageInput)
       .url(`${home}/connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
       .useCss()
@@ -89,11 +83,7 @@ module.exports = {
     const verificationText =
       '//p[contains(.,"Hello test! I\'m stupid bot who knows you have verified email address!!! I can trust you.")]'
     const credIcon = 'svg[aria-label=Certificate]'
-    browser
-      .url(home)
-      .execute(userCmd)
-      .url(home)
-      .useCss()
+    login(browser)
       .waitForElementVisible(organisationLabel)
       .click(organisationLabel)
       .useCss()
