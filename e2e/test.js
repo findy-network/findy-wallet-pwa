@@ -15,6 +15,9 @@ const login = browser =>
     .url(home)
     .execute(userCmd)
     .url(home)
+    .useXpath()
+    .waitForElementVisible(addConBtn)
+    .useCss()
 
 module.exports = {
   afterEach: (browser) => {
@@ -40,7 +43,6 @@ module.exports = {
     const newInvBtn = '//button[contains(.,"New invitation")]'
     login(browser)
       .useXpath()
-      .waitForElementVisible(addConBtn)
       .waitForElementVisible(newInvBtn)
   },
   'Check connection is done': (browser) => {
@@ -49,7 +51,6 @@ module.exports = {
     const invitation = JSON.stringify(invitationContent)
     login(browser)
       .useXpath()
-      .waitForElementVisible(addConBtn)
       .click(addConBtn)
       .useCss()
       .waitForElementVisible(invitationInput)
@@ -70,7 +71,6 @@ module.exports = {
   },
   'Check invalid connection id redirects to home': (browser) => {
     login(browser)
-      .useCss()
       .waitForElementVisible(messageInput)
       .url(`${home}/connections/6e0a9f70-dece-4329-9e1e-93512f24d9dc`)
       .useCss()
@@ -84,7 +84,6 @@ module.exports = {
       '//p[contains(.,"Hello test! I\'m stupid bot who knows you have verified email address!!! I can trust you.")]'
     const credIcon = 'svg[aria-label=Certificate]'
     login(browser)
-      .useCss()
       .waitForElementVisible(organisationLabel)
       .click(organisationLabel)
       .useCss()
