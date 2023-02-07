@@ -71,7 +71,7 @@
     "chromedriver": "^109.0.0",
     "husky": "^8.0.3",
     "js-green-licenses": "^4.0.0",
-    "lint-staged": "^13.1.0",
+    "lint-staged": "^13.1.1",
     "nightwatch": "^2.6.13",
     "npm-outdated-to-latest": "^1.0.6",
     "prettier": "^2.8.3",
