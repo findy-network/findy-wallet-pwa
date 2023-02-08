@@ -74,7 +74,7 @@
     "lint-staged": "^13.1.1",
     "nightwatch": "^2.6.13",
     "npm-outdated-to-latest": "^1.0.6",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "react-scripts": "^5.0.1",
     "typescript": "^4.9.5"
   }
