@@ -19,7 +19,11 @@ shows how web wallet users can connect with other agents that are operated throu
 - This documentation does not intend to teach readers theoretical background or other aspects of SSI technology. For that, we recommend excellent material crafed by other authors:
   - [Self-Sovereign Identity (book)](https://www.manning.com/books/self-sovereign-identity) by Alex Preukschat and Drummond Reed
   - [Developing Blockchain-Based Identity Applications (course)](https://www.edx.org/professional-certificate/linuxfoundationx-developing-blockchain-based-identity-applications) by Stephen Curran and Carol Howard
-- The following steps describe only initial steps for getting things going with Findy agency. Please see more examples in our sample controller implementations [findy-agent-cli (go)](https://github.com/findy-network/findy-agent-cli) and [issuer-tool (JS)](https://github.com/findy-network/findy-issuer-tool)
+- The following steps describe only initial steps for getting things going with Findy agency. Read more about getting started with service agents from the blog:
+
+  - [Getting Started with SSI Service Agent Development](https://findy-network.github.io/blog/2023/01/30/getting-started-with-ssi-service-agent-development/)
+  - [How to Equip Your App with VC Superpowers](https://findy-network.github.io/blog/2023/02/06/how-to-equip-your-app-with-vc-superpowers/)
+
 - The full test case is executed solely on your local computer and no data is sent to external services (including the authentication keys created during the registration).
 
 ## Prerequisities
@@ -190,17 +194,7 @@ shows how web wallet users can connect with other agents that are operated throu
 
 1. **All done!**
 
-   Congratulations, you just completed the initial Findy agency crash course! You can now continue experiments
-
-   - Either by issuing and verifying credentials or building chat bots using findy-agent-cli functionality.
-   See more documentation and samples [here](https://github.com/findy-network/findy-agency-demo)
-   and [here](https://github.com/findy-network/findy-agent-cli)
-   - Or building applications that utilise Findy Agency through its GRPC API.
-   You can use our helper libraries for [go](https://github.com/findy-network/findy-common-go),
-   [Typescript](https://github.com/findy-network/findy-common-ts) or
-   [Kotlin](https://github.com/findy-network/findy-common-kt)
-   or use directly [the GRPC interface](https://github.com/findy-network/findy-agent-api)
-   with the language of your choice.
-   - Web application examples:
-      - [Agency Demo](https://github.com/findy-network/agency-demo)
-      - [Issuer Tool](https://github.com/findy-network/findy-issuer-tool)
+   Congratulations, you just completed the initial Findy agency crash course! You can now continue experiments by
+   - trying to run [the Alice-Faber-Acme demo](https://github.com/findy-network/findy-agency-demo#findy-agency-demo)
+   - starting to [build a service agent of your own](https://findy-network.github.io/docs/getting-started/service-agent/)
+   - or you can play around with the credentials using the tools: CLI tool [findy-agent-cli](https://findy-network.github.io/docs/getting-started/setup-agency/#cli) or UI tool [findy-issuer-tool](https://findy-network.github.io/docs/getting-started/setup-agency/#ui-tool)
