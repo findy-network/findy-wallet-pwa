@@ -19,40 +19,8 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: test e2e flow
+        uses: findy-network/e2e-test-action@master
         with:
-          node-version: '18.12'
-      - name: set chrome version
-        run: |
-          full_version=$(google-chrome --product-version)
-          echo "chrome_version=$(echo "${full_version%.*.*.*}")" >> $GITHUB_ENV
-      - name: setup env
-        run: |
-          cd tools/env
-          make init-store
-          docker-compose up -d
-      - name: install cli
-        run: |
-          curl https://raw.githubusercontent.com/findy-network/findy-agent-cli/HEAD/install.sh > install.sh
-          chmod a+x install.sh
-          sudo ./install.sh -b /bin
-      - name: install deps
-        run: |
-          npm ci
-          npm install chromedriver@"${{ env.chrome_version }}"
-      - name: start app
-        run: CI=true npm start &
-      - name: test
-        run: npm run test:e2e
-      - name: Collect docker logs
-        if: ${{ failure() }}
-        uses: jwalton/gh-docker-logs@v2.0.2
-        with:
-          dest: './tests_output/docker-logs'
-      - name: archive logs
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: e2e-logs
-          path: tests_output
+          service: "pwa"
+          service-image-path: ./tools/env-docker
