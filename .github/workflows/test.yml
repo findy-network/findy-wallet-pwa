@@ -23,4 +23,5 @@ jobs:
         uses: findy-network/e2e-test-action@master
         with:
           service: "pwa"
-          service-image-path: ./tools/env-docker
+          service-context: ./
+          service-dockerfile: ./tools/env-docker/Dockerfile
