@@ -32,10 +32,10 @@ echo "Using USER NAME $username"
 if [ -z "$FCLI_TLS_PATH" ]; then
   mkdir -p "cert/client"
   mkdir -p "cert/server"
-  cert_home="https://raw.githubusercontent.com/findy-network/findy-wallet-pwa/master/tools/env/config/"
-  curl -s "$cert_home/cert/client/client.crt" >./cert/client/client.crt
-  curl -s "$cert_home/cert/client/client.key" >./cert/client/client.key
-  curl -s "$cert_home/cert/server/server.crt" >./cert/server/server.crt
+  cert_home="https://raw.githubusercontent.com/findy-network/findy-wallet-pwa/master/tools/env/config"
+  curl -s -o ./cert/client/client.crt "$cert_home/cert/client/client.crt"
+  curl -s -o ./cert/client/client.key "$cert_home/cert/client/client.key"
+  curl -s -o ./cert/server/server.crt "$cert_home/cert/server/server.crt"
   export FCLI_TLS_PATH='./cert'
 fi
 
