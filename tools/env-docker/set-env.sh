@@ -22,7 +22,7 @@ echo "Using KEY $new_key"
 
 username=$FCLI_USER
 if [ -z "$username" ]; then
-  username=$(whoami)
+  username="$(whoami)-$(date +%s)"
 fi
 
 echo "Using USER NAME $username"
