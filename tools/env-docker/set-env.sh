@@ -13,6 +13,11 @@ echo "Using CLI $bin"
 
 $bin --version || (echo "Please install $bin first." && exit 1)
 
+# Create file with env variables
+env=".envrc"
+
+mv $env $env.bak || echo "$env does not exist."
+
 new_key=$FCLI_KEY
 if [ -z "$new_key" ]; then
   new_key=$($bin new-key)
@@ -27,26 +32,7 @@ fi
 
 echo "Using USER NAME $username"
 
-# agency API server cert path
-# relative to the folder where you run the sample
-if [ -z "$FCLI_TLS_PATH" ]; then
-  mkdir -p "cert/client"
-  mkdir -p "cert/server"
-  cert_home="https://raw.githubusercontent.com/findy-network/findy-wallet-pwa/master/tools/env/config"
-  curl -s -o ./cert/client/client.crt "$cert_home/cert/client/client.crt"
-  curl -s -o ./cert/client/client.key "$cert_home/cert/client/client.key"
-  curl -s -o ./cert/server/server.crt "$cert_home/cert/server/server.crt"
-  export FCLI_TLS_PATH='./cert'
-fi
-
-echo "Using TLS PATH $FCLI_TLS_PATH"
-
-# Create file with env variables
-env=".envrc"
-
-cp $env $env.bak || echo "$env does not exist."
-
-echo " # agency authentication service URL" >$env
+echo "# agency authentication service URL" >>$env
 echo "export FCLI_URL='http://localhost:8088'" >>$env
 
 echo "# agency authentication origin" >>$env
@@ -70,6 +56,21 @@ echo "export AGENCY_API_SERVER_PORT='50052'" >>$env
 # API server address for CLI
 echo "# full API server address" >>$env
 echo 'export FCLI_SERVER="$AGENCY_API_SERVER:$AGENCY_API_SERVER_PORT"' >>$env
+
+# agency API server cert path
+if [ -z "$FCLI_TLS_PATH" ]; then
+  mkdir -p "cert/client"
+  mkdir -p "cert/server"
+  cert_home="https://raw.githubusercontent.com/findy-network/findy-wallet-pwa/master/tools/env/config"
+  curl -s -o ./cert/client/client.crt "$cert_home/cert/client/client.crt"
+  curl -s -o ./cert/client/client.key "$cert_home/cert/client/client.key"
+  curl -s -o ./cert/server/server.crt "$cert_home/cert/server/server.crt"
+  echo "# agency API server TLS cert path" >>$env
+  echo "# relative to the folder where you run the sample" >>$env
+  echo "export FCLI_TLS_PATH='./cert'" >>$env
+fi
+
+echo "Using TLS PATH $FCLI_TLS_PATH"
 
 source .envrc
 
