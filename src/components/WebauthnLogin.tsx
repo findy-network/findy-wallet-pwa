@@ -235,6 +235,7 @@ function WebauthnLogin() {
   return (
     <Login width="medium" margin="medium">
       <TextInput
+        id="user-input"
         autoComplete="on"
         name="email"
         placeholder="email"
@@ -246,6 +247,7 @@ function WebauthnLogin() {
         {register ? (
           <>
             <Btn
+              id="register-btn"
               disabled={email.length === 0 || waiting}
               label="Register"
               onClick={tryDoRegister}
@@ -253,6 +255,7 @@ function WebauthnLogin() {
             <Text size="small" margin="12px 0 0 0">
               Existing user?{' '}
               <ModeAnchor
+                id="login-link"
                 disabled={waiting}
                 onClick={() => toggleRegister(false)}
               >
@@ -263,6 +266,7 @@ function WebauthnLogin() {
         ) : (
           <>
             <Btn
+              id="login-btn"
               disabled={email.length === 0 || waiting}
               label="Login"
               onClick={tryDoLogin}
@@ -270,6 +274,7 @@ function WebauthnLogin() {
             <Text size="small" margin="12px 0 0 0">
               New user?{' '}
               <ModeAnchor
+                id="register-link"
                 disabled={waiting}
                 onClick={() => toggleRegister(true)}
               >
