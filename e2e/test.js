@@ -9,6 +9,7 @@ const walletLink = '#wallet-link'
 const credentialsHeader = user.existing
   ? '//span[contains(.,"email")]'
   : '//h2[contains(.,"Your wallet is empty")]'
+const newInvBtn = '//button[contains(.,"New invitation")]'
 
 const login = browser =>
   browser
@@ -40,7 +41,6 @@ module.exports = {
   },
 
   'Check app loads': (browser) => {
-    const newInvBtn = '//button[contains(.,"New invitation")]'
     login(browser)
       .useXpath()
       .waitForElementVisible(newInvBtn)
@@ -133,5 +133,19 @@ module.exports = {
       .useCss()
       .click(walletLink)
       .waitForElementVisible(credIcon)
+  },
+
+  // TODO: use virtual authenticator for all logins
+  'Check webauthn works': (browser) => {
+    browser
+      .url(home)
+      .addVirtualAuth() // add virtual authenticator
+      .click('#register-link')
+      .setValue('#user-input', `${user.user}-2`)
+      .click('#register-btn')
+      .click('#login-link')
+      .click('#login-btn')
+      .useXpath()
+      .waitForElementVisible(newInvBtn)
   },
 }
