@@ -3,17 +3,19 @@ import { Anchor, Button, Box, TextInput, Text } from 'grommet'
 import config from '../config'
 import styled from 'styled-components'
 import { RotateRight } from 'grommet-icons'
+import { Base64 } from 'js-base64';
+
 import { Line } from '../theme'
 import { colors } from '../theme'
 
 // Base64 to ArrayBuffer
 const bufferDecode = (value: string) => {
-  return Uint8Array.from(atob(value), (c) => c.charCodeAt(0))
+  return Base64.toUint8Array(value)
 }
 
 // ArrayBuffer to URLBase64
 const bufferEncode = (value: ArrayBuffer) => {
-  return btoa(String.fromCharCode.apply(null, new Uint8Array(value) as any))
+  return Base64.btoa(String.fromCharCode.apply(null, new Uint8Array(value) as any))
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=/g, '')
@@ -205,9 +207,10 @@ function WebauthnLogin() {
   const tryDoRegister = async () => {
     try {
       await doRegister()
-    } catch {
+    } catch (err) {
       // Sometimes iOS safari fails with
       // "Unhandled Promise Rejection: NotAllowedError: This request has been cancelled by the user."
+      console.log(err)
       setOperationResult("Register failed for unknown reason. Please retry.")
       setWaiting(false)
     }
@@ -216,9 +219,10 @@ function WebauthnLogin() {
   const tryDoLogin = async () => {
     try {
       await doLogin()
-    } catch {
+    } catch (err) {
       // Sometimes iOS safari fails with
       // "Unhandled Promise Rejection: NotAllowedError: This request has been cancelled by the user."
+      console.log(err)
       setOperationResult("Login failed for unknown reason. Please retry.")
       setWaiting(false)
     }
