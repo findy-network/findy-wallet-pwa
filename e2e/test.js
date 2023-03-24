@@ -141,7 +141,7 @@ module.exports = {
       .url(home)
       .addVirtualAuth() // add virtual authenticator
       .click('#register-link')
-      .setValue('#user-input', `${user.user}-2`)
+      .setValue('#user-input', `${user.user}-${Date.now()}`)
       .click('#register-btn')
       .click('#login-link')
       .click('#login-btn')
