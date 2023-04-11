@@ -11,12 +11,7 @@ fi
 
 echo "Using CLI $bin"
 
-$bin --version || (echo "Please install $bin first." && exit 1)
-
-# Create file with env variables
-env=".envrc"
-
-mv $env $env.bak || echo "$env does not exist."
+$bin --version || (echo "Please install $bin first.")
 
 new_key=$FCLI_KEY
 if [ -z "$new_key" ]; then
@@ -31,6 +26,11 @@ if [ -z "$username" ]; then
 fi
 
 echo "Using USER NAME $username"
+
+# Create file with env variables
+env=".envrc"
+
+mv $env $env.bak || echo "$env does not exist."
 
 echo "# agency authentication service URL" >>$env
 echo "export FCLI_URL='http://localhost:8088'" >>$env
@@ -64,13 +64,15 @@ if [ -z "$FCLI_TLS_PATH" ]; then
   cert_home="https://raw.githubusercontent.com/findy-network/findy-wallet-pwa/master/tools/env/config"
   curl -s -o ./cert/client/client.crt "$cert_home/cert/client/client.crt"
   curl -s -o ./cert/client/client.key "$cert_home/cert/client/client.key"
+  curl -s -o ./cert/client/client-pkcs8.key "$cert_home/cert/client/client-pkcs8.key"
   curl -s -o ./cert/server/server.crt "$cert_home/cert/server/server.crt"
-  echo "# agency API server TLS cert path" >>$env
-  echo "# relative to the folder where you run the sample" >>$env
-  echo "export FCLI_TLS_PATH='./cert'" >>$env
+  FCLI_TLS_PATH='./cert'
 fi
 
 echo "Using TLS PATH $FCLI_TLS_PATH"
+echo "# agency API server TLS cert path" >>$env
+echo "# relative to the folder where you run the sample" >>$env
+echo 'export FCLI_TLS_PATH="'$FCLI_TLS_PATH'"' >>$env
 
 source .envrc
 
