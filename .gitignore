@@ -31,11 +31,9 @@ yarn-error.log*
 .vscode
 *.log
 tests_output
-e2e.*.json
 .temp
 .data
 .key-backup
 tools/env/use-key.sh
 
-e2e/e2e-sa.yaml
-e2e/cert
+e2e/test
