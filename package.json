@@ -69,7 +69,7 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/styled-components": "^5.1.26",
     "async": "^3.2.4",
-    "chromedriver": "^112.0.0",
+    "chromedriver": "^112.0.1",
     "husky": "^8.0.3",
     "js-green-licenses": "^4.0.0",
     "lint-staged": "^13.2.2",
