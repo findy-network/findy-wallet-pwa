@@ -66,7 +66,7 @@ if [ -z "$FCLI_TLS_PATH" ]; then
   curl -s -o ./cert/client/client.key "$cert_home/cert/client/client.key"
   curl -s -o ./cert/client/client-pkcs8.key "$cert_home/cert/client/client-pkcs8.key"
   # insert cert dl command
-  echo 'echo -n | openssl s_client -connect \"'$FCLI_SERVER'\" -servername \"'$FCLI_SERVER'\" | openssl x509 >./cert/server/server.crt' >>$env
+  echo -n | openssl s_client -connect "localhost:50052" -servername "localhost:50052" | openssl x509 >./cert/server/server.crt
   FCLI_TLS_PATH='./cert'
 fi
 
