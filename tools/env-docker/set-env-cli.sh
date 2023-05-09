@@ -20,28 +20,19 @@ fi
 
 echo "Using KEY $new_key"
 
-username=$FCLI_USER
-if [ -z "$username" ]; then
-  username="$(whoami)-$(date +%s)"
-fi
-
-echo "Using USER NAME $username"
-
 # Create file with env variables
 env=".envrc"
 
 mv $env $env.bak || echo "$env does not exist."
+
+echo "# findy-agent-cli binary" >>$env
+echo "export FCLI='findy-agent-cli'" >>$env
 
 echo "# agency authentication service URL" >>$env
 echo "export FCLI_URL='http://localhost:8088'" >>$env
 
 echo "# agency authentication origin" >>$env
 echo "export FCLI_ORIGIN='http://localhost:3000'" >>$env
-
-echo "# desired agent user name" >>$env
-echo "# note: this should be an unique string within agency context," >>$env
-echo "# use for example your email address" >>$env
-echo 'export FCLI_USER="'$username'"' >>$env
 
 echo "# desired agent authentication key (create new random key: 'findy-agent-cli new-key')" >>$env
 echo "# note: this key authenticates your client to agency, so keep it secret" >>$env
@@ -84,7 +75,6 @@ echo "API server address (FCLI_SERVER): $FCLI_SERVER"
 echo "TLS cert path (FCLI_TLS_PATH): $FCLI_TLS_PATH"
 
 echo "*******************************************"
-echo "Username (FCLI_USER): $username"
 echo "Master key (FCLI_KEY): $new_key"
 echo "*******************************************"
 
