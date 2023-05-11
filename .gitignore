@@ -37,3 +37,6 @@ tests_output
 tools/env/use-key.sh
 
 e2e/test
+
+public/set-env.sh
+public/set-env-cli.sh

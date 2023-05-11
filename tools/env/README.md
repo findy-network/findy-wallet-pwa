@@ -29,7 +29,6 @@ shows how web wallet users can connect with other agents that are operated throu
 ## Prerequisities
 
 - [Docker](https://www.docker.com/products/docker-desktop)
-- [Node.js](https://nodejs.org/en/download/)
 - [findy-agent-cli](https://github.com/findy-network/findy-agent-cli#installation)
 
 ## Steps
@@ -67,9 +66,9 @@ shows how web wallet users can connect with other agents that are operated throu
    anymore, `make clean` will remove all the generated data and allocated
    resources.
 
-1. **Start wallet development environment.**
+1. **Navigate to wallet**
 
-   Open terminal on the root of this repository, run `npm install` and `npm start`. Wallet application is launched and you can access the service with browser in address <http://localhost:3000>
+   You can access the wallet service with browser in address <http://localhost:3000>
 
 1. **Register Alice's Web-Wallet**
 

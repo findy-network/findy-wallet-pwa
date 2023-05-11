@@ -3,18 +3,26 @@ services:
   core:
     image: ghcr.io/findy-network/findy-agent:latest
     volumes:
-      - ../env/config/steward.exported:/steward.exported
       - ../env/config/cert:/grpc
       - .data/agent:/root
     environment:
       FCLI_POOL_GENESIS_TXN_FILE: ''
       FCLI_POOL_NAME: 'FINDY_FILE_LEDGER'
       FCLI_AGENCY_POOL_NAME: 'FINDY_FILE_LEDGER'
+      FCLI_STEWARD_POOL_NAME: 'FINDY_FILE_LEDGER'
+      FCLI_AGENCY_STEWARD_DID: 'Th7MpTaRZVRYnPiabds81Y'
+      FCLI_STEWARD_SEED: '000000000000000000000000Steward1'
+      FCLI_IMPORT_WALLET_FILE: ""
+      FCLI_IMPORT_WALLET_NAME: ""
       FCLI_AGENCY_GRPC_TLS: 'true'
       FCLI_AGENCY_GRPC_CERT_PATH: '/grpc'
+      FCLI_AGENCY_HOST_PORT: 8088
+      FCLI_AGENCY_SERVER_PORT: 8088
+    #      FCLI_LOGGING: '-logtostderr -v=9 -vmodule=cmdHandles=10,agency*=15,agent*=15'
     ports:
       - '8080:8080'
       - '50052:50051'
+
   auth:
     image: ghcr.io/findy-network/findy-agent-auth:latest
     volumes:
@@ -28,6 +36,7 @@ services:
       FAA_AGENCY_ADDR: 'core'
     ports:
       - '8088:8888'
+
   vault:
     image: ghcr.io/findy-network/findy-agent-vault:latest
     volumes:
@@ -40,23 +49,15 @@ services:
       FAV_AGENCY_HOST: 'core'
     ports:
       - '8085:8085'
-    restart: unless-stopped
-    entrypoint: >
-      /bin/sh -c "
-        while ! nc -z vault-db 5432;
-        do
-          echo 'wait for db';
-          sleep 1;
-        done;
-        /start.sh;
-      "
+
   vault-db:
     image: postgres:13.6-alpine
     volumes:
-      - .data/vault:/var/lib/postgresql/data
+      - .data/vault-db:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: 'vault'
       POSTGRES_PASSWORD: 'password'
+
   pwa:
     build:
       context: ../..
