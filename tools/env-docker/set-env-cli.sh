@@ -2,6 +2,7 @@
 
 # Sets development environment for agency client development
 
+[[ $- == *e* ]] && state=-e || state=+e
 set -e
 
 bin=$FCLI
@@ -82,3 +83,5 @@ echo "Environment setup ready for agency client"
 echo "The configuration is stored here: $env."
 echo "Please use direnv or 'source $env' to recreate environment."
 echo "*******************************************"
+
+set "$state"
