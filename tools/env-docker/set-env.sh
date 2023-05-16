@@ -73,7 +73,6 @@ fi
 
 echo "Using TLS PATH $FCLI_TLS_PATH"
 echo "# agency API server TLS cert path" >>$env
-echo "# relative to the folder where you run the sample" >>$env
 echo 'export FCLI_TLS_PATH="'$FCLI_TLS_PATH'"' >>$env
 
 source .envrc
