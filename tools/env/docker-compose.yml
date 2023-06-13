@@ -33,7 +33,8 @@ services:
       - core
     environment:
       FAA_ENABLE_CORS: 'true'
-      FAA_ORIGIN: 'http://localhost:3000'
+      FAA_DOMAIN: 'igknaogecaknebmjklgpaccejllghcjg'
+      FAA_ORIGIN: 'chrome-extension://igknaogecaknebmjklgpaccejllghcjg'
       FAA_AGENCY_ADDR: 'core'
     ports:
       - '8088:8888'
@@ -58,7 +59,6 @@ services:
     environment:
       POSTGRES_DB: 'vault'
       POSTGRES_PASSWORD: 'password'
-
   pwa:
     image: ghcr.io/findy-network/findy-wallet-pwa/local:latest
     ports:

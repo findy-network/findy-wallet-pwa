@@ -4,6 +4,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@apollo/client": "^3.7.15",
+    "@types/chrome": "^0.0.237",
     "graphql": "^16.6.0",
     "grommet": "^2.32.2",
     "grommet-icons": "^4.10.0",

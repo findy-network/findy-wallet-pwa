@@ -10,9 +10,10 @@ const AddButton = styled(GreyButton)`
 interface AddProps {
   onClick: () => void
   onClose: () => void
+  initialCode: string
 }
 
-function Add({ onClick, onClose }: AddProps) {
+function Add({ onClick, onClose, initialCode }: AddProps) {
   const [dialogOpen, setOpen] = useState(false)
   const close = () => {
     setOpen(false)
@@ -29,7 +30,7 @@ function Add({ onClick, onClose }: AddProps) {
           setOpen(true)
         }}
       />
-      {dialogOpen && <AddDialog onClose={close} initialCode="" />}
+      {dialogOpen && <AddDialog onClose={close} initialCode={initialCode} />}
     </>
   )
 }

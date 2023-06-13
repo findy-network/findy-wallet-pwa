@@ -4,6 +4,7 @@ import { Menu as MenuIco } from 'grommet-icons'
 import { Link, NavLink } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 import { useLocation } from 'react-router-dom'
+import { BrowserQRCodeReader } from '@zxing/browser'
 
 import EventNotifications from './EventNotifications'
 
@@ -191,11 +192,20 @@ function Navi({ children }: IProps) {
   const { username } = useContext(UserContext)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showDialog, setShowDialog] = useState(false)
+  const [initialCode, setInitialCode] = useState('')
+  const readQRCodeOnPage = () =>
+    chrome.tabs.captureVisibleTab({ format: 'jpeg' }, async (dataUrl: string) => {
+      const codeReader = new BrowserQRCodeReader()
+      const result = await codeReader.decodeFromImageUrl(dataUrl)
+      setInitialCode(result.getText())
+      setShowDialog(true)
+    })
   let location = useLocation()
   const connectionNav = (direction: BoxProps['direction'] = 'row') => (
     <Nav animation="fadeIn" gap="small" align="start" direction={direction}>
       <Add
-        onClick={() => setShowDialog(true)}
+        initialCode={initialCode}
+        onClick={readQRCodeOnPage}
         onClose={() => setShowDialog(false)}
       ></Add>
       <Invite to="/me">
