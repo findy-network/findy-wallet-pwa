@@ -12,7 +12,7 @@ fi
 
 echo "Using CLI $bin"
 
-$bin --version || (echo "Please install $bin first.")
+$bin version || (echo "Please install $bin first.")
 
 new_key=$FCLI_KEY
 if [ -z "$new_key" ]; then
