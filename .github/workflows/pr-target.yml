@@ -1,19 +1,28 @@
-name: "pr-target"
+name: 'pr-target'
 on:
   pull_request_target:
 
 jobs:
-
   # label with "dev" to enable PR filtering
   label:
     permissions:
-        contents: read
-        pull-requests: write
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     steps:
-      - uses: actions/labeler@v4
-        with:
-          repo-token: '${{ secrets.RELEASER_PAT }}'
+      - id: label-the-PR
+        uses: actions/labeler@v4
+      # Add comment to trigger notification
+      - uses: actions/checkout@v3
+        if: contains(steps.label-the-PR.outputs.all-labels, 'dev')
+      - name: Add comment to PR
+        if: contains(steps.label-the-PR.outputs.all-labels, 'dev')
+        run: gh pr comment $PR --body "PR created by $USER"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          USER: ${{ github.event.pull_request.user.login }}
 
   # automerge successful dependabot PRs
   dependabot:
