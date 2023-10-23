@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Define ASSOCIATED_APPS as following:
 # export ASSOCIATED_APPS='\"ABCDE12345.com.example.app\", \"ABCDE12345.com.example.app2\"'
@@ -16,7 +16,7 @@ TARGET_PATH='./public/.well-known/apple-app-site-association'
 
 cp $TEMPLATE_PATH $TEMP_PATH
 
-# replace auth server URL
+# replace app ids
 sub_cmd='{gsub("\\[]","['$ASSOCIATED_APPS']")}1'
 awk "$sub_cmd" "$TEMP_PATH" >"./$TEMP_PATH.tmp" && mv ./$TEMP_PATH.tmp $TEMP_PATH
 
