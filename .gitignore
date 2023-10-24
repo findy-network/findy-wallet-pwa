@@ -40,4 +40,4 @@ e2e/test
 
 public/set-env.sh
 public/set-env-cli.sh
-public/.well-known/apple-site-association
+public/.well-known/
