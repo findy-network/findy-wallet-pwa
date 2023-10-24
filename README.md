@@ -20,10 +20,12 @@ To start experimenting with Findy Agency we recommend you to start with
 
 Web wallet frontend for Findy agency. Uses WebAuthn / Fido2 for authentication to agency backend.
 
-This project is a PoC/MVP of a web wallet intended for Findy agency users (individuals). The UI is unfinished in many ways and probably this project will not be seen in production as such. However, it shows how to implement
+This project is a PoC/MVP of a web wallet intended for Findy agency users (individuals).
+The UI is unfinished in many ways and probably this project will not be seen in production as such.
+However, it shows how to implement
 
 1. Authentication to Findy agency from browser environment
-1. Data fetching and manipulation use cases that utilise Findy agency vault service (GraphQL-interface)
+1. Data fetching and manipulation use cases that utilise [Findy agency vault service (GraphQL-interface)](https://github.com/findy-network/findy-agent-vault#api)
 
 ## General architecture
 
