@@ -2,7 +2,13 @@
   "applinks": {
     "details": [
       {
-        "appIDs": []
+        "appIDs": [],
+        "components": [
+          {
+            "/": "/mobile/*",
+            "comment": "Matches any URL with a path that starts with /mobile/."
+          }
+        ]
       }
     ]
   },
