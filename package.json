@@ -1,6 +1,6 @@
 {
   "name": "findy-wallet-pwa",
-  "version": "0.6.17",
+  "version": "0.6.18",
   "license": "Apache-2.0",
   "dependencies": {
     "@apollo/client": "^3.8.7",
