@@ -1,6 +1,7 @@
 name: 'pr-target'
 on:
   pull_request_target:
+    types: [opened]
 
 jobs:
   # label with "dev" to enable PR filtering
