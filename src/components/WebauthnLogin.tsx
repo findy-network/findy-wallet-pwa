@@ -87,12 +87,12 @@ function WebauthnLogin() {
     }
 
     setWaiting(true)
-    const response = await doFetch(`${config.authUrl}/register/begin/${email}`)
+    const response = await doFetch(`${config.authUrl}/attestation/options`, { username: email})
     if (response.status !== 200) {
       setError()
       return
     }
-    const { publicKey } = await response.json()
+    const publicKey = await response.json()
     const authenticatorSelection = publicKey.authenticatorSelection || {}
     const credential: ICredential = (await navigator.credentials.create({
       publicKey: {
@@ -127,7 +127,7 @@ function WebauthnLogin() {
       response: { attestationObject, clientDataJSON },
     } = credential
     setWaiting(true)
-    const result = await doFetch(`${config.authUrl}/register/finish/${email}`, {
+    const result = await doFetch(`${config.authUrl}/attestation/result`, {
       id,
       rawId: bufferEncode(rawId),
       type,
@@ -155,12 +155,12 @@ function WebauthnLogin() {
     }
 
     setWaiting(true)
-    const response = await doFetch(`${config.authUrl}/login/begin/${email}`)
+    const response = await doFetch(`${config.authUrl}/assertion/options`, {username: email})
     if (response.status !== 200) {
       setError()
       return
     }
-    const { publicKey } = await response.json()
+    const publicKey = await response.json()
     const credential: ICredential = (await navigator.credentials.get({
       publicKey: {
         ...publicKey,
@@ -182,7 +182,7 @@ function WebauthnLogin() {
       response: { authenticatorData, clientDataJSON, signature, userHandle },
     } = credential
     setWaiting(true)
-    const result = await doFetch(`${config.authUrl}/login/finish/${email}`, {
+    const result = await doFetch(`${config.authUrl}/assertion/result`, {
       id,
       rawId: bufferEncode(rawId),
       type,
