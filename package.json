@@ -18,8 +18,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build:app-association && react-scripts build && npm run build:version && npm run licenses:report",
-    "build:app-association": "./tools/gen-app-association.sh",
+    "build": "npm run build:well-known && react-scripts build && npm run build:version && npm run licenses:report",
+    "build:well-known": "./tools/well-known/gen-app-association.sh",
     "build:version": "ver=$(node -pe \"require('./package.json').version\") && echo v$ver > build/version.txt",
     "format": "prettier --write src/**/*.{ts,tsx}",
     "licenses:report": "node ./tools/check-licenses.js report ./build/licenses.txt",
