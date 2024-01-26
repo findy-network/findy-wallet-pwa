@@ -51,7 +51,7 @@ services:
       - '8085:8085'
 
   vault-db:
-    image: postgres:13.6-alpine
+    image: postgres:16.1-alpine
     volumes:
       - .data/vault-db:/var/lib/postgresql/data
     environment:
