@@ -2,6 +2,7 @@
 
 [![test](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml/badge.svg?branch=dev)](https://github.com/findy-network/findy-wallet-pwa/actions/workflows/test.yml)
 ![last-commit](https://img.shields.io/github/last-commit/findy-network/findy-wallet-pwa)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/findy-network/findy-wallet-pwa)
 
 ## Getting Started
 
