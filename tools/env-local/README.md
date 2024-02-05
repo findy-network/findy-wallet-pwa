@@ -2,6 +2,12 @@
 
 Make sure you have Docker and Node.js available.
 
+Change current directory to this folder:
+
+```sh
+cd tools/env-local
+```
+
 Start backend in Docker containers:
 
 ```sh
