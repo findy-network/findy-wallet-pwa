@@ -43,8 +43,8 @@ Wallet application interacts with two Findy agency services:
 
 ## Running in development mode
 
-1. [Setup local development environment](./tools/env-local/README.md)
-2. Install Findy Wallet PWA
+1. [Setup backend for local development environment](./tools/env-local/README.md)
+2. Install dependencies
 
    ```
    npm install
