@@ -19,3 +19,5 @@ jobs:
         with:
           token: ${{ steps.generate_token.outputs.token }}
           gate: test
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
