@@ -71,7 +71,7 @@
     "async": "^3.2.5",
     "husky": "^9.0.10",
     "js-green-licenses": "^4.0.0",
-    "lint-staged": "^15.2.1",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "react-scripts": "^5.0.1",
     "typescript": "^5.1.6"
