@@ -63,7 +63,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
-    "@types/react": "^18.2.70",
+    "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
     "@types/react-linkify": "^1.0.4",
     "@types/react-router-dom": "^5.3.2",
