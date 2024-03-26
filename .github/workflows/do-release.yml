@@ -15,7 +15,7 @@ jobs:
         with:
           app-id: ${{ secrets.AGENCY_RELEASER_ID }}
           private-key: ${{ secrets.AGENCY_RELEASER_KEY }}
-      - uses: findy-network/releaser-action@master
+      - uses: findy-network/releaser-action@push-to-dev
         with:
           token: ${{ steps.generate_token.outputs.token }}
           gate: test
